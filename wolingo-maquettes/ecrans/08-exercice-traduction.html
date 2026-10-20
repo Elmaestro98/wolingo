@@ -1,0 +1,200 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Wolingo — Exercice — traduction</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&amp;family=Nunito+Sans:opsz,wght@6..12,400;6..12,600;6..12,700;6..12,800&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0;background:#FBF7F0}
+a{color:#0B5D3B}a:hover{color:#08462C}
+.wl-radio:focus-visible + .wl-card{outline:3px solid #F2C230;outline-offset:2px}
+</style>
+<style>
+html{background:#E9E4DA}
+body{margin:0;min-height:100vh;display:flex;justify-content:center;align-items:flex-start;padding:24px 0;box-sizing:border-box;background:#E9E4DA}
+#app{border-radius:28px;overflow:hidden;box-shadow:0 20px 60px -20px rgba(30,27,22,0.35);background:#FBF7F0}
+@media (max-width:480px){body{padding:0;background:#FBF7F0}#app{border-radius:0;box-shadow:none}}
+</style>
+</head>
+<body>
+<div id="app"></div>
+<template id="tpl">
+<div style="width: 390px; height: 844px; box-sizing: border-box; background: #FBF7F0; font-family: 'Nunito Sans', system-ui, sans-serif; color: #1E1B16; display: flex; flex-direction: column; position: relative; overflow: hidden">
+
+  <div style="display: flex; align-items: center; gap: 12px; padding: 14px 20px 10px; flex-shrink: 0">
+    <a href="05-parcours.html" aria-label="Quitter la leçon" style="width: 44px; height: 44px; flex-shrink: 0; border-radius: 50%; display: flex; align-items: center; justify-content: center; text-decoration: none">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#3D3730" stroke-width="2.6" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18"></path></svg>
+    </a>
+    <div role="progressbar" aria-label="Progression de la leçon" aria-valuenow="4" aria-valuemin="0" aria-valuemax="5" style="flex-grow: 1; height: 12px; border-radius: 99px; background: #E6DFD3; overflow: hidden">
+      <div style="width: 80%; height: 100%; border-radius: 99px; background: #0B5D3B; box-shadow: inset 0 -3px 0 rgba(0,0,0,0.12)"></div>
+    </div>
+    <div aria-label="{{livesLabel}}" role="img" style="height: 40px; padding: 0 10px; display: flex; align-items: center; gap: 5px; flex-shrink: 0">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="#E5484D" stroke="#B42318" stroke-width="1.8" stroke-linejoin="round" aria-hidden="true"><path d="M19 14c1.5-1.5 3-3.2 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.8 0-3 .5-4.5 2-1.5-1.5-2.7-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4 3 5.5l7 7z"></path></svg>
+      <span style="font-size: 16px; font-weight: 800; color: #B42318">{{lives}}</span>
+    </div>
+  </div>
+
+  <div style="padding: 6px 20px 0; display: flex; flex-direction: column">
+    <div style="display: flex">
+      <span style="display: inline-flex; align-items: center; gap: 6px; padding: 4px 10px; border-radius: 99px; background: #FCEFC7; font-size: 11.5px; font-weight: 800; letter-spacing: 0.1em; text-transform: uppercase; color: #6B4700">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="#F2C230" stroke="#8A5A00" stroke-width="1.8" stroke-linejoin="round" aria-hidden="true"><path d="m12 2 3.1 6.3 6.9 1-5 4.9 1.2 6.8L12 17.8 5.8 21l1.2-6.8-5-4.9 6.9-1z"></path></svg>
+        Nouveau mot
+      </span>
+    </div>
+    <h1 style="margin: 10px 0 0; font-family: 'Bricolage Grotesque', sans-serif; font-weight: 800; font-size: 24px; line-height: 1.15; letter-spacing: -0.02em">Que veut dire cette phrase ?</h1>
+
+    <div style="margin-top: 16px; display: flex; gap: 12px; align-items: stretch">
+      <img src="assets/homme.jpg" alt="Un jeune homme souriant, la main au menton" style="width: 104px; height: 128px; border-radius: 18px; object-fit: cover; flex-shrink: 0">
+      <div style="flex-grow: 1; min-width: 0; padding: 14px; border-radius: 18px 18px 18px 6px; background: #FFFFFF; box-shadow: 0 1px 2px rgba(30,27,22,0.06); display: flex; flex-direction: column; justify-content: space-between; gap: 8px">
+        <div style="display: flex; align-items: center; justify-content: space-between; gap: 8px">
+          <div style="display: flex; flex-direction: column; gap: 2px; min-width: 0">
+            <span lang="wo" style="font-family: 'Bricolage Grotesque', sans-serif; font-size: 30px; font-weight: 800; line-height: 1; letter-spacing: -0.01em">Mangi fi</span>
+            <span style="font-size: 13px; color: #5E564C">se prononce <em style="font-weight: 700; color: #3D3730">[man-gui fi]</em></span>
+          </div>
+          <button type="button" aria-label="Écouter « Mangi fi »" style="width: 52px; height: 52px; flex-shrink: 0; border-radius: 16px; border: none; background: #0B5D3B; box-shadow: 0 4px 0 #063A24; display: flex; align-items: center; justify-content: center; cursor: pointer; padding: 0">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 5 6 9H3v6h3l5 4z"></path><path d="M15.5 8.5a5 5 0 0 1 0 7"></path><path d="M18.5 5.5a9 9 0 0 1 0 13"></path></svg>
+          </button>
+        </div>
+        <span style="font-size: 12.5px; line-height: 1.35; color: #5E564C">Réponse courante à <em lang="wo" style="font-weight: 800; color: #3D3730">« Nanga def ? »</em></span>
+      </div>
+    </div>
+  </div>
+
+  <fieldset style="border: none; margin: 20px 0 0; padding: 0 20px; display: flex; flex-direction: column; gap: 10px">
+    <legend style="position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0)">Choisis la bonne traduction</legend>
+    <sc-for list="{{options}}" as="o" hint-placeholder-count="4">
+      <label style="display: block; cursor: pointer; position: relative">
+        <input class="wl-radio" type="radio" name="reponse" value="{{o.id}}" checked="{{o.selected}}" disabled="{{o.locked}}" onChange="{{o.pick}}" style="position: absolute; opacity: 0; width: 1px; height: 1px; margin: 0">
+        <div class="wl-card" style="{{o.cardStyle}}">
+          <span style="{{o.keyStyle}}">{{o.key}}</span>
+          <span style="flex-grow: 1; font-size: 17px; font-weight: 800; color: {{o.textColor}}">{{o.fr}}</span>
+          <sc-if value="{{o.showOk}}" hint-placeholder-val="{{ false }}">
+            <span style="width: 28px; height: 28px; border-radius: 50%; background: #0B5D3B; display: flex; align-items: center; justify-content: center" aria-hidden="true">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"></path></svg>
+            </span>
+          </sc-if>
+          <sc-if value="{{o.showKo}}" hint-placeholder-val="{{ false }}">
+            <span style="width: 28px; height: 28px; border-radius: 50%; background: #C0262D; display: flex; align-items: center; justify-content: center" aria-hidden="true">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" stroke-width="3.5" stroke-linecap="round"><path d="M6 6l12 12M18 6 6 18"></path></svg>
+            </span>
+          </sc-if>
+        </div>
+      </label>
+    </sc-for>
+  </fieldset>
+
+  <div style="flex-grow: 1"></div>
+
+  <sc-if value="{{showCheck}}" hint-placeholder-val="{{ true }}">
+    <div style="flex-shrink: 0; padding: 14px 20px 24px; border-top: 1px solid #EFE8DC">
+      <button type="button" disabled="{{noPick}}" onClick="{{check}}" style="{{checkStyle}}">Vérifier</button>
+    </div>
+  </sc-if>
+
+  <sc-if value="{{showGood}}" hint-placeholder-val="{{ false }}">
+    <div role="status" style="flex-shrink: 0; padding: 18px 20px 24px; background: #D7EDDF; border-radius: 24px 24px 0 0; display: flex; flex-direction: column; gap: 12px">
+      <div style="display: flex; align-items: center; gap: 12px">
+        <div style="width: 44px; height: 44px; border-radius: 50%; background: #0B5D3B; display: flex; align-items: center; justify-content: center; flex-shrink: 0">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"></path></svg>
+        </div>
+        <div style="display: flex; flex-direction: column">
+          <span style="font-family: 'Bricolage Grotesque', sans-serif; font-size: 22px; font-weight: 800; color: #08462C"><span lang="wo">Baax na !</span> Bravo</span>
+          <span style="font-size: 13px; font-weight: 700; color: #0B5D3B">+10 XP</span>
+        </div>
+      </div>
+      <p style="margin: 0; font-size: 14px; line-height: 1.4; color: #1F3D2C"><strong>Fi</strong> = ici même. Pour un endroit éloigné, on dit <strong lang="wo">fale</strong> : <em lang="wo">Mangë fale</em>.</p>
+      <a href="10-exercice-completer.html" style="height: 56px; border-radius: 16px; background: #0B5D3B; box-shadow: 0 5px 0 #063A24; color: #FFFFFF; text-decoration: none; font-size: 18px; font-weight: 800; display: flex; align-items: center; justify-content: center">Continuer</a>
+    </div>
+  </sc-if>
+
+  <sc-if value="{{showBad}}" hint-placeholder-val="{{ false }}">
+    <div role="status" style="flex-shrink: 0; padding: 18px 20px 24px; background: #FBE3E3; border-radius: 24px 24px 0 0; display: flex; flex-direction: column; gap: 12px">
+      <div style="display: flex; align-items: center; gap: 12px">
+        <div style="width: 44px; height: 44px; border-radius: 50%; background: #C0262D; display: flex; align-items: center; justify-content: center; flex-shrink: 0">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" stroke-width="3.2" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18"></path></svg>
+        </div>
+        <div style="display: flex; flex-direction: column">
+          <span style="font-family: 'Bricolage Grotesque', sans-serif; font-size: 22px; font-weight: 800; color: #8E1B20">Pas tout à fait…</span>
+          <span style="font-size: 13.5px; font-weight: 700; color: #8E1B20">Bonne réponse : Je suis ici</span>
+        </div>
+      </div>
+      <p style="margin: 0; font-size: 14px; line-height: 1.4; color: #5C1A1D"><strong lang="wo">Fi</strong> veut dire ici, tout près. « Là-bas » se dit <strong lang="wo">fale</strong>.</p>
+      <button type="button" onClick="{{retry}}" style="height: 56px; border: none; border-radius: 16px; background: #C0262D; box-shadow: 0 5px 0 #8E1B20; color: #FFFFFF; font-family: inherit; font-size: 18px; font-weight: 800; cursor: pointer">J'ai compris</button>
+    </div>
+  </sc-if>
+</div>
+</template>
+<script src="runtime.js"></script>
+<script>
+class Component extends DCLogic {
+  constructor(props) {
+    super(props);
+    this.state = { picked: undefined, checked: undefined };
+  }
+  renderVals() {
+    const presets = {
+      vide: { picked: null, checked: false },
+      selection: { picked: 'a', checked: false },
+      correct: { picked: 'a', checked: true },
+      incorrect: { picked: 'b', checked: true }
+    };
+    const p = presets[this.props.etat ?? 'selection'] || presets.selection;
+    const picked = this.state.picked !== undefined ? this.state.picked : p.picked;
+    const checked = this.state.checked !== undefined ? this.state.checked : p.checked;
+    const answer = 'a';
+    const good = checked && picked === answer;
+    const bad = checked && picked !== answer;
+    const data = [
+      { id: 'a', key: '1', fr: 'Je suis ici' },
+      { id: 'b', key: '2', fr: 'Il est là-bas' },
+      { id: 'c', key: '3', fr: 'Tu es assis' },
+      { id: 'd', key: '4', fr: 'Nous partons' }
+    ];
+    const options = data.map((o) => {
+      const sel = picked === o.id;
+      const isAns = o.id === answer;
+      let look = 'idle';
+      if (!checked && sel) look = 'sel';
+      if (checked && isAns) look = 'ok';
+      if (checked && sel && !isAns) look = 'ko';
+      if (checked && !sel && !isAns) look = 'dim';
+      const styles = {
+        idle: ['#FFFFFF', '#ECE5D9', '#ECE5D9', '#F3EEE5', '#3D3730', '#1E1B16', '1'],
+        sel: ['#E3F1E8', '#0B5D3B', '#0B5D3B', '#0B5D3B', '#FFFFFF', '#08462C', '1'],
+        ok: ['#E3F1E8', '#0B5D3B', '#0B5D3B', '#0B5D3B', '#FFFFFF', '#08462C', '1'],
+        ko: ['#FDECEC', '#C0262D', '#C0262D', '#C0262D', '#FFFFFF', '#8E1B20', '1'],
+        dim: ['#FFFFFF', '#ECE5D9', '#ECE5D9', '#F3EEE5', '#3D3730', '#1E1B16', '0.5']
+      }[look];
+      return {
+        ...o,
+        selected: sel,
+        locked: checked,
+        showOk: look === 'ok',
+        showKo: look === 'ko',
+        textColor: styles[5],
+        pick: () => { if (!checked) this.setState({ picked: o.id, checked: false }); },
+        cardStyle: 'display: flex; align-items: center; gap: 14px; height: 60px; padding: 0 14px; border-radius: 16px; box-sizing: border-box; transition: background 0.15s; background: ' + styles[0] + '; border: 2px solid ' + styles[1] + '; box-shadow: 0 4px 0 ' + styles[2] + '; opacity: ' + styles[6] + ';',
+        keyStyle: 'width: 32px; height: 32px; flex-shrink: 0; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 15px; font-weight: 800; background: ' + styles[3] + '; color: ' + styles[4] + ';'
+      };
+    });
+    const noPick = !picked;
+    return {
+      options,
+      lives: bad ? 4 : 5,
+      livesLabel: (bad ? 4 : 5) + ' vies',
+      showCheck: !checked,
+      showGood: good,
+      showBad: bad,
+      noPick,
+      check: () => this.setState({ picked, checked: true }),
+      retry: () => this.setState({ picked: null, checked: false }),
+      checkStyle: 'width: 100%; height: 58px; border: none; border-radius: 16px; font-family: inherit; font-size: 18px; font-weight: 800; ' + (noPick ? 'background: #E6DFD3; color: #6B6258; cursor: not-allowed;' : 'background: #0B5D3B; box-shadow: 0 5px 0 #063A24; color: #FFFFFF; cursor: pointer;')
+    };
+  }
+}
+WL.mount(Component, {"etat": "selection"});
+</script>
+</body>
+</html>

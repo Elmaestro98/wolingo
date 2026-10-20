@@ -1,56 +1,140 @@
-# Welcome to your Expo app 👋
+<p align="center">
+  <img src="assets/logo.png" alt="Logo Wolingo" width="160">
+</p>
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+<h1 align="center">Wolingo</h1>
 
-## Get started
+<p align="center">
+  Apprends le wolof en t'amusant — leçons courtes, quiz animés, audio natif, 100 % hors ligne.
+</p>
 
-1. Install dependencies
+---
 
-   ```bash
-   npm install
-   ```
+## À propos
 
-2. Start the app
+Wolingo est une application mobile (Android et iOS) pour apprendre le wolof à partir du français. Elle adapte le cours « Initiation au Wolof — Méthode rapide » de Xavier Bry en 10 modules interactifs : explications courtes, exercices, quiz, écoute et prononciation.
 
-   ```bash
-   npx expo start
-   ```
+Projet développé par **AFRICATECHNOLOGIE / E-DEV** — Saint-Louis, Sénégal.
 
-In the output, you'll find options to open the app in a
+Le cahier des charges complet est dans [`CAHIER_DES_CHARGES.md`](CAHIER_DES_CHARGES.md).
 
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
+## Fonctionnalités (V1)
 
-You can start developing by editing the files inside the **src/app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
+- **Parcours en 11 modules** (sons + unités 1 à 10) : présent démonstratif, classes nominales, pronoms, possessifs, accompli, questions, nombres et dërëm, impératif, futur, passés, conditionnel.
+- **Exercices variés** : QCM, traduction FR ↔ WO, construction de phrase par tuiles, écoute, prononciation, conversion FCFA ↔ dërëm.
+- **Correction tolérante** sur les accents (ë/é) et les variantes acceptées.
+- **Gamification** : XP, série de jours, badges, révision espacée (J+1, J+3, J+7).
+- **Animations** : tuiles glissantes, confettis, secousse sur erreur, retour haptique.
+- **Hors ligne** : contenu, audio et progression stockés sur le téléphone, sans compte.
 
-## Get a fresh project
+## Stack technique
 
-When you're ready, run:
+| Besoin | Outil |
+| --- | --- |
+| Framework | Expo + React Native + TypeScript |
+| Navigation | Expo Router |
+| Animations | Reanimated, Gesture Handler, Lottie |
+| Audio | expo-audio |
+| Stockage | expo-sqlite + Drizzle ORM, contenu en JSON |
+| État | Zustand |
+| Styles | NativeWind (Tailwind) |
+| Notifications | expo-notifications |
+| Tests | Jest, React Native Testing Library, Zod |
+| Build | EAS Build / Submit / Update |
 
-```bash
-npm run reset-project
+## Structure du projet (prévue)
+
+```
+wolingo/
+├── src/
+│   ├── app/                    # Écrans (Expo Router)
+│   │   ├── (tabs)/             # Parcours, Révision, Lexique, Profil
+│   │   └── lecon/[id].tsx      # Lecteur de leçon
+│   ├── components/
+│   │   ├── exercices/          # QCM, Traduction, OrdreMots, Ecoute, Prononciation, Nombres
+│   │   └── ui/                 # Boutons, cartes, barre de progression, mascotte
+│   ├── content/
+│   │   ├── modules/            # module-00.json … module-10.json
+│   │   ├── lexique.json        # Banque de mots
+│   │   └── schema.ts           # Schémas Zod du contenu
+│   ├── constants/theme.ts      # Couleurs de la charte
+│   └── lib/
+│       ├── db/                 # SQLite + Drizzle (progression)
+│       ├── correcteur.ts       # Comparaison tolérante des réponses
+│       ├── revision.ts         # Révision espacée
+│       └── gamification.ts     # XP, série, badges
+├── assets/
+│   ├── audio/                  # Fichiers M4A nommés par audioId
+│   ├── animations/             # Fichiers Lottie
+│   └── logo.png
+├── CAHIER_DES_CHARGES.md
+└── README.md
 ```
 
-This command will move the starter code to the **example** directory and create a blank **src/app** directory where you can start developing.
+## Démarrage
 
-### Other setup steps
+Prérequis : Node.js LTS, l'application **Expo Go** sur ton téléphone (ou un émulateur Android / simulateur iOS).
 
-- To set up ESLint for linting, run `npx expo lint`, or follow our guide on ["Using ESLint and Prettier"](https://docs.expo.dev/guides/using-eslint/)
-- If you'd like to set up unit testing, follow our guide on ["Unit Testing with Jest"](https://docs.expo.dev/develop/unit-testing/)
-- Learn more about the TypeScript setup in this template in our guide on ["Using TypeScript"](https://docs.expo.dev/guides/typescript/)
+```bash
+# Installer les dépendances
+npm install
 
-## Learn more
+# Lancer le serveur de développement
+npx expo start
 
-To learn more about developing your project with Expo, look at the following resources:
+# Valider les fichiers de contenu
+npm run content:check
 
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
+# Générer la liste des audios à enregistrer
+npm run audio:list
+```
 
-## Join the community
+Scanne le QR code avec Expo Go pour ouvrir l'app.
 
-Join our community of developers creating universal apps.
+## Ajouter du contenu
 
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
+Le contenu ne touche pas au code : chaque module est un fichier JSON dans `content/modules/`.
+
+```json
+{
+  "id": "u1-l3-e05",
+  "type": "ordre_mots",
+  "consigne": "Traduis : Diop est en train de s'en aller",
+  "tuiles": ["Joob", "angiy", "dem", "mungi"],
+  "reponses_acceptees": ["Joob angiy dem"],
+  "audioId": "u1-joob-angiy-dem",
+  "explication": "Nom + a + ngi + di se contracte en « angiy »."
+}
+```
+
+Types d'exercice : `qcm`, `traduction_fr_wo`, `traduction_wo_fr`, `ordre_mots`, `ecoute`, `prononciation`, `nombres`.
+
+Tout nouveau contenu wolof doit être relu par un locuteur natif avant fusion.
+
+## Charte graphique
+
+| Couleur | Code | Usage |
+| --- | --- | --- |
+| Vert | `#00773D` | Couleur principale, bonnes réponses |
+| Jaune | `#FFC003` | XP, série, badges |
+| Rouge | `#E40718` | Erreurs |
+| Blanc | `#FFFFFF` | Fond |
+
+## Feuille de route
+
+- [ ] Lot 1 — Fondations (projet Expo, moteur de leçon, SQLite)
+- [ ] Lot 2 — Composants d'exercice et animations
+- [ ] Lot 3 — Contenu des modules 0 à 3 + audio
+- [ ] Lot 4 — Parcours, XP, série, badges, révision
+- [ ] Lot 5 — Bêta fermée (MVP)
+- [ ] Lot 6 — Modules 4 à 10
+- [ ] Lot 7 — Publication sur les stores
+
+## Crédits
+
+- Cours d'origine : *Initiation au Wolof — Méthode rapide*, Xavier Bry, relu par Maïmouna Kane. Adaptation soumise à l'accord de l'auteur.
+- Conception et développement : AFRICATECHNOLOGIE / E-DEV — africatechnologie9@gmail.com
+
+## Licence
+
+Tous droits réservés © 2026 AFRICATECHNOLOGIE. Le contenu pédagogique reste la propriété de ses auteurs.

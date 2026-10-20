@@ -1,0 +1,169 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Wolingo — Leçon terminée</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&amp;family=Nunito+Sans:ital,opsz,wght@0,6..12,400;0,6..12,600;0,6..12,700;0,6..12,800;1,6..12,600&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0;background:#FBF7F0}
+a{color:#0B5D3B}a:hover{color:#08462C}
+@keyframes wl-fall{0%{transform:translateY(-30px) rotate(0deg);opacity:0}15%{opacity:1}100%{transform:translateY(150px) rotate(220deg);opacity:0}}
+.wl-cf{animation:wl-fall 3.2s linear infinite}
+@keyframes wl-pop{0%{transform:scale(0.6);opacity:0}70%{transform:scale(1.06)}100%{transform:scale(1);opacity:1}}
+.wl-pop{animation:wl-pop 0.6s cubic-bezier(.2,.9,.3,1.2) both}
+</style>
+<style>
+html{background:#E9E4DA}
+body{margin:0;min-height:100vh;display:flex;justify-content:center;align-items:flex-start;padding:24px 0;box-sizing:border-box;background:#E9E4DA}
+#app{border-radius:28px;overflow:hidden;box-shadow:0 20px 60px -20px rgba(30,27,22,0.35);background:#FBF7F0}
+@media (max-width:480px){body{padding:0;background:#FBF7F0}#app{border-radius:0;box-shadow:none}}
+</style>
+</head>
+<body>
+<div id="app"></div>
+<template id="tpl">
+<div style="width: 390px; height: 900px; box-sizing: border-box; background: #FBF7F0; font-family: 'Nunito Sans', system-ui, sans-serif; color: #1E1B16; display: flex; flex-direction: column; padding: 18px 20px 22px; position: relative; overflow: hidden">
+
+  <div style="position: absolute; left: 50%; top: -180px; margin-left: -240px; width: 480px; height: 480px; border-radius: 50%; background: #F6E7C4; opacity: 0.6" aria-hidden="true"></div>
+
+  <div aria-hidden="true" style="position: absolute; left: 0; right: 0; top: 40px; height: 200px; pointer-events: none">
+    <span class="wl-cf" style="position: absolute; left: 60px; top: 0; width: 8px; height: 14px; border-radius: 2px; background: #0B5D3B; animation-delay: 0s"></span>
+    <span class="wl-cf" style="position: absolute; left: 96px; top: 20px; width: 10px; height: 10px; border-radius: 50%; background: #F2C230; animation-delay: 0.6s"></span>
+    <span class="wl-cf" style="position: absolute; left: 130px; top: 6px; width: 7px; height: 13px; border-radius: 2px; background: #E5484D; animation-delay: 1.4s"></span>
+    <span class="wl-cf" style="position: absolute; left: 252px; top: 10px; width: 8px; height: 14px; border-radius: 2px; background: #F2C230; animation-delay: 0.3s"></span>
+    <span class="wl-cf" style="position: absolute; left: 288px; top: 0; width: 10px; height: 10px; border-radius: 50%; background: #0B5D3B; animation-delay: 1s"></span>
+    <span class="wl-cf" style="position: absolute; left: 318px; top: 24px; width: 7px; height: 13px; border-radius: 2px; background: #00853F; animation-delay: 1.8s"></span>
+    <span class="wl-cf" style="position: absolute; left: 40px; top: 40px; width: 9px; height: 9px; border-radius: 50%; background: #E5484D; animation-delay: 2.2s"></span>
+    <span class="wl-cf" style="position: absolute; left: 336px; top: 50px; width: 8px; height: 14px; border-radius: 2px; background: #F2C230; animation-delay: 2.6s"></span>
+  </div>
+
+  <div style="position: relative; display: flex; justify-content: center">
+    <span style="display: inline-flex; align-items: center; gap: 8px; padding: 8px 14px; border-radius: 99px; background: #FFFFFF; box-shadow: 0 1px 2px rgba(30,27,22,0.08); font-size: 12px; font-weight: 800; letter-spacing: 0.1em; text-transform: uppercase; color: #3D3730">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="#F2C230" stroke="#8A5A00" stroke-width="1.8" stroke-linejoin="round" aria-hidden="true"><path d="m12 2 3.1 6.3 6.9 1-5 4.9 1.2 6.8L12 17.8 5.8 21l1.2-6.8-5-4.9 6.9-1z"></path></svg>
+      Module 1 · Leçon 1 validée
+    </span>
+  </div>
+
+  <div style="position: relative; display: flex; justify-content: center; margin-top: 10px">
+    <img class="wl-pop" src="assets/lion-full.png" alt="Le lion mascotte de Wolingo lève le pouce" style="height: 190px; width: auto; display: block">
+  </div>
+
+  <div style="position: relative; text-align: center; margin-top: 6px; display: flex; flex-direction: column; gap: 4px">
+    <h1 style="margin: 0; font-family: 'Bricolage Grotesque', sans-serif; font-weight: 800; font-size: 34px; line-height: 1.05; letter-spacing: -0.02em">Leçon terminée !</h1>
+    <p style="margin: 0; font-size: 15.5px; color: #5E564C"><strong lang="wo" style="color: #0B5D3B">Baax na lool !</strong> Tu as assuré aujourd'hui.</p>
+  </div>
+
+  <div style="position: relative; margin-top: 18px; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px">
+    <div style="padding: 12px 6px; border-radius: 18px; background: #FFFFFF; box-shadow: 0 1px 2px rgba(30,27,22,0.06); display: flex; flex-direction: column; align-items: center; gap: 4px">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="#F2C230" stroke="#8A5A00" stroke-width="1.8" stroke-linejoin="round" aria-hidden="true"><path d="M13 2 4 14h7l-1 8 9-12h-7z"></path></svg>
+      <span style="font-family: 'Bricolage Grotesque', sans-serif; font-size: 22px; font-weight: 800; color: #6B4700">+60</span>
+      <span style="font-size: 12px; font-weight: 700; color: #5E564C">XP gagnés</span>
+    </div>
+    <div style="padding: 12px 6px; border-radius: 18px; background: #FFFFFF; box-shadow: 0 1px 2px rgba(30,27,22,0.06); display: flex; flex-direction: column; align-items: center; gap: 4px">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#0B5D3B" stroke-width="2.2" aria-hidden="true"><circle cx="12" cy="12" r="9"></circle><circle cx="12" cy="12" r="5"></circle><circle cx="12" cy="12" r="1.5" fill="#0B5D3B"></circle></svg>
+      <span style="font-family: 'Bricolage Grotesque', sans-serif; font-size: 22px; font-weight: 800; color: #0B5D3B">92 %</span>
+      <span style="font-size: 12px; font-weight: 700; color: #5E564C">Précision</span>
+    </div>
+    <div style="padding: 12px 6px; border-radius: 18px; background: #FFFFFF; box-shadow: 0 1px 2px rgba(30,27,22,0.06); display: flex; flex-direction: column; align-items: center; gap: 4px">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#3D3730" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="13" r="8"></circle><path d="M12 9v4l2 2"></path><path d="M10 2h4"></path></svg>
+      <span style="font-family: 'Bricolage Grotesque', sans-serif; font-size: 22px; font-weight: 800">6 min</span>
+      <span style="font-size: 12px; font-weight: 700; color: #5E564C">Temps</span>
+    </div>
+  </div>
+
+  <section style="position: relative; margin-top: 12px; padding: 16px; border-radius: 20px; background: #FCEFC7">
+    <div style="display: flex; align-items: center; gap: 12px">
+      <div style="width: 44px; height: 44px; border-radius: 14px; background: #F2C230; display: flex; align-items: center; justify-content: center; flex-shrink: 0">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="#F59F0B" stroke="#7A2E0E" stroke-width="1.8" stroke-linejoin="round" aria-hidden="true"><path d="M12 22c4.4 0 7-2.9 7-6.8 0-3.6-2.4-6-4.2-8.2-.4 2-1.4 3.3-2.8 3.8.4-3.4-1-6.7-4-8.8.2 3.6-1.6 5.6-3 7.6C3.9 11.4 5 13.7 5 15.2 5 19.1 7.6 22 12 22z"></path></svg>
+      </div>
+      <div style="flex-grow: 1; display: flex; flex-direction: column">
+        <span style="font-family: 'Bricolage Grotesque', sans-serif; font-size: 20px; font-weight: 800; color: #3A2A00">8 jours d'affilée !</span>
+        <span style="font-size: 13.5px; color: #5A4300">Encore 2 jours pour ouvrir le coffre Teranga</span>
+      </div>
+    </div>
+    <div style="margin-top: 14px; display: flex; align-items: center; gap: 4px" role="img" aria-label="Série : 8 jours sur 10">
+      <span style="flex: 1; height: 10px; border-radius: 99px; background: #E0A800"></span>
+      <span style="flex: 1; height: 10px; border-radius: 99px; background: #E0A800"></span>
+      <span style="flex: 1; height: 10px; border-radius: 99px; background: #E0A800"></span>
+      <span style="flex: 1; height: 10px; border-radius: 99px; background: #E0A800"></span>
+      <span style="flex: 1; height: 10px; border-radius: 99px; background: #E0A800"></span>
+      <span style="flex: 1; height: 10px; border-radius: 99px; background: #E0A800"></span>
+      <span style="flex: 1; height: 10px; border-radius: 99px; background: #E0A800"></span>
+      <span style="flex: 1; height: 14px; border-radius: 99px; background: #E0A800; box-shadow: 0 0 0 3px #FFFFFF"></span>
+      <span style="flex: 1; height: 10px; border-radius: 99px; background: #EAD9A6"></span>
+      <span style="flex: 1; height: 10px; border-radius: 99px; background: #EAD9A6"></span>
+      <span style="width: 34px; height: 34px; margin-left: 4px; border-radius: 10px; background: #FFFFFF; display: flex; align-items: center; justify-content: center; flex-shrink: 0">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#8A5A00" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="9" width="18" height="11" rx="2"></rect><path d="M3 13h18"></path><path d="M5 9V7a3 3 0 0 1 3-3h8a3 3 0 0 1 3 3v2"></path><rect x="10" y="11" width="4" height="4" rx="1" fill="#F2C230"></rect></svg>
+      </span>
+    </div>
+    <div style="display: flex; justify-content: space-between; margin-top: 6px; padding-right: 38px">
+      <span style="font-size: 11.5px; font-weight: 700; color: #6B4700">Jour 1</span>
+      <span style="font-size: 11.5px; font-weight: 800; color: #3A2A00">Aujourd'hui</span>
+      <span style="font-size: 11.5px; font-weight: 700; color: #6B4700">Jour 10</span>
+    </div>
+  </section>
+
+  <section style="position: relative; margin-top: 12px; padding: 14px; border-radius: 20px; background: #FFFFFF; box-shadow: 0 1px 2px rgba(30,27,22,0.06)">
+    <h2 style="margin: 0 0 10px 2px; font-size: 15px; font-weight: 800">4 nouveaux mots</h2>
+    <div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px">
+      <sc-for list="{{words}}" as="w" hint-placeholder-count="4">
+        <button type="button" aria-label="{{w.label}}" aria-pressed="{{w.pressed}}" onClick="{{w.play}}" style="{{w.style}}">
+          <span style="display: flex; flex-direction: column; align-items: flex-start">
+            <span lang="wo" style="font-family: 'Bricolage Grotesque', sans-serif; font-size: 18px; font-weight: 800; color: #0B5D3B">{{w.wo}}</span>
+            <span style="font-size: 13px; color: #5E564C">{{w.fr}}</span>
+          </span>
+          <span style="{{w.icoStyle}}" aria-hidden="true">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M11 5 6 9H3v6h3l5 4z"></path><path d="M15.5 8.5a5 5 0 0 1 0 7"></path></svg>
+          </span>
+        </button>
+      </sc-for>
+    </div>
+  </section>
+
+  <div style="flex-grow: 1; min-height: 14px"></div>
+
+  <a href="05-parcours.html" style="position: relative; height: 58px; flex-shrink: 0; border-radius: 16px; background: #0B5D3B; box-shadow: 0 5px 0 #063A24; color: #FFFFFF; text-decoration: none; font-size: 18px; font-weight: 800; display: flex; align-items: center; justify-content: center; gap: 10px">
+    Continuer
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"></path><path d="m13 6 6 6-6 6"></path></svg>
+  </a>
+  <a href="17-construire-phrase-erreur.html" style="position: relative; height: 44px; margin-top: 8px; flex-shrink: 0; display: flex; align-items: center; justify-content: center; gap: 8px; text-decoration: none; color: #3D3730; font-size: 15px; font-weight: 800">
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#B42318" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 12a9 9 0 1 0 3-6.7L3 8"></path><path d="M3 3v5h5"></path></svg>
+    Revoir mon erreur (1)
+  </a>
+</div>
+</template>
+<script src="runtime.js"></script>
+<script>
+class Component extends DCLogic {
+  constructor(props) {
+    super(props);
+    this.state = { playing: null };
+  }
+  renderVals() {
+    const playing = this.state.playing;
+    const data = [
+      { wo: 'bunt', fr: 'porte' },
+      { wo: 'cin', fr: 'marmite' },
+      { wo: 'nit', fr: 'personne' },
+      { wo: 'fas', fr: 'cheval' }
+    ];
+    const words = data.map((d) => {
+      const on = playing === d.wo;
+      return {
+        ...d,
+        label: 'Écouter « ' + d.wo + ' » : ' + d.fr,
+        pressed: on ? 'true' : 'false',
+        play: () => this.setState({ playing: on ? null : d.wo }),
+        style: 'height: 64px; padding: 0 10px 0 14px; border-radius: 14px; font-family: inherit; display: flex; align-items: center; justify-content: space-between; gap: 8px; cursor: pointer; text-align: left; ' + (on ? 'background: #E3F1E8; border: 2px solid #0B5D3B;' : 'background: #F7F3EC; border: 2px solid #F7F3EC;'),
+        icoStyle: 'width: 34px; height: 34px; flex-shrink: 0; border-radius: 50%; display: flex; align-items: center; justify-content: center; ' + (on ? 'background: #0B5D3B; color: #FFFFFF;' : 'background: #FFFFFF; color: #0B5D3B;')
+      };
+    });
+    return { words };
+  }
+}
+WL.mount(Component, {});
+</script>
+</body>
+</html>

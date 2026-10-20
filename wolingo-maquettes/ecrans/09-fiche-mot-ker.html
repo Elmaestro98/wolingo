@@ -1,0 +1,236 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Wolingo — Fiche mot — kër</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&amp;family=Nunito+Sans:ital,opsz,wght@0,6..12,400;0,6..12,600;0,6..12,700;0,6..12,800;1,6..12,600&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0;background:#FBF7F0}
+a{color:#0B5D3B}a:hover{color:#08462C}
+</style>
+<style>
+html{background:#E9E4DA}
+body{margin:0;min-height:100vh;display:flex;justify-content:center;align-items:flex-start;padding:24px 0;box-sizing:border-box;background:#E9E4DA}
+#app{border-radius:28px;overflow:hidden;box-shadow:0 20px 60px -20px rgba(30,27,22,0.35);background:#FBF7F0}
+@media (max-width:480px){body{padding:0;background:#FBF7F0}#app{border-radius:0;box-shadow:none}}
+</style>
+</head>
+<body>
+<div id="app"></div>
+<template id="tpl">
+<div style="width: 390px; height: 1780px; box-sizing: border-box; background: #FBF7F0; font-family: 'Nunito Sans', system-ui, sans-serif; color: #1E1B16; position: relative; overflow: hidden">
+
+  <div style="display: flex; align-items: center; gap: 12px; padding: 14px 20px 10px">
+    <a href="05-parcours.html" aria-label="Quitter la leçon" style="width: 44px; height: 44px; flex-shrink: 0; border-radius: 50%; display: flex; align-items: center; justify-content: center; text-decoration: none">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#3D3730" stroke-width="2.6" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18"></path></svg>
+    </a>
+    <div role="progressbar" aria-label="Progression de la leçon" aria-valuenow="2" aria-valuemin="0" aria-valuemax="5" style="flex-grow: 1; height: 12px; border-radius: 99px; background: #E6DFD3; overflow: hidden">
+      <div style="width: 40%; height: 100%; border-radius: 99px; background: #0B5D3B; box-shadow: inset 0 -3px 0 rgba(0,0,0,0.12)"></div>
+    </div>
+    <div aria-label="5 vies" role="img" style="height: 40px; padding: 0 10px; display: flex; align-items: center; gap: 5px; flex-shrink: 0">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="#E5484D" stroke="#B42318" stroke-width="1.8" stroke-linejoin="round" aria-hidden="true"><path d="M19 14c1.5-1.5 3-3.2 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.8 0-3 .5-4.5 2-1.5-1.5-2.7-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4 3 5.5l7 7z"></path></svg>
+      <span style="font-size: 16px; font-weight: 800; color: #B42318">5</span>
+    </div>
+  </div>
+
+  <div style="padding: 4px 20px 0">
+    <article style="border-radius: 24px; background: #FFFFFF; box-shadow: 0 1px 2px rgba(30,27,22,0.06); overflow: hidden">
+      <div style="position: relative">
+        <img src="assets/maison.jpg" alt="Cour intérieure d'une maison sénégalaise avec des bougainvilliers" style="width: 100%; height: 170px; object-fit: cover; display: block">
+        <span style="position: absolute; left: 12px; top: 12px; padding: 4px 10px; border-radius: 99px; background: #FFFFFF; font-size: 11.5px; font-weight: 800; letter-spacing: 0.1em; text-transform: uppercase; color: #6B4700">Nouveau mot</span>
+        <button type="button" aria-label="Ajouter aux favoris" aria-pressed="{{favAria}}" onClick="{{toggleFav}}" style="position: absolute; right: 12px; top: 12px; width: 44px; height: 44px; border-radius: 50%; border: none; background: #FFFFFF; display: flex; align-items: center; justify-content: center; cursor: pointer; padding: 0">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="{{favFill}}" stroke="#8A5A00" stroke-width="2" stroke-linejoin="round" aria-hidden="true"><path d="m12 2 3.1 6.3 6.9 1-5 4.9 1.2 6.8L12 17.8 5.8 21l1.2-6.8-5-4.9 6.9-1z"></path></svg>
+        </button>
+      </div>
+      <div style="padding: 16px 18px 18px">
+        <div style="display: flex; align-items: flex-start; justify-content: space-between; gap: 12px">
+          <div style="display: flex; flex-direction: column; gap: 2px">
+            <span lang="wo" style="font-family: 'Bricolage Grotesque', sans-serif; font-size: 48px; font-weight: 800; line-height: 1; letter-spacing: -0.02em">kër</span>
+            <span style="font-size: 13px; color: #5E564C">[kër] · nom</span>
+          </div>
+          <div style="display: flex; gap: 8px">
+            <button type="button" aria-label="Écouter lentement" aria-pressed="{{slowAria}}" onClick="{{playSlow}}" style="{{slowStyle}}">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 15c0-4 3.5-7 8-7s8 3 8 7z"></path><path d="M19 13h1.5a1.5 1.5 0 0 0 0-3H19"></path><path d="M6 15v3M15 15v3"></path><path d="M8 8l1.5 3.5M14 8l-1.5 3.5"></path></svg>
+            </button>
+            <button type="button" aria-label="Écouter « kër »" aria-pressed="{{normAria}}" onClick="{{playNorm}}" style="{{normStyle}}">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 5 6 9H3v6h3l5 4z"></path><path d="M15.5 8.5a5 5 0 0 1 0 7"></path><path d="M18.5 5.5a9 9 0 0 1 0 13"></path></svg>
+            </button>
+          </div>
+        </div>
+        <div style="margin-top: 14px; display: flex; flex-direction: column; gap: 2px">
+          <span style="font-family: 'Bricolage Grotesque', sans-serif; font-size: 24px; font-weight: 800; color: #0B5D3B">maison</span>
+          <span style="font-size: 14px; color: #5E564C">demeure, foyer, concession familiale</span>
+        </div>
+        <div style="margin-top: 14px; display: flex; flex-wrap: wrap; gap: 6px; align-items: center">
+          <span style="padding: 4px 10px; border-radius: 99px; background: #E3F1E8; font-size: 12.5px; font-weight: 800; color: #0B5D3B">Classe g</span>
+          <span style="padding: 4px 10px; border-radius: 99px; background: #F3EEE5; font-size: 12.5px; font-weight: 800; color: #3D3730">Pluriel : <span lang="wo">kër yi</span></span>
+          <span style="display: inline-flex; align-items: center; gap: 6px; padding: 4px 10px; border-radius: 99px; background: #F3EEE5; font-size: 12.5px; font-weight: 800; color: #3D3730">
+            <svg width="14" height="12" viewBox="0 0 14 12" aria-hidden="true"><rect x="0" y="7" width="3" height="5" rx="1" fill="#0B5D3B"></rect><rect x="5.5" y="3.5" width="3" height="8.5" rx="1" fill="#0B5D3B"></rect><rect x="11" y="0" width="3" height="12" rx="1" fill="#0B5D3B"></rect></svg>
+            Très courant
+          </span>
+        </div>
+        <div style="margin-top: 14px; padding: 12px; border-radius: 14px; background: #FCEFC7; display: flex; gap: 10px; align-items: flex-start">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#8A5A00" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="flex-shrink: 0; margin-top: 1px"><path d="M3 10.5 12 3l9 7.5"></path><path d="M5 9v12h14V9"></path><path d="M9 21v-6h6v6"></path></svg>
+          <p style="margin: 0; font-size: 13.5px; line-height: 1.4; color: #5A4300">Au Sénégal, <strong lang="wo">kër</strong> désigne bien plus qu'un bâtiment : c'est le foyer, l'espace où résonne la <em>Teranga</em>.</p>
+        </div>
+      </div>
+    </article>
+  </div>
+
+  <section style="padding: 28px 20px 0">
+    <h2 style="margin: 0; font-family: 'Bricolage Grotesque', sans-serif; font-size: 21px; font-weight: 800; letter-spacing: -0.01em">Les 4 articles de <span lang="wo" style="color: #0B5D3B">kër</span></h2>
+    <p style="margin: 6px 0 0; font-size: 14px; line-height: 1.45; color: #5E564C">L'article prend la consonne de classe <strong>g</strong> et change selon la distance. Touche une ligne pour l'écouter.</p>
+    <div style="margin-top: 14px; display: flex; flex-direction: column; gap: 8px">
+      <sc-for list="{{arts}}" as="a" hint-placeholder-count="4">
+        <button type="button" aria-pressed="{{a.pressed}}" onClick="{{a.play}}" style="{{a.rowStyle}}">
+          <span style="{{a.iconStyle}}">
+            <sc-if value="{{a.isNear}}" hint-placeholder-val="{{ false }}">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 21s-7-6.2-7-11.5a7 7 0 0 1 14 0C19 14.8 12 21 12 21z"></path><circle cx="12" cy="9.5" r="2.5"></circle></svg>
+            </sc-if>
+            <sc-if value="{{a.isThere}}" hint-placeholder-val="{{ false }}">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 12h14"></path><path d="m13 6 6 6-6 6"></path></svg>
+            </sc-if>
+            <sc-if value="{{a.isMentioned}}" hint-placeholder-val="{{ false }}">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12a8 8 0 0 1-11.6 7.1L4 20.5l1.4-4.9A8 8 0 1 1 21 12z"></path></svg>
+            </sc-if>
+            <sc-if value="{{a.isFar}}" hint-placeholder-val="{{ false }}">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12z"></path><circle cx="12" cy="12" r="3"></circle></svg>
+            </sc-if>
+          </span>
+          <span style="flex-grow: 1; min-width: 0; display: flex; flex-direction: column; gap: 2px; text-align: left">
+            <span style="display: flex; align-items: center; gap: 8px; flex-wrap: wrap">
+              <span lang="wo" style="font-family: 'Bricolage Grotesque', sans-serif; font-size: 19px; font-weight: 800; color: #1E1B16">kër <span style="color: #0B5D3B">{{a.art}}</span></span>
+              <span style="{{a.tagStyle}}">{{a.tag}}</span>
+            </span>
+            <span style="font-size: 13px; line-height: 1.35; color: #5E564C">{{a.fr}}</span>
+          </span>
+          <span style="{{a.playStyle}}" aria-hidden="true">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M11 5 6 9H3v6h3l5 4z"></path><path d="M15.5 8.5a5 5 0 0 1 0 7"></path></svg>
+          </span>
+        </button>
+      </sc-for>
+    </div>
+    <div style="margin-top: 10px; padding: 12px 14px; border-radius: 14px; border: 2px dashed #DCD2C2; font-size: 13.5px; line-height: 1.45; color: #3D3730">
+      <strong>Au pluriel</strong> (classe y) : <span lang="wo" style="font-weight: 800; color: #0B5D3B">kër yi · kër yë · kër yooyu · kër yëlé</span>
+    </div>
+  </section>
+
+  <section style="padding: 28px 20px 0">
+    <h2 style="margin: 0; font-family: 'Bricolage Grotesque', sans-serif; font-size: 21px; font-weight: 800; letter-spacing: -0.01em">En contexte</h2>
+    <div style="margin-top: 12px; display: flex; flex-direction: column; gap: 10px">
+      <div style="padding: 16px; border-radius: 20px; background: #FFFFFF; box-shadow: 0 1px 2px rgba(30,27,22,0.06); display: flex; flex-direction: column; gap: 8px">
+        <div style="display: flex; align-items: flex-start; justify-content: space-between; gap: 10px">
+          <span lang="wo" style="font-size: 18px; font-weight: 800; line-height: 1.3">Job ak Juf angi toog ci <span style="color: #0B5D3B; text-decoration: underline; text-decoration-color: #F2C230; text-decoration-thickness: 3px; text-underline-offset: 4px">kër gi</span></span>
+          <button type="button" aria-label="Écouter la phrase" style="width: 44px; height: 44px; flex-shrink: 0; border-radius: 50%; border: none; background: #E3F1E8; display: flex; align-items: center; justify-content: center; cursor: pointer; padding: 0">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#0B5D3B" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 5 6 9H3v6h3l5 4z"></path><path d="M15.5 8.5a5 5 0 0 1 0 7"></path><path d="M18.5 5.5a9 9 0 0 1 0 13"></path></svg>
+          </button>
+        </div>
+        <span style="font-size: 14px; line-height: 1.4; color: #5E564C">Diop et Diouf sont assis dans cette maison.</span>
+        <span style="align-self: flex-start; padding: 3px 9px; border-radius: 8px; background: #F3EEE5; font-size: 12px; font-weight: 700; color: #3D3730">Présent locatif <em lang="wo">angi</em> + article <em lang="wo">gi</em></span>
+      </div>
+      <div style="padding: 16px; border-radius: 20px; background: #FFFFFF; box-shadow: 0 1px 2px rgba(30,27,22,0.06); display: flex; flex-direction: column; gap: 8px">
+        <div style="display: flex; align-items: flex-start; justify-content: space-between; gap: 10px">
+          <span lang="wo" style="font-size: 18px; font-weight: 800; line-height: 1.3"><span style="color: #0B5D3B; text-decoration: underline; text-decoration-color: #F2C230; text-decoration-thickness: 3px; text-underline-offset: 4px">Kër</span> gu mag la</span>
+          <button type="button" aria-label="Écouter la phrase" style="width: 44px; height: 44px; flex-shrink: 0; border-radius: 50%; border: none; background: #E3F1E8; display: flex; align-items: center; justify-content: center; cursor: pointer; padding: 0">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#0B5D3B" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 5 6 9H3v6h3l5 4z"></path><path d="M15.5 8.5a5 5 0 0 1 0 7"></path><path d="M18.5 5.5a9 9 0 0 1 0 13"></path></svg>
+          </button>
+        </div>
+        <span style="font-size: 14px; line-height: 1.4; color: #5E564C">C'est une grande maison.</span>
+        <span style="font-size: 12.5px; line-height: 1.4; color: #5E564C">Souvent la grande concession familiale où vivent plusieurs générations.</span>
+      </div>
+    </div>
+  </section>
+
+  <section style="padding: 28px 20px 0">
+    <h2 style="margin: 0; font-family: 'Bricolage Grotesque', sans-serif; font-size: 21px; font-weight: 800; letter-spacing: -0.01em">Mots de la même famille</h2>
+    <ul style="list-style: none; margin: 12px 0 0; padding: 0 16px; border-radius: 20px; background: #FFFFFF; box-shadow: 0 1px 2px rgba(30,27,22,0.06)">
+      <li style="display: flex; align-items: center; justify-content: space-between; gap: 12px; min-height: 56px">
+        <span lang="wo" style="font-size: 17px; font-weight: 800"><span style="color: #0B5D3B">borom</span> kër</span>
+        <span style="font-size: 13px; color: #5E564C; text-align: right">chef de famille</span>
+      </li>
+      <li style="display: flex; align-items: center; justify-content: space-between; gap: 12px; min-height: 56px; border-top: 1px solid #F0EADF">
+        <span lang="wo" style="font-size: 17px; font-weight: 800">waa<span style="color: #0B5D3B">kër</span></span>
+        <span style="font-size: 13px; color: #5E564C; text-align: right">les gens de la maison</span>
+      </li>
+      <li style="display: flex; align-items: center; justify-content: space-between; gap: 12px; min-height: 56px; border-top: 1px solid #F0EADF">
+        <span lang="wo" style="font-size: 17px; font-weight: 800">kër <span style="color: #0B5D3B">doktóor</span></span>
+        <span style="font-size: 13px; color: #5E564C; text-align: right">dispensaire</span>
+      </li>
+    </ul>
+  </section>
+
+  <div style="position: absolute; left: 0; right: 0; bottom: 0; padding: 14px 20px 24px; background: #FBF7F0; border-top: 1px solid #EFE8DC; display: flex; gap: 10px">
+    <button type="button" aria-label="Ajouter à mes révisions" aria-pressed="{{revAria}}" onClick="{{toggleRev}}" style="{{revStyle}}">
+      <sc-if value="{{inRev}}" hint-placeholder-val="{{ false }}">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="#0B5D3B" stroke="#0B5D3B" stroke-width="2" stroke-linejoin="round" aria-hidden="true"><path d="M6 3h12v18l-6-4-6 4z"></path></svg>
+      </sc-if>
+      <sc-if value="{{notRev}}" hint-placeholder-val="{{ true }}">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#0B5D3B" stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round" aria-hidden="true"><path d="M6 3h12v18l-6-4-6 4z"></path><path d="M12 7v6M9 10h6"></path></svg>
+      </sc-if>
+    </button>
+    <a href="08-exercice-traduction.html" style="flex-grow: 1; height: 58px; border-radius: 16px; background: #0B5D3B; box-shadow: 0 5px 0 #063A24; color: #FFFFFF; text-decoration: none; font-size: 18px; font-weight: 800; display: flex; align-items: center; justify-content: center; gap: 10px">
+      Continuer
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"></path><path d="m13 6 6 6-6 6"></path></svg>
+    </a>
+  </div>
+  <sc-if value="{{inRev}}" hint-placeholder-val="{{ false }}">
+    <div role="status" style="position: absolute; left: 20px; right: 20px; bottom: 112px; padding: 12px 14px; border-radius: 14px; background: #1E1B16; color: #FFFFFF; font-size: 14px; font-weight: 700; display: flex; align-items: center; gap: 10px">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#7FD49B" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"></path></svg>
+      <span><span lang="wo">kër</span> est ajouté à tes révisions</span>
+    </div>
+  </sc-if>
+</div>
+</template>
+<script src="runtime.js"></script>
+<script>
+class Component extends DCLogic {
+  constructor(props) {
+    super(props);
+    this.state = { playing: 'gi', fav: false, rev: false, audio: null };
+  }
+  renderVals() {
+    const { playing, fav, rev, audio } = this.state;
+    const data = [
+      { id: 'gi', art: 'gi', tag: 'Ici · proche', fr: 'La maison juste à côté, ici même', k: 'near' },
+      { id: 'ge', art: 'gë', tag: 'Là-bas', fr: 'La maison qu’on voit, un peu plus loin', k: 'there' },
+      { id: 'googu', art: 'googu', tag: 'Déjà mentionnée', fr: 'Cette maison dont on a parlé', k: 'mentioned' },
+      { id: 'gele', art: 'gëlé', tag: 'Au loin', fr: 'La maison tout là-bas, à l’horizon', k: 'far' }
+    ];
+    const arts = data.map((d) => {
+      const on = playing === d.id;
+      return {
+        ...d,
+        isNear: d.k === 'near', isThere: d.k === 'there', isMentioned: d.k === 'mentioned', isFar: d.k === 'far',
+        pressed: on ? 'true' : 'false',
+        play: () => this.setState({ playing: d.id }),
+        rowStyle: 'width: 100%; display: flex; align-items: center; gap: 12px; padding: 12px; border-radius: 16px; cursor: pointer; font-family: inherit; ' + (on ? 'background: #E3F1E8; border: 2px solid #0B5D3B;' : 'background: #FFFFFF; border: 2px solid #FFFFFF; box-shadow: 0 1px 2px rgba(30,27,22,0.06);'),
+        iconStyle: 'width: 44px; height: 44px; flex-shrink: 0; border-radius: 50%; display: flex; align-items: center; justify-content: center; ' + (on ? 'background: #0B5D3B; color: #FFFFFF;' : 'background: #F3EEE5; color: #3D3730;'),
+        tagStyle: 'padding: 2px 8px; border-radius: 99px; font-size: 11.5px; font-weight: 800; ' + (on ? 'background: #0B5D3B; color: #FFFFFF;' : 'background: #F3EEE5; color: #3D3730;'),
+        playStyle: 'width: 32px; height: 32px; flex-shrink: 0; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #0B5D3B; ' + (on ? 'background: #FFFFFF;' : 'background: #E3F1E8;')
+      };
+    });
+    const audioBtn = (on, big) => 'width: ' + (big ? 52 : 44) + 'px; height: ' + (big ? 52 : 44) + 'px; border-radius: 16px; border: none; display: flex; align-items: center; justify-content: center; cursor: pointer; padding: 0; ' + (on || big ? 'background: #0B5D3B; color: #FFFFFF; box-shadow: 0 4px 0 #063A24;' : 'background: #E3F1E8; color: #0B5D3B;');
+    return {
+      arts,
+      favAria: fav ? 'true' : 'false',
+      favFill: fav ? '#F2C230' : 'none',
+      toggleFav: () => this.setState({ fav: !fav }),
+      slowAria: audio === 'slow' ? 'true' : 'false',
+      normAria: audio === 'norm' ? 'true' : 'false',
+      slowStyle: audioBtn(audio === 'slow', false),
+      normStyle: audioBtn(audio === 'norm', true),
+      playSlow: () => this.setState({ audio: audio === 'slow' ? null : 'slow' }),
+      playNorm: () => this.setState({ audio: audio === 'norm' ? null : 'norm' }),
+      inRev: rev, notRev: !rev,
+      revAria: rev ? 'true' : 'false',
+      toggleRev: () => this.setState({ rev: !rev }),
+      revStyle: 'width: 58px; height: 58px; flex-shrink: 0; border-radius: 16px; cursor: pointer; padding: 0; display: flex; align-items: center; justify-content: center; ' + (rev ? 'background: #E3F1E8; border: 2px solid #0B5D3B;' : 'background: #FFFFFF; border: 2px solid #DCD2C2;')
+    };
+  }
+}
+WL.mount(Component, {});
+</script>
+</body>
+</html>

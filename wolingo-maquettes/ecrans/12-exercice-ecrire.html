@@ -1,0 +1,228 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Wolingo — Exercice — écrire en wolof</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&amp;family=Nunito+Sans:ital,opsz,wght@0,6..12,400;0,6..12,600;0,6..12,700;0,6..12,800;1,6..12,600&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0;background:#FBF7F0}
+a{color:#0B5D3B}a:hover{color:#08462C}
+@keyframes wl-blink{0%,49%{opacity:1}50%,100%{opacity:0}}
+.wl-caret{animation:wl-blink 1s steps(1) infinite}
+</style>
+<style>
+html{background:#E9E4DA}
+body{margin:0;min-height:100vh;display:flex;justify-content:center;align-items:flex-start;padding:24px 0;box-sizing:border-box;background:#E9E4DA}
+#app{border-radius:28px;overflow:hidden;box-shadow:0 20px 60px -20px rgba(30,27,22,0.35);background:#FBF7F0}
+@media (max-width:480px){body{padding:0;background:#FBF7F0}#app{border-radius:0;box-shadow:none}}
+</style>
+</head>
+<body>
+<div id="app"></div>
+<template id="tpl">
+<div style="width: 390px; height: 844px; box-sizing: border-box; background: #FBF7F0; font-family: 'Nunito Sans', system-ui, sans-serif; color: #1E1B16; display: flex; flex-direction: column; position: relative; overflow: hidden">
+
+  <div style="display: flex; align-items: center; gap: 12px; padding: 14px 20px 10px; flex-shrink: 0">
+    <a href="05-parcours.html" aria-label="Quitter la leçon" style="width: 44px; height: 44px; flex-shrink: 0; border-radius: 50%; display: flex; align-items: center; justify-content: center; text-decoration: none">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#3D3730" stroke-width="2.6" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18"></path></svg>
+    </a>
+    <div role="progressbar" aria-label="Progression de la leçon" aria-valuenow="4" aria-valuemin="0" aria-valuemax="5" style="flex-grow: 1; height: 12px; border-radius: 99px; background: #E6DFD3; overflow: hidden">
+      <div style="width: 80%; height: 100%; border-radius: 99px; background: #0B5D3B; box-shadow: inset 0 -3px 0 rgba(0,0,0,0.12)"></div>
+    </div>
+    <div aria-label="{{livesLabel}}" role="img" style="height: 40px; padding: 0 10px; display: flex; align-items: center; gap: 5px; flex-shrink: 0">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="#E5484D" stroke="#B42318" stroke-width="1.8" stroke-linejoin="round" aria-hidden="true"><path d="M19 14c1.5-1.5 3-3.2 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.8 0-3 .5-4.5 2-1.5-1.5-2.7-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4 3 5.5l7 7z"></path></svg>
+      <span style="font-size: 16px; font-weight: 800; color: #B42318">{{lives}}</span>
+    </div>
+  </div>
+
+  <div style="padding: 4px 20px 0; display: flex; flex-direction: column">
+    <span style="font-size: 12px; font-weight: 800; letter-spacing: 0.14em; text-transform: uppercase; color: #8A5A00">Traduction écrite</span>
+    <h1 style="margin: 4px 0 0; font-family: 'Bricolage Grotesque', sans-serif; font-weight: 800; font-size: 24px; line-height: 1.15; letter-spacing: -0.02em">Écris cette phrase en wolof</h1>
+
+    <div style="margin-top: 12px; display: flex; align-items: center; gap: 12px; padding: 12px 14px; border-radius: 18px; background: #FFFFFF; box-shadow: 0 1px 2px rgba(30,27,22,0.06)">
+      <img src="assets/awa.png" alt="" style="width: 40px; height: 40px; border-radius: 50%; object-fit: cover; flex-shrink: 0">
+      <div style="flex-grow: 1; min-width: 0; display: flex; flex-direction: column; gap: 1px">
+        <span style="font-size: 12px; font-weight: 700; color: #5E564C">Awa dit :</span>
+        <span style="font-family: 'Bricolage Grotesque', sans-serif; font-size: 20px; font-weight: 800; line-height: 1.2">« Je prends mon livre. »</span>
+      </div>
+      <button type="button" aria-label="Écouter la phrase en français" style="width: 44px; height: 44px; flex-shrink: 0; border-radius: 50%; border: none; background: #E3F1E8; display: flex; align-items: center; justify-content: center; cursor: pointer; padding: 0">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#0B5D3B" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 5 6 9H3v6h3l5 4z"></path><path d="M15.5 8.5a5 5 0 0 1 0 7"></path><path d="M18.5 5.5a9 9 0 0 1 0 13"></path></svg>
+      </button>
+    </div>
+
+    <label for="wl-answer" style="position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0)">Ta traduction en wolof</label>
+    <div id="wl-answer" role="textbox" aria-multiline="false" lang="wo" style="{{boxStyle}}">
+      <span style="flex-grow: 1; min-width: 0; font-family: 'Bricolage Grotesque', sans-serif; font-size: 22px; font-weight: 800; line-height: 1.3; word-break: break-word">
+        <sc-if value="{{isEmpty}}" hint-placeholder-val="{{ false }}"><span style="color: #8C8274; font-family: 'Nunito Sans', sans-serif; font-size: 17px; font-weight: 600">Écris ta traduction…</span></sc-if>{{text}}<sc-if value="{{showCaret}}" hint-placeholder-val="{{ true }}"><span class="wl-caret" style="display: inline-block; width: 3px; height: 26px; margin-left: 2px; vertical-align: -5px; background: #0B5D3B; border-radius: 2px"></span></sc-if>
+      </span>
+      <sc-if value="{{canClear}}" hint-placeholder-val="{{ true }}">
+        <button type="button" aria-label="Effacer tout" onClick="{{clear}}" style="width: 36px; height: 36px; flex-shrink: 0; border-radius: 50%; border: none; background: #F3EEE5; display: flex; align-items: center; justify-content: center; cursor: pointer; padding: 0">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#5E564C" stroke-width="2.6" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18"></path></svg>
+        </button>
+      </sc-if>
+    </div>
+
+    <sc-if value="{{showCheck}}" hint-placeholder-val="{{ true }}">
+      <div style="margin-top: 10px; display: flex; align-items: flex-start; gap: 8px; min-height: 36px">
+        <button type="button" aria-expanded="{{hintAria}}" onClick="{{toggleHint}}" style="height: 34px; padding: 0 12px; flex-shrink: 0; border: none; border-radius: 99px; background: #FCEFC7; color: #6B4700; font-family: inherit; font-size: 13px; font-weight: 800; display: flex; align-items: center; gap: 6px; cursor: pointer">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#8A5A00" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 18h6M10 22h4"></path><path d="M12 2a7 7 0 0 0-4 12.7c.6.5 1 1.3 1 2.3h6c0-1 .4-1.8 1-2.3A7 7 0 0 0 12 2z"></path></svg>
+          Indice
+        </button>
+        <sc-if value="{{showHint}}" hint-placeholder-val="{{ false }}">
+          <span style="font-size: 13.5px; line-height: 1.35; color: #5A4300; padding-top: 7px"><strong lang="wo">jël</strong> = prendre · <strong lang="wo">téere</strong> = livre</span>
+        </sc-if>
+      </div>
+    </sc-if>
+  </div>
+
+  <div style="flex-grow: 1"></div>
+
+  <sc-if value="{{showCheck}}" hint-placeholder-val="{{ true }}">
+    <div style="flex-shrink: 0; padding: 0 20px 12px">
+      <button type="button" disabled="{{isEmpty}}" onClick="{{check}}" style="{{checkStyle}}">Vérifier</button>
+    </div>
+    <div style="flex-shrink: 0; background: #D9D4CC; padding: 0 0 18px">
+      <div role="group" aria-label="Caractères wolof" style="display: flex; gap: 6px; padding: 8px 8px; background: #EFEAE2; border-bottom: 1px solid #CFC8BD">
+        <span style="align-self: center; padding: 0 4px; font-size: 11px; font-weight: 800; letter-spacing: 0.06em; text-transform: uppercase; color: #5E564C">Wolof</span>
+        <sc-for list="{{specials}}" as="k" hint-placeholder-count="6">
+          <button type="button" aria-label="{{k.label}}" onClick="{{k.press}}" lang="wo" style="flex: 1; height: 40px; border: none; border-radius: 10px; background: #FFFFFF; box-shadow: 0 1px 0 #B9B2A6; color: #0B5D3B; font-family: inherit; font-size: 19px; font-weight: 800; cursor: pointer; padding: 0">{{k.ch}}</button>
+        </sc-for>
+      </div>
+      <div style="padding: 8px 4px 0; display: flex; flex-direction: column; gap: 10px">
+        <div style="display: flex; gap: 5px; justify-content: center">
+          <sc-for list="{{row1}}" as="k" hint-placeholder-count="10">
+            <button type="button" onClick="{{k.press}}" style="width: 33px; height: 44px; border: none; border-radius: 6px; background: #FFFFFF; box-shadow: 0 1px 0 #9E978C; color: #1E1B16; font-family: system-ui, sans-serif; font-size: 20px; cursor: pointer; padding: 0">{{k.ch}}</button>
+          </sc-for>
+        </div>
+        <div style="display: flex; gap: 5px; justify-content: center">
+          <sc-for list="{{row2}}" as="k" hint-placeholder-count="10">
+            <button type="button" onClick="{{k.press}}" style="width: 33px; height: 44px; border: none; border-radius: 6px; background: #FFFFFF; box-shadow: 0 1px 0 #9E978C; color: #1E1B16; font-family: system-ui, sans-serif; font-size: 20px; cursor: pointer; padding: 0">{{k.ch}}</button>
+          </sc-for>
+        </div>
+        <div style="display: flex; gap: 5px; justify-content: center">
+          <button type="button" aria-label="Majuscule" aria-pressed="{{shiftAria}}" onClick="{{toggleShift}}" style="{{shiftStyle}}">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" aria-hidden="true"><path d="M12 3 3 12h5v8h8v-8h5z"></path></svg>
+          </button>
+          <sc-for list="{{row3}}" as="k" hint-placeholder-count="6">
+            <button type="button" onClick="{{k.press}}" style="width: 33px; height: 44px; border: none; border-radius: 6px; background: #FFFFFF; box-shadow: 0 1px 0 #9E978C; color: #1E1B16; font-family: system-ui, sans-serif; font-size: 20px; cursor: pointer; padding: 0">{{k.ch}}</button>
+          </sc-for>
+          <button type="button" aria-label="Effacer" onClick="{{backspace}}" style="width: 52px; height: 44px; border: none; border-radius: 6px; background: #ADA699; box-shadow: 0 1px 0 #8A8377; display: flex; align-items: center; justify-content: center; cursor: pointer; padding: 0">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#1E1B16" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 5H9l-6 7 6 7h12z"></path><path d="m12 9 6 6M18 9l-6 6"></path></svg>
+          </button>
+        </div>
+        <div style="display: flex; gap: 5px; justify-content: center">
+          <span style="width: 82px; height: 44px; border-radius: 6px; background: #ADA699; display: flex; align-items: center; justify-content: center; font-family: system-ui, sans-serif; font-size: 15px; color: #1E1B16" aria-hidden="true">123</span>
+          <button type="button" onClick="{{space}}" style="width: 190px; height: 44px; border: none; border-radius: 6px; background: #FFFFFF; box-shadow: 0 1px 0 #9E978C; font-family: system-ui, sans-serif; font-size: 15px; color: #5E564C; cursor: pointer">espace</button>
+          <span style="width: 82px; height: 44px; border-radius: 6px; background: #ADA699; display: flex; align-items: center; justify-content: center; font-family: system-ui, sans-serif; font-size: 15px; color: #1E1B16" aria-hidden="true">retour</span>
+        </div>
+      </div>
+    </div>
+  </sc-if>
+
+  <sc-if value="{{showGood}}" hint-placeholder-val="{{ false }}">
+    <div role="status" style="flex-shrink: 0; padding: 18px 20px 24px; background: #D7EDDF; border-radius: 24px 24px 0 0; display: flex; flex-direction: column; gap: 12px">
+      <div style="display: flex; align-items: center; gap: 12px">
+        <div style="width: 44px; height: 44px; border-radius: 50%; background: #0B5D3B; display: flex; align-items: center; justify-content: center; flex-shrink: 0">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"></path></svg>
+        </div>
+        <div style="display: flex; flex-direction: column">
+          <span style="font-family: 'Bricolage Grotesque', sans-serif; font-size: 22px; font-weight: 800; color: #08462C">{{goodTitle}}</span>
+          <span style="font-size: 13px; font-weight: 700; color: #0B5D3B">+10 XP</span>
+        </div>
+      </div>
+      <sc-if value="{{nearMiss}}" hint-placeholder-val="{{ false }}">
+        <p style="margin: 0; font-size: 14px; line-height: 1.45; color: #1F3D2C">Attention aux accents : <strong lang="wo">Mangi jël sumë téere</strong>. Le <strong lang="wo">ë</strong> et le <strong lang="wo">é</strong> changent la prononciation.</p>
+      </sc-if>
+      <a href="13-exercice-ecoute.html" style="height: 56px; border-radius: 16px; background: #0B5D3B; box-shadow: 0 5px 0 #063A24; color: #FFFFFF; text-decoration: none; font-size: 18px; font-weight: 800; display: flex; align-items: center; justify-content: center">Continuer</a>
+    </div>
+  </sc-if>
+
+  <sc-if value="{{showBad}}" hint-placeholder-val="{{ false }}">
+    <div role="status" style="flex-shrink: 0; padding: 18px 20px 24px; background: #FBE3E3; border-radius: 24px 24px 0 0; display: flex; flex-direction: column; gap: 12px">
+      <div style="display: flex; align-items: center; gap: 12px">
+        <div style="width: 44px; height: 44px; border-radius: 50%; background: #C0262D; display: flex; align-items: center; justify-content: center; flex-shrink: 0">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" stroke-width="3.2" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18"></path></svg>
+        </div>
+        <span style="font-family: 'Bricolage Grotesque', sans-serif; font-size: 22px; font-weight: 800; color: #8E1B20">Pas tout à fait…</span>
+      </div>
+      <div style="display: flex; flex-direction: column; gap: 2px">
+        <span style="font-size: 12.5px; font-weight: 800; letter-spacing: 0.08em; text-transform: uppercase; color: #8E1B20">Bonne réponse</span>
+        <span lang="wo" style="font-family: 'Bricolage Grotesque', sans-serif; font-size: 20px; font-weight: 800; color: #5C1A1D">Mangi jël sumë téere.</span>
+      </div>
+      <button type="button" onClick="{{retry}}" style="height: 56px; border: none; border-radius: 16px; background: #C0262D; box-shadow: 0 5px 0 #8E1B20; color: #FFFFFF; font-family: inherit; font-size: 18px; font-weight: 800; cursor: pointer">J'ai compris</button>
+    </div>
+  </sc-if>
+</div>
+</template>
+<script src="runtime.js"></script>
+<script>
+class Component extends DCLogic {
+  constructor(props) {
+    super(props);
+    this.state = { touched: false, text: '', checked: false, shift: false, hint: false, lives: 5 };
+  }
+  preset() {
+    const e = this.props.etat ?? 'saisie';
+    const m = {
+      vide: { text: '', checked: false },
+      saisie: { text: 'Mangi jël sumë', checked: false },
+      correct: { text: 'Mangi jël sumë téere', checked: true },
+      presque: { text: 'Mangi jel sume teere', checked: true },
+      incorrect: { text: 'Mangi am téere', checked: true }
+    }[e] || { text: '', checked: false };
+    return Object.assign({ shift: false, hint: false, lives: e === 'incorrect' ? 4 : 5 }, m);
+  }
+  norm(s) { return s.toLowerCase().replace(/[.,!?;:«»"]/g, '').replace(/\s+/g, ' ').trim(); }
+  bare(s) { return this.norm(s).normalize('NFD').replace(/[̀-ͯ]/g, ''); }
+  renderVals() {
+    const s = this.state.touched ? this.state : this.preset();
+    const { text, checked, shift, hint, lives } = s;
+    const target = 'Mangi jël sumë téere';
+    const exact = this.norm(text) === this.norm(target);
+    const near = !exact && this.bare(text) === this.bare(target);
+    const good = checked && (exact || near);
+    const bad = checked && !good;
+    const set = (patch) => this.setState(Object.assign({ touched: true, text, checked, shift, hint, lives }, patch));
+    const type = (ch) => {
+      let c = ch;
+      if (shift || text.length === 0) c = c.toUpperCase();
+      set({ text: text + c, shift: false });
+    };
+    const mk = (str) => str.split('').map((ch) => ({ ch: shift ? ch.toUpperCase() : ch, press: () => type(ch) }));
+    const specials = ['ë', 'é', 'ñ', 'ŋ', 'à', 'ó'].map((ch) => ({ ch, label: 'Insérer ' + ch, press: () => type(ch) }));
+    const isEmpty = text.length === 0;
+    let boxStyle = 'margin-top: 12px; min-height: 64px; padding: 12px 12px 12px 16px; box-sizing: border-box; border-radius: 18px; background: #FFFFFF; display: flex; align-items: center; gap: 10px; ';
+    if (good) boxStyle += 'border: 2px solid #0B5D3B;';
+    else if (bad) boxStyle += 'border: 2px solid #C0262D; background: #FFF7F7;';
+    else boxStyle += 'border: 2px solid #0B5D3B; box-shadow: 0 0 0 4px #D7EDDF;';
+    return {
+      text, isEmpty,
+      showCaret: !checked,
+      canClear: !checked && !isEmpty,
+      boxStyle,
+      showCheck: !checked, showGood: good, showBad: bad,
+      nearMiss: good && near,
+      goodTitle: near ? 'Presque parfait !' : 'Baax na ! Bravo',
+      showHint: hint, hintAria: hint ? 'true' : 'false',
+      toggleHint: () => set({ hint: !hint }),
+      specials,
+      row1: mk('azertyuiop'), row2: mk('qsdfghjklm'), row3: mk('wxcvbn'),
+      shiftAria: shift ? 'true' : 'false',
+      shiftStyle: 'width: 52px; height: 44px; border: none; border-radius: 6px; display: flex; align-items: center; justify-content: center; cursor: pointer; padding: 0; ' + (shift ? 'background: #FFFFFF; color: #1E1B16; box-shadow: 0 1px 0 #9E978C;' : 'background: #ADA699; color: #1E1B16; box-shadow: 0 1px 0 #8A8377;'),
+      toggleShift: () => set({ shift: !shift }),
+      backspace: () => set({ text: text.slice(0, -1) }),
+      space: () => set({ text: text.length && text[text.length - 1] !== ' ' ? text + ' ' : text }),
+      clear: () => set({ text: '' }),
+      check: () => set({ checked: true, lives: (this.norm(text) === this.norm(target) || this.bare(text) === this.bare(target)) ? lives : Math.max(0, lives - 1) }),
+      retry: () => set({ text: '', checked: false }),
+      lives, livesLabel: lives + ' vies',
+      checkStyle: 'width: 100%; height: 56px; border: none; border-radius: 16px; font-family: inherit; font-size: 18px; font-weight: 800; ' + (isEmpty ? 'background: #E6DFD3; color: #6B6258; cursor: not-allowed;' : 'background: #0B5D3B; box-shadow: 0 5px 0 #063A24; color: #FFFFFF; cursor: pointer;')
+    };
+  }
+}
+WL.mount(Component, {"etat": "saisie"});
+</script>
+</body>
+</html>

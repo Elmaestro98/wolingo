@@ -1,0 +1,135 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Wolingo — Niveau de départ</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&amp;family=Nunito+Sans:opsz,wght@6..12,400;6..12,600;6..12,700;6..12,800&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0;background:#FBF7F0}
+a{color:#0B5D3B}a:hover{color:#08462C}
+.wl-radio:focus-visible + .wl-card{outline:3px solid #F2C230;outline-offset:2px}
+</style>
+<style>
+html{background:#E9E4DA}
+body{margin:0;min-height:100vh;display:flex;justify-content:center;align-items:flex-start;padding:24px 0;box-sizing:border-box;background:#E9E4DA}
+#app{border-radius:28px;overflow:hidden;box-shadow:0 20px 60px -20px rgba(30,27,22,0.35);background:#FBF7F0}
+@media (max-width:480px){body{padding:0;background:#FBF7F0}#app{border-radius:0;box-shadow:none}}
+</style>
+</head>
+<body>
+<div id="app"></div>
+<template id="tpl">
+<div style="width: 390px; height: 844px; box-sizing: border-box; background: #FBF7F0; font-family: 'Nunito Sans', system-ui, sans-serif; color: #1E1B16; display: flex; flex-direction: column; padding: 16px 24px 24px">
+
+  <div style="display: flex; align-items: center; gap: 14px">
+    <a href="03-rappel.html" aria-label="Retour" style="width: 44px; height: 44px; flex-shrink: 0; border-radius: 50%; background: #FFFFFF; box-shadow: 0 1px 2px rgba(30,27,22,0.08); display: flex; align-items: center; justify-content: center; text-decoration: none">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#1E1B16" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 12H5"></path><path d="m11 18-6-6 6-6"></path></svg>
+    </a>
+    <div style="flex-grow: 1; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 6px" role="img" aria-label="Étape 3 sur 3">
+      <div style="height: 8px; border-radius: 99px; background: {{accent}}"></div>
+      <div style="height: 8px; border-radius: 99px; background: {{accent}}"></div>
+      <div style="height: 8px; border-radius: 99px; background: {{accent}}"></div>
+    </div>
+    <span style="font-size: 13px; font-weight: 800; color: #5E564C; flex-shrink: 0">3 / 3</span>
+  </div>
+
+  <div style="display: flex; flex-direction: column; gap: 8px; margin-top: 26px">
+    <span style="font-size: 12px; font-weight: 800; letter-spacing: 0.14em; text-transform: uppercase; color: #8A5A00">Ton point de départ</span>
+    <h1 style="margin: 0; font-family: 'Bricolage Grotesque', sans-serif; font-weight: 800; font-size: 30px; line-height: 1.08; letter-spacing: -0.02em">Tu connais déjà un peu de wolof ?</h1>
+    <p style="margin: 0; font-size: 15px; line-height: 1.45; color: #5E564C">On adapte tes premières leçons à ton aisance.</p>
+  </div>
+
+  <fieldset style="border: none; margin: 22px 0 0; padding: 0; display: flex; flex-direction: column; gap: 12px">
+    <legend style="position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0)">Niveau de départ</legend>
+    <sc-for list="{{options}}" as="opt" hint-placeholder-count="2">
+      <label style="display: block; cursor: pointer; position: relative">
+        <input class="wl-radio" type="radio" name="niveau" value="{{opt.id}}" checked="{{opt.checked}}" onChange="{{opt.pick}}" style="position: absolute; opacity: 0; width: 1px; height: 1px; margin: 0">
+        <div class="wl-card" style="{{opt.cardStyle}}">
+          <div style="{{opt.iconStyle}}">
+            <sc-if value="{{opt.isNew}}" hint-placeholder-val="{{ false }}">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 20h10"></path><path d="M12 20v-9"></path><path d="M12 11C12 7 9.5 5 5 5c0 4 2.5 6 7 6z"></path><path d="M12 11c0-3 2-5 6.5-5 0 3.5-2 5-6.5 5z"></path></svg>
+            </sc-if>
+            <sc-if value="{{opt.isBasics}}" hint-placeholder-val="{{ false }}">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"></circle><circle cx="12" cy="12" r="5"></circle><circle cx="12" cy="12" r="1.2"></circle></svg>
+            </sc-if>
+          </div>
+          <div style="flex-grow: 1; min-width: 0; display: flex; flex-direction: column; gap: 4px">
+            <span style="font-family: 'Bricolage Grotesque', sans-serif; font-size: 19px; font-weight: 800; line-height: 1.15">{{opt.title}}</span>
+            <span style="font-size: 13.5px; line-height: 1.38; color: #5E564C">{{opt.desc}}</span>
+            <div style="display: flex; margin-top: 4px">
+              <span style="{{opt.tagStyle}}">
+                <sc-if value="{{opt.isBasics}}" hint-placeholder-val="{{ false }}">
+                  <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M13 2 4 14h7l-1 8 9-12h-7z"></path></svg>
+                </sc-if>
+                {{opt.tag}}
+              </span>
+            </div>
+          </div>
+          <div style="{{opt.dotStyle}}" aria-hidden="true">
+            <sc-if value="{{opt.checked}}" hint-placeholder-val="{{ false }}">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"></path></svg>
+            </sc-if>
+          </div>
+        </div>
+      </label>
+    </sc-for>
+  </fieldset>
+
+  <div style="display: flex; gap: 12px; align-items: flex-start; margin-top: 18px; padding: 14px; background: #FCEFC7; border-radius: 16px">
+    <img src="assets/chauffeur.png" alt="" style="width: 44px; height: 44px; border-radius: 50%; object-fit: cover; flex-shrink: 0; box-shadow: 0 0 0 2px #FFFFFF">
+    <div style="display: flex; flex-direction: column; gap: 3px">
+      <span style="font-size: 14px; font-weight: 800; color: #3A2A00">Bul tiit ! <span style="font-weight: 600; color: #5A4300">(N'aie pas peur !)</span></span>
+      <span style="font-size: 13px; line-height: 1.35; color: #5A4300">Même si tu pars de zéro, les révisions sont courtes et conviviales.</span>
+    </div>
+  </div>
+
+  <div style="flex-grow: 1"></div>
+
+  <a href="05-parcours.html" style="height: 58px; flex-shrink: 0; border-radius: 16px; background: {{accent}}; box-shadow: 0 5px 0 #063A24; color: #FFFFFF; text-decoration: none; font-family: 'Nunito Sans', sans-serif; font-size: 18px; font-weight: 800; display: flex; align-items: center; justify-content: center; gap: 10px; cursor: pointer">
+    {{ctaLabel}}
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"></path><path d="m13 6 6 6-6 6"></path></svg>
+  </a>
+  <p style="margin: 14px 0 0; display: flex; align-items: center; justify-content: center; gap: 6px; font-size: 13px; color: #5E564C; text-align: center">
+    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#5E564C" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12a9 9 0 0 1-15.5 6.2L3 16"></path><path d="M3 21v-5h5"></path><path d="M3 12a9 9 0 0 1 15.5-6.2L21 8"></path><path d="M21 3v5h-5"></path></svg>
+    Tu pourras changer de niveau à tout moment.
+  </p>
+</div>
+</template>
+<script src="runtime.js"></script>
+<script>
+class Component extends DCLogic {
+  constructor(props) {
+    super(props);
+    this.state = { picked: 'basics' };
+  }
+  renderVals() {
+    const accent = this.props.accent ?? '#0B5D3B';
+    const data = [
+      { id: 'new', title: 'Je débute', desc: 'On commence par les salutations et la politesse : Salaam aleekum, Jërëjëf…', tag: 'Module 0 · Les bases', cta: 'Commencer le module 0' },
+      { id: 'basics', title: 'J’ai quelques bases', desc: 'Un test rapide pour débloquer directement les modules à ton niveau.', tag: 'Test rapide · 3 min', cta: 'Passer le test rapide' }
+    ];
+    const picked = this.state.picked;
+    const options = data.map((o) => {
+      const on = o.id === picked;
+      return {
+        ...o,
+        checked: on,
+        isNew: o.id === 'new',
+        isBasics: o.id === 'basics',
+        cardStyle: 'display: flex; align-items: flex-start; gap: 14px; padding: 16px; border-radius: 18px; box-sizing: border-box; transition: background 0.15s, border-color 0.15s; ' + (on ? 'background: #E3F1E8; border: 2px solid ' + accent + '; box-shadow: 0 4px 0 ' + accent + ';' : 'background: #FFFFFF; border: 2px solid #ECE5D9; box-shadow: 0 4px 0 #ECE5D9;'),
+        iconStyle: 'width: 48px; height: 48px; flex-shrink: 0; border-radius: 14px; display: flex; align-items: center; justify-content: center; ' + (on ? 'background: ' + accent + '; color: #FFFFFF;' : 'background: #F3EEE5; color: #3D3730;'),
+        tagStyle: 'display: inline-flex; align-items: center; gap: 5px; padding: 4px 10px; border-radius: 99px; font-size: 12px; font-weight: 800; ' + (o.id === 'basics' ? 'background: #F2C230; color: #3A2A00;' : (on ? 'background: #FFFFFF; color: ' + accent + ';' : 'background: #F3EEE5; color: #3D3730;')),
+        dotStyle: 'width: 26px; height: 26px; flex-shrink: 0; border-radius: 50%; box-sizing: border-box; display: flex; align-items: center; justify-content: center; ' + (on ? 'background: ' + accent + ';' : 'border: 2px solid #CFC6B8; background: #FFFFFF;'),
+        pick: () => this.setState({ picked: o.id })
+      };
+    });
+    const cur = data.find((o) => o.id === picked);
+    return { accent, options, ctaLabel: cur.cta };
+  }
+}
+WL.mount(Component, {"accent": "#0B5D3B"});
+</script>
+</body>
+</html>

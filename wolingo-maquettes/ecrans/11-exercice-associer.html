@@ -1,0 +1,182 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Wolingo — Exercice — associer</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&amp;family=Nunito+Sans:ital,opsz,wght@0,6..12,400;0,6..12,600;0,6..12,700;0,6..12,800;1,6..12,600&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0;background:#FBF7F0}
+a{color:#0B5D3B}a:hover{color:#08462C}
+</style>
+<style>
+html{background:#E9E4DA}
+body{margin:0;min-height:100vh;display:flex;justify-content:center;align-items:flex-start;padding:24px 0;box-sizing:border-box;background:#E9E4DA}
+#app{border-radius:28px;overflow:hidden;box-shadow:0 20px 60px -20px rgba(30,27,22,0.35);background:#FBF7F0}
+@media (max-width:480px){body{padding:0;background:#FBF7F0}#app{border-radius:0;box-shadow:none}}
+</style>
+</head>
+<body>
+<div id="app"></div>
+<template id="tpl">
+<div style="width: 390px; height: 844px; box-sizing: border-box; background: #FBF7F0; font-family: 'Nunito Sans', system-ui, sans-serif; color: #1E1B16; display: flex; flex-direction: column; position: relative; overflow: hidden">
+
+  <div style="display: flex; align-items: center; gap: 12px; padding: 14px 20px 10px; flex-shrink: 0">
+    <a href="05-parcours.html" aria-label="Quitter la leçon" style="width: 44px; height: 44px; flex-shrink: 0; border-radius: 50%; display: flex; align-items: center; justify-content: center; text-decoration: none">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#3D3730" stroke-width="2.6" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18"></path></svg>
+    </a>
+    <div role="progressbar" aria-label="Progression de la leçon" aria-valuenow="5" aria-valuemin="0" aria-valuemax="5" style="flex-grow: 1; height: 12px; border-radius: 99px; background: #E6DFD3; overflow: hidden">
+      <div style="width: 94%; height: 100%; border-radius: 99px; background: #0B5D3B; box-shadow: inset 0 -3px 0 rgba(0,0,0,0.12)"></div>
+    </div>
+    <div aria-label="{{livesLabel}}" role="img" style="height: 40px; padding: 0 10px; display: flex; align-items: center; gap: 5px; flex-shrink: 0">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="#E5484D" stroke="#B42318" stroke-width="1.8" stroke-linejoin="round" aria-hidden="true"><path d="M19 14c1.5-1.5 3-3.2 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.8 0-3 .5-4.5 2-1.5-1.5-2.7-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4 3 5.5l7 7z"></path></svg>
+      <span style="font-size: 16px; font-weight: 800; color: #B42318">{{lives}}</span>
+    </div>
+  </div>
+
+  <div style="padding: 6px 20px 0">
+    <span style="font-size: 12px; font-weight: 800; letter-spacing: 0.14em; text-transform: uppercase; color: #8A5A00">Classes nominales</span>
+    <h1 style="margin: 4px 0 0; font-family: 'Bricolage Grotesque', sans-serif; font-weight: 800; font-size: 24px; line-height: 1.15; letter-spacing: -0.02em">Associe chaque nom à son article</h1>
+    <p style="margin: 6px 0 0; font-size: 14px; line-height: 1.4; color: #5E564C">Touche un nom, puis l'article qui va avec.</p>
+  </div>
+
+  <div style="padding: 18px 20px 0; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px">
+    <div role="group" aria-label="Noms en wolof" style="display: flex; flex-direction: column; gap: 10px">
+      <sc-for list="{{left}}" as="l" hint-placeholder-count="4">
+        <button type="button" aria-pressed="{{l.pressed}}" disabled="{{l.done}}" onClick="{{l.tap}}" style="{{l.style}}">
+          <span style="display: flex; flex-direction: column; align-items: flex-start; gap: 1px; min-width: 0">
+            <span lang="wo" style="font-family: 'Bricolage Grotesque', sans-serif; font-size: 22px; font-weight: 800; line-height: 1.1">{{l.wo}}</span>
+            <span style="font-size: 13px; font-weight: 600; opacity: 0.8">{{l.fr}}</span>
+          </span>
+          <sc-if value="{{l.done}}" hint-placeholder-val="{{ false }}">
+            <span style="width: 26px; height: 26px; flex-shrink: 0; border-radius: 50%; background: #0B5D3B; display: flex; align-items: center; justify-content: center" aria-hidden="true">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"></path></svg>
+            </span>
+          </sc-if>
+          <sc-if value="{{l.open}}" hint-placeholder-val="{{ true }}">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="flex-shrink: 0; opacity: 0.7"><path d="M11 5 6 9H3v6h3l5 4z"></path><path d="M15.5 8.5a5 5 0 0 1 0 7"></path></svg>
+          </sc-if>
+        </button>
+      </sc-for>
+    </div>
+    <div role="group" aria-label="Articles" style="display: flex; flex-direction: column; gap: 10px">
+      <sc-for list="{{right}}" as="r" hint-placeholder-count="4">
+        <button type="button" aria-pressed="{{r.pressed}}" disabled="{{r.done}}" onClick="{{r.tap}}" lang="wo" style="{{r.style}}">
+          <span style="font-family: 'Bricolage Grotesque', sans-serif; font-size: 26px; font-weight: 800">{{r.wo}}</span>
+          <sc-if value="{{r.done}}" hint-placeholder-val="{{ false }}">
+            <span style="width: 26px; height: 26px; flex-shrink: 0; border-radius: 50%; background: #0B5D3B; display: flex; align-items: center; justify-content: center" aria-hidden="true">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"></path></svg>
+            </span>
+          </sc-if>
+        </button>
+      </sc-for>
+    </div>
+  </div>
+
+  <div style="padding: 18px 20px 0; display: flex; align-items: center; justify-content: center; gap: 10px">
+    <div style="display: flex; gap: 6px" aria-hidden="true">
+      <sc-for list="{{dots}}" as="d" hint-placeholder-count="4">
+        <span style="{{d.style}}"></span>
+      </sc-for>
+    </div>
+    <span role="status" style="font-size: 13.5px; font-weight: 800; color: {{statusColor}}">{{status}}</span>
+  </div>
+
+  <div style="flex-grow: 1"></div>
+
+  <sc-if value="{{allDone}}" hint-placeholder-val="{{ false }}">
+    <div role="status" style="flex-shrink: 0; padding: 18px 20px 24px; background: #D7EDDF; border-radius: 24px 24px 0 0; display: flex; flex-direction: column; gap: 12px">
+      <div style="display: flex; align-items: center; gap: 12px">
+        <div style="width: 44px; height: 44px; border-radius: 50%; background: #0B5D3B; display: flex; align-items: center; justify-content: center; flex-shrink: 0">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"></path></svg>
+        </div>
+        <div style="display: flex; flex-direction: column">
+          <span style="font-family: 'Bricolage Grotesque', sans-serif; font-size: 22px; font-weight: 800; color: #08462C"><span lang="wo">Baax na !</span> Sans faute</span>
+          <span style="font-size: 13px; font-weight: 700; color: #0B5D3B">+15 XP</span>
+        </div>
+      </div>
+      <p style="margin: 0; font-size: 14px; line-height: 1.45; color: #1F3D2C">À retenir : <strong lang="wo">nit ki</strong>, <strong lang="wo">kër gi</strong>, <strong lang="wo">cin li</strong>, <strong lang="wo">fas wi</strong>. Chaque nom a sa consonne, apprends-les ensemble.</p>
+      <a href="12-exercice-ecrire.html" style="height: 56px; border-radius: 16px; background: #0B5D3B; box-shadow: 0 5px 0 #063A24; color: #FFFFFF; text-decoration: none; font-size: 18px; font-weight: 800; display: flex; align-items: center; justify-content: center">Continuer</a>
+    </div>
+  </sc-if>
+</div>
+</template>
+<script src="runtime.js"></script>
+<script>
+class Component extends DCLogic {
+  constructor(props) {
+    super(props);
+    this.state = { touched: false, selL: null, selR: null, matched: [], wrong: null, lives: 5 };
+  }
+  preset() {
+    const e = this.props.etat ?? 'en-cours';
+    if (e === 'debut') return { selL: null, matched: [], wrong: null, lives: 5 };
+    if (e === 'erreur') return { selL: null, matched: ['nit'], wrong: ['fas', 'li'], lives: 4 };
+    if (e === 'termine') return { selL: null, matched: ['nit', 'ker', 'fas', 'cin'], wrong: null, lives: 5 };
+    return { selL: 'ker', matched: ['nit'], wrong: null, lives: 5 };
+  }
+  renderVals() {
+    const s = this.state.touched ? this.state : this.preset();
+    const selL = s.selL, matched = s.matched, wrong = s.wrong, lives = s.lives;
+    const pairs = { ker: 'gi', nit: 'ki', fas: 'wi', cin: 'li' };
+    const nouns = [
+      { id: 'ker', wo: 'kër', fr: 'la maison' },
+      { id: 'nit', wo: 'nit', fr: 'la personne' },
+      { id: 'fas', wo: 'fas', fr: 'le cheval' },
+      { id: 'cin', wo: 'cin', fr: 'la marmite' }
+    ];
+    const arts = ['ki', 'gi', 'li', 'wi'];
+    const matchedArts = matched.map((m) => pairs[m]);
+    const go = (patch) => this.setState(Object.assign({ touched: true, selL, matched, wrong: null, lives }, patch));
+    const look = (kind) => {
+      const base = 'width: 100%; height: 72px; padding: 0 12px 0 14px; border-radius: 16px; display: flex; align-items: center; justify-content: space-between; gap: 8px; font-family: inherit; text-align: left; cursor: pointer; transition: background 0.15s; ';
+      return base + ({
+        idle: 'background: #FFFFFF; border: 2px solid #ECE5D9; box-shadow: 0 4px 0 #ECE5D9; color: #1E1B16;',
+        sel: 'background: #FFF6DA; border: 2px solid #E0A800; box-shadow: 0 4px 0 #E0A800; color: #3A2A00;',
+        done: 'background: #E3F1E8; border: 2px solid #A9D3B8; box-shadow: none; color: #0B5D3B; cursor: default; opacity: 0.75;',
+        bad: 'background: #FDECEC; border: 2px solid #C0262D; box-shadow: 0 4px 0 #C0262D; color: #8E1B20;'
+      })[kind];
+    };
+    const left = nouns.map((n) => {
+      const done = matched.indexOf(n.id) >= 0;
+      const isSel = selL === n.id;
+      const isBad = wrong && wrong[0] === n.id;
+      return {
+        ...n, done, open: !done,
+        pressed: isSel ? 'true' : 'false',
+        style: look(done ? 'done' : isBad ? 'bad' : isSel ? 'sel' : 'idle'),
+        tap: () => { if (!done) go({ selL: n.id }); }
+      };
+    });
+    const right = arts.map((a) => {
+      const done = matchedArts.indexOf(a) >= 0;
+      const isBad = wrong && wrong[1] === a;
+      return {
+        wo: a, done,
+        pressed: 'false',
+        style: look(done ? 'done' : isBad ? 'bad' : 'idle').replace('justify-content: space-between', 'justify-content: space-between'),
+        tap: () => {
+          if (done || !selL) return;
+          if (pairs[selL] === a) go({ selL: null, matched: matched.concat([selL]) });
+          else go({ selL: null, wrong: [selL, a], lives: Math.max(0, lives - 1) });
+        }
+      };
+    });
+    const n = matched.length;
+    const dots = [0, 1, 2, 3].map((i) => ({ style: 'width: 22px; height: 8px; border-radius: 99px; display: block; background: ' + (i < n ? '#0B5D3B' : '#E2D9C9') + ';' }));
+    let status = n + ' paire' + (n > 1 ? 's' : '') + ' sur 4';
+    let statusColor = '#5E564C';
+    if (wrong) { status = 'Pas la bonne paire, réessaie'; statusColor = '#B42318'; }
+    else if (selL && n < 4) { status = 'Choisis maintenant l’article'; statusColor = '#8A5A00'; }
+    return {
+      left, right, dots, status, statusColor,
+      allDone: n === 4,
+      lives, livesLabel: lives + ' vies'
+    };
+  }
+}
+WL.mount(Component, {"etat": "en-cours"});
+</script>
+</body>
+</html>

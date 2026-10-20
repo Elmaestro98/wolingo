@@ -1,0 +1,209 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Wolingo — Exercice — écoute</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&amp;family=Nunito+Sans:ital,opsz,wght@0,6..12,400;0,6..12,600;0,6..12,700;0,6..12,800;1,6..12,600&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0;background:#FBF7F0}
+a{color:#0B5D3B}a:hover{color:#08462C}
+@keyframes wl-wave{0%,100%{transform:scaleY(0.35)}50%{transform:scaleY(1)}}
+.wl-bar{transform-origin:center;animation:wl-wave 0.9s ease-in-out infinite}
+.wl-radio:focus-visible + .wl-card{outline:3px solid #F2C230;outline-offset:2px}
+</style>
+<style>
+html{background:#E9E4DA}
+body{margin:0;min-height:100vh;display:flex;justify-content:center;align-items:flex-start;padding:24px 0;box-sizing:border-box;background:#E9E4DA}
+#app{border-radius:28px;overflow:hidden;box-shadow:0 20px 60px -20px rgba(30,27,22,0.35);background:#FBF7F0}
+@media (max-width:480px){body{padding:0;background:#FBF7F0}#app{border-radius:0;box-shadow:none}}
+</style>
+</head>
+<body>
+<div id="app"></div>
+<template id="tpl">
+<div style="width: 390px; height: 844px; box-sizing: border-box; background: #FBF7F0; font-family: 'Nunito Sans', system-ui, sans-serif; color: #1E1B16; display: flex; flex-direction: column; position: relative; overflow: hidden">
+
+  <div style="display: flex; align-items: center; gap: 12px; padding: 14px 20px 10px; flex-shrink: 0">
+    <a href="05-parcours.html" aria-label="Quitter la leçon" style="width: 44px; height: 44px; flex-shrink: 0; border-radius: 50%; display: flex; align-items: center; justify-content: center; text-decoration: none">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#3D3730" stroke-width="2.6" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18"></path></svg>
+    </a>
+    <div role="progressbar" aria-label="Progression de la leçon" aria-valuenow="3" aria-valuemin="0" aria-valuemax="5" style="flex-grow: 1; height: 12px; border-radius: 99px; background: #E6DFD3; overflow: hidden">
+      <div style="width: 60%; height: 100%; border-radius: 99px; background: #0B5D3B; box-shadow: inset 0 -3px 0 rgba(0,0,0,0.12)"></div>
+    </div>
+    <div aria-label="{{livesLabel}}" role="img" style="height: 40px; padding: 0 10px; display: flex; align-items: center; gap: 5px; flex-shrink: 0">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="#E5484D" stroke="#B42318" stroke-width="1.8" stroke-linejoin="round" aria-hidden="true"><path d="M19 14c1.5-1.5 3-3.2 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.8 0-3 .5-4.5 2-1.5-1.5-2.7-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4 3 5.5l7 7z"></path></svg>
+      <span style="font-size: 16px; font-weight: 800; color: #B42318">{{lives}}</span>
+    </div>
+  </div>
+
+  <div style="padding: 4px 20px 0">
+    <span style="font-size: 12px; font-weight: 800; letter-spacing: 0.14em; text-transform: uppercase; color: #8A5A00">Écoute · Les nombres</span>
+    <h1 style="margin: 4px 0 0; font-family: 'Bricolage Grotesque', sans-serif; font-weight: 800; font-size: 24px; line-height: 1.15; letter-spacing: -0.02em">Quel nombre entends-tu ?</h1>
+
+    <div style="margin-top: 14px; padding: 18px 16px 16px; border-radius: 24px; background: #FFFFFF; box-shadow: 0 1px 2px rgba(30,27,22,0.06); display: flex; flex-direction: column; align-items: center; gap: 14px">
+      <div style="display: flex; align-items: center; gap: 18px">
+        <div style="width: 56px" aria-hidden="true"></div>
+        <button type="button" aria-label="{{playLabel}}" aria-pressed="{{normAria}}" onClick="{{playNorm}}" style="width: 96px; height: 96px; border-radius: 50%; border: none; background: #0B5D3B; box-shadow: 0 6px 0 #063A24, 0 0 0 8px #E3F1E8; display: flex; align-items: center; justify-content: center; cursor: pointer; padding: 0">
+          <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 5 6 9H3v6h3l5 4z" fill="#FFFFFF"></path><path d="M15.5 8.5a5 5 0 0 1 0 7"></path><path d="M18.5 5.5a9 9 0 0 1 0 13"></path></svg>
+        </button>
+        <div style="display: flex; flex-direction: column; align-items: center; gap: 4px">
+          <button type="button" aria-label="Écouter lentement" aria-pressed="{{slowAria}}" onClick="{{playSlow}}" style="{{slowStyle}}">
+            <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 15c0-4 3.5-7 8-7s8 3 8 7z"></path><path d="M19 13h1.5a1.5 1.5 0 0 0 0-3H19"></path><path d="M6 15v3M15 15v3"></path><path d="M8 8l1.5 3.5M14 8l-1.5 3.5"></path></svg>
+          </button>
+          <span style="font-size: 12px; font-weight: 700; color: #5E564C">Lent</span>
+        </div>
+      </div>
+      <div style="height: 32px; display: flex; align-items: center; gap: 5px" aria-hidden="true">
+        <sc-for list="{{bars}}" as="b" hint-placeholder-count="13">
+          <span class="{{b.cls}}" style="{{b.style}}"></span>
+        </sc-for>
+      </div>
+      <span style="font-size: 12.5px; color: #5E564C">Voix de Baye · touche autant de fois que tu veux</span>
+    </div>
+  </div>
+
+  <fieldset style="border: none; margin: 16px 0 0; padding: 0 20px; display: flex; flex-direction: column; gap: 10px">
+    <legend style="position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0)">Choisis le mot entendu</legend>
+    <sc-for list="{{options}}" as="o" hint-placeholder-count="4">
+      <label style="display: block; cursor: pointer; position: relative">
+        <input class="wl-radio" type="radio" name="nombre" value="{{o.id}}" checked="{{o.selected}}" disabled="{{o.locked}}" onChange="{{o.pick}}" style="position: absolute; opacity: 0; width: 1px; height: 1px; margin: 0">
+        <div class="wl-card" style="{{o.cardStyle}}">
+          <span style="{{o.dotStyle}}" aria-hidden="true">
+            <sc-if value="{{o.showOk}}" hint-placeholder-val="{{ false }}">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"></path></svg>
+            </sc-if>
+            <sc-if value="{{o.showKo}}" hint-placeholder-val="{{ false }}">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" stroke-width="3.5" stroke-linecap="round"><path d="M6 6l12 12M18 6 6 18"></path></svg>
+            </sc-if>
+          </span>
+          <span style="flex-grow: 1; display: flex; align-items: baseline; gap: 8px">
+            <span lang="wo" style="font-family: 'Bricolage Grotesque', sans-serif; font-size: 22px; font-weight: 800; color: {{o.textColor}}">{{o.wo}}</span>
+            <span style="font-size: 13.5px; font-style: italic; color: #5E564C">[{{o.ph}}]</span>
+          </span>
+        </div>
+      </label>
+    </sc-for>
+  </fieldset>
+
+  <div style="flex-grow: 1"></div>
+
+  <sc-if value="{{showCheck}}" hint-placeholder-val="{{ true }}">
+    <div style="flex-shrink: 0; padding: 14px 20px 24px; border-top: 1px solid #EFE8DC">
+      <button type="button" disabled="{{noPick}}" onClick="{{check}}" style="{{checkStyle}}">Vérifier</button>
+    </div>
+  </sc-if>
+
+  <sc-if value="{{showGood}}" hint-placeholder-val="{{ false }}">
+    <div role="status" style="flex-shrink: 0; padding: 18px 20px 24px; background: #D7EDDF; border-radius: 24px 24px 0 0; display: flex; flex-direction: column; gap: 12px">
+      <div style="display: flex; align-items: center; gap: 12px">
+        <div style="width: 44px; height: 44px; border-radius: 50%; background: #0B5D3B; display: flex; align-items: center; justify-content: center; flex-shrink: 0">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"></path></svg>
+        </div>
+        <div style="display: flex; flex-direction: column">
+          <span style="font-family: 'Bricolage Grotesque', sans-serif; font-size: 22px; font-weight: 800; color: #08462C"><span lang="wo">Baax na !</span> <span lang="wo">ñett</span> = 3</span>
+          <span style="font-size: 13px; font-weight: 700; color: #0B5D3B">+10 XP</span>
+        </div>
+      </div>
+      <p style="margin: 0; font-size: 14px; line-height: 1.45; color: #1F3D2C">Le <strong lang="wo">ñ</strong> se prononce « gn », comme dans <em>vigne</em>. On le retrouve dans <span lang="wo">ñaar</span> (2), <span lang="wo">ñett</span> (3) et <span lang="wo">ñeent</span> (4).</p>
+      <a href="14-exercice-prononciation.html" style="height: 56px; border-radius: 16px; background: #0B5D3B; box-shadow: 0 5px 0 #063A24; color: #FFFFFF; text-decoration: none; font-size: 18px; font-weight: 800; display: flex; align-items: center; justify-content: center">Continuer</a>
+    </div>
+  </sc-if>
+
+  <sc-if value="{{showBad}}" hint-placeholder-val="{{ false }}">
+    <div role="status" style="flex-shrink: 0; padding: 18px 20px 24px; background: #FBE3E3; border-radius: 24px 24px 0 0; display: flex; flex-direction: column; gap: 12px">
+      <div style="display: flex; align-items: center; gap: 12px">
+        <div style="width: 44px; height: 44px; border-radius: 50%; background: #C0262D; display: flex; align-items: center; justify-content: center; flex-shrink: 0">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" stroke-width="3.2" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18"></path></svg>
+        </div>
+        <div style="display: flex; flex-direction: column">
+          <span style="font-family: 'Bricolage Grotesque', sans-serif; font-size: 22px; font-weight: 800; color: #8E1B20">Pas tout à fait…</span>
+          <span style="font-size: 13.5px; font-weight: 700; color: #8E1B20">Tu as entendu <span lang="wo">ñett</span> (3)</span>
+        </div>
+      </div>
+      <p style="margin: 0; font-size: 14px; line-height: 1.45; color: #5C1A1D">Réécoute en mode lent : <span lang="wo">ñett</span> est court et se termine par un « t » bien net.</p>
+      <button type="button" onClick="{{retry}}" style="height: 56px; border: none; border-radius: 16px; background: #C0262D; box-shadow: 0 5px 0 #8E1B20; color: #FFFFFF; font-family: inherit; font-size: 18px; font-weight: 800; cursor: pointer">J'ai compris</button>
+    </div>
+  </sc-if>
+</div>
+</template>
+<script src="runtime.js"></script>
+<script>
+class Component extends DCLogic {
+  constructor(props) {
+    super(props);
+    this.state = { picked: undefined, checked: undefined, audio: null };
+  }
+  renderVals() {
+    const presets = {
+      vide: { picked: null, checked: false },
+      selection: { picked: 'nett', checked: false },
+      correct: { picked: 'nett', checked: true },
+      incorrect: { picked: 'neent', checked: true }
+    };
+    const p = presets[this.props.etat ?? 'selection'] || presets.selection;
+    const picked = this.state.picked !== undefined ? this.state.picked : p.picked;
+    const checked = this.state.checked !== undefined ? this.state.checked : p.checked;
+    const audio = this.state.audio;
+    const answer = 'nett';
+    const good = checked && picked === answer;
+    const bad = checked && picked !== answer;
+    const data = [
+      { id: 'naar', wo: 'ñaar', ph: 'gnaar' },
+      { id: 'nett', wo: 'ñett', ph: 'gnett' },
+      { id: 'neent', wo: 'ñeent', ph: 'gnéent' },
+      { id: 'juroom', wo: 'juroom', ph: 'djou-rome' }
+    ];
+    const options = data.map((o) => {
+      const sel = picked === o.id;
+      const isAns = o.id === answer;
+      let look = 'idle';
+      if (!checked && sel) look = 'sel';
+      if (checked && isAns) look = 'ok';
+      if (checked && sel && !isAns) look = 'ko';
+      if (checked && !sel && !isAns) look = 'dim';
+      const st = {
+        idle: ['#FFFFFF', '#ECE5D9', '#ECE5D9', 'border: 2px solid #CFC6B8; background: #FFFFFF;', '#1E1B16', '1'],
+        sel: ['#E3F1E8', '#0B5D3B', '#0B5D3B', 'border: 7px solid #0B5D3B; background: #FFFFFF;', '#08462C', '1'],
+        ok: ['#E3F1E8', '#0B5D3B', '#0B5D3B', 'background: #0B5D3B;', '#08462C', '1'],
+        ko: ['#FDECEC', '#C0262D', '#C0262D', 'background: #C0262D;', '#8E1B20', '1'],
+        dim: ['#FFFFFF', '#ECE5D9', '#ECE5D9', 'border: 2px solid #CFC6B8; background: #FFFFFF;', '#1E1B16', '0.45']
+      }[look];
+      return {
+        ...o,
+        selected: sel, locked: checked,
+        showOk: look === 'ok', showKo: look === 'ko',
+        textColor: st[4],
+        pick: () => { if (!checked) this.setState({ picked: o.id, checked: false }); },
+        cardStyle: 'display: flex; align-items: center; gap: 14px; height: 62px; padding: 0 16px; border-radius: 16px; box-sizing: border-box; background: ' + st[0] + '; border: 2px solid ' + st[1] + '; box-shadow: 0 4px 0 ' + st[2] + '; opacity: ' + st[5] + ';',
+        dotStyle: 'width: 26px; height: 26px; flex-shrink: 0; border-radius: 50%; box-sizing: border-box; display: flex; align-items: center; justify-content: center; ' + st[3]
+      };
+    });
+    const heights = [10, 18, 26, 14, 30, 20, 28, 16, 24, 12, 22, 14, 8];
+    const playing = !!audio;
+    const bars = heights.map((h, i) => ({
+      cls: playing ? 'wl-bar' : '',
+      style: 'display: block; width: 5px; height: ' + h + 'px; border-radius: 3px; background: ' + (playing ? '#0B5D3B' : '#CFC6B8') + '; animation-delay: ' + (i * 0.07).toFixed(2) + 's; animation-duration: ' + (audio === 'slow' ? '1.4s' : '0.9s') + ';'
+    }));
+    const noPick = !picked;
+    return {
+      options, bars,
+      playLabel: audio === 'norm' ? 'Pause' : 'Écouter',
+      normAria: audio === 'norm' ? 'true' : 'false',
+      slowAria: audio === 'slow' ? 'true' : 'false',
+      playNorm: () => this.setState({ audio: audio === 'norm' ? null : 'norm' }),
+      playSlow: () => this.setState({ audio: audio === 'slow' ? null : 'slow' }),
+      slowStyle: 'width: 56px; height: 56px; border-radius: 18px; cursor: pointer; padding: 0; display: flex; align-items: center; justify-content: center; ' + (audio === 'slow' ? 'background: #0B5D3B; color: #FFFFFF; border: 2px solid #0B5D3B; box-shadow: 0 4px 0 #063A24;' : 'background: #FFFFFF; color: #0B5D3B; border: 2px solid #ECE5D9; box-shadow: 0 4px 0 #ECE5D9;'),
+      lives: bad ? 4 : 5, livesLabel: (bad ? 4 : 5) + ' vies',
+      showCheck: !checked, showGood: good, showBad: bad, noPick,
+      check: () => this.setState({ picked, checked: true }),
+      retry: () => this.setState({ picked: null, checked: false }),
+      checkStyle: 'width: 100%; height: 58px; border: none; border-radius: 16px; font-family: inherit; font-size: 18px; font-weight: 800; ' + (noPick ? 'background: #E6DFD3; color: #6B6258; cursor: not-allowed;' : 'background: #0B5D3B; box-shadow: 0 5px 0 #063A24; color: #FFFFFF; cursor: pointer;')
+    };
+  }
+}
+WL.mount(Component, {"etat": "selection"});
+</script>
+</body>
+</html>

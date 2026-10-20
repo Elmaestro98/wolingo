@@ -1,65 +1,31 @@
 /**
- * Below are the colors that are used in the app. The colors are defined in the light and dark mode.
- * There are many other ways to style your app. For example, [Nativewind](https://www.nativewind.dev/), [Tamagui](https://tamagui.dev/), [unistyles](https://unistyl.es/), etc.
+ * Charte graphique Wolingo (relevée dans la maquette).
+ * Mêmes valeurs que dans tailwind.config.js : à utiliser quand une couleur
+ * doit être passée en JavaScript (icônes, barre d'onglets…).
  */
-
-import '@/global.css';
-
-import { Platform } from 'react-native';
-
 export const Colors = {
-  light: {
-    text: '#000000',
-    background: '#ffffff',
-    backgroundElement: '#F0F0F3',
-    backgroundSelected: '#E0E1E6',
-    textSecondary: '#60646C',
-  },
-  dark: {
-    text: '#ffffff',
-    background: '#000000',
-    backgroundElement: '#212225',
-    backgroundSelected: '#2E3135',
-    textSecondary: '#B0B4BA',
-  },
+  green: '#0B5D3B',
+  greenDark: '#08462C',
+  greenLight: '#E3F1E8',
+  greenShadow: '#063A24',
+  yellow: '#F2C230',
+  yellowLight: '#FCEFC7',
+  yellowText: '#8A5A00',
+  red: '#C0262D',
+  redLight: '#FDECEC',
+  redShadow: '#8E1B20',
+  disabled: '#E6DFD3',
+  disabledText: '#6B6258',
+  cream: '#FBF7F0',
+  sand: '#ECE5D9',
+  white: '#FFFFFF',
+  ink: '#1E1B16',
+  muted: '#5E564C',
 } as const;
 
-export type ThemeColor = keyof typeof Colors.light & keyof typeof Colors.dark;
-
-export const Fonts = Platform.select({
-  ios: {
-    /** iOS `UIFontDescriptorSystemDesignDefault` */
-    sans: 'system-ui',
-    /** iOS `UIFontDescriptorSystemDesignSerif` */
-    serif: 'ui-serif',
-    /** iOS `UIFontDescriptorSystemDesignRounded` */
-    rounded: 'ui-rounded',
-    /** iOS `UIFontDescriptorSystemDesignMonospaced` */
-    mono: 'ui-monospace',
-  },
-  default: {
-    sans: 'normal',
-    serif: 'serif',
-    rounded: 'normal',
-    mono: 'monospace',
-  },
-  web: {
-    sans: 'var(--font-display)',
-    serif: 'var(--font-serif)',
-    rounded: 'var(--font-rounded)',
-    mono: 'var(--font-mono)',
-  },
-});
-
-export const Spacing = {
-  half: 2,
-  one: 4,
-  two: 8,
-  three: 16,
-  four: 24,
-  five: 32,
-  six: 64,
+/** Noms des fichiers de police (pour les endroits où on ne peut pas utiliser className). */
+export const Fonts = {
+  title: 'BricolageGrotesque_800ExtraBold',
+  bodyBold: 'NunitoSans_700Bold',
+  bodyBlack: 'NunitoSans_800ExtraBold',
 } as const;
-
-export const BottomTabInset = Platform.select({ ios: 50, android: 80 }) ?? 0;
-export const MaxContentWidth = 800;

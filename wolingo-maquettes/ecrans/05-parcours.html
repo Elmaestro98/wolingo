@@ -1,0 +1,213 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Wolingo — Parcours</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&amp;family=Nunito+Sans:opsz,wght@6..12,400;6..12,600;6..12,700;6..12,800&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0;background:#FBF7F0}
+a{color:#0B5D3B}a:hover{color:#08462C}
+</style>
+<style>
+html{background:#E9E4DA}
+body{margin:0;min-height:100vh;display:flex;justify-content:center;align-items:flex-start;padding:24px 0;box-sizing:border-box;background:#E9E4DA}
+#app{border-radius:28px;overflow:hidden;box-shadow:0 20px 60px -20px rgba(30,27,22,0.35);background:#FBF7F0}
+@media (max-width:480px){body{padding:0;background:#FBF7F0}#app{border-radius:0;box-shadow:none}}
+</style>
+</head>
+<body>
+<div id="app"></div>
+<template id="tpl">
+<div style="width: 390px; height: 1440px; box-sizing: border-box; background: #FBF7F0; font-family: 'Nunito Sans', system-ui, sans-serif; color: #1E1B16; position: relative; overflow: hidden">
+
+  <header style="display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 14px 24px 10px">
+    <div style="display: flex; flex-direction: column">
+      <span style="font-size: 11.5px; font-weight: 800; letter-spacing: 0.14em; text-transform: uppercase; color: #8A5A00">Wolingo</span>
+      <h1 style="margin: 0; font-family: 'Bricolage Grotesque', sans-serif; font-weight: 800; font-size: 26px; line-height: 1.1; letter-spacing: -0.02em">Parcours</h1>
+    </div>
+    <div style="display: flex; gap: 8px">
+      <div aria-label="Série de 5 jours" role="img" style="height: 40px; padding: 0 12px; border-radius: 99px; background: #FFFFFF; box-shadow: 0 1px 2px rgba(30,27,22,0.08); display: flex; align-items: center; gap: 6px">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="#F59F0B" stroke="#C2410C" stroke-width="1.8" stroke-linejoin="round" aria-hidden="true"><path d="M12 22c4.4 0 7-2.9 7-6.8 0-3.6-2.4-6-4.2-8.2-.4 2-1.4 3.3-2.8 3.8.4-3.4-1-6.7-4-8.8.2 3.6-1.6 5.6-3 7.6C3.900 11.400 5 13.700 5 15.200 5 19.100 7.600 22 12 22z"></path></svg>
+        <span style="font-size: 15px; font-weight: 800">5</span>
+      </div>
+      <div aria-label="5 vies" role="img" style="height: 40px; padding: 0 12px; border-radius: 99px; background: #FFFFFF; box-shadow: 0 1px 2px rgba(30,27,22,0.08); display: flex; align-items: center; gap: 6px">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="#E5484D" stroke="#B42318" stroke-width="1.8" stroke-linejoin="round" aria-hidden="true"><path d="M19 14c1.5-1.5 3-3.2 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.8 0-3 .5-4.5 2-1.5-1.5-2.7-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4 3 5.5l7 7z"></path></svg>
+        <span style="font-size: 15px; font-weight: 800">5</span>
+      </div>
+    </div>
+  </header>
+
+  <section style="margin: 6px 16px 0; padding: 20px; border-radius: 24px; background: #0B5D3B; box-shadow: 0 6px 0 #063A24; color: #FFFFFF; position: relative; overflow: hidden">
+    <svg width="170" height="200" viewBox="0 0 170 200" aria-hidden="true" style="position: absolute; right: -20px; top: -10px; opacity: 0.12">
+      <g fill="none" stroke="#FFFFFF" stroke-width="2">
+        <path d="M40 0 L80 40 L40 80 L0 40 Z"></path><path d="M120 0 L160 40 L120 80 L80 40 Z"></path>
+        <path d="M80 40 L120 80 L80 120 L40 80 Z"></path><path d="M160 40 L200 80 L160 120 L120 80 Z"></path>
+        <path d="M40 80 L80 120 L40 160 L0 120 Z"></path><path d="M120 80 L160 120 L120 160 L80 120 Z"></path>
+        <path d="M80 120 L120 160 L80 200 L40 160 Z"></path><path d="M160 120 L200 160 L160 200 L120 160 Z"></path>
+        <circle cx="40" cy="40" r="8"></circle><circle cx="120" cy="40" r="8"></circle><circle cx="80" cy="120" r="8"></circle><circle cx="160" cy="120" r="8"></circle><circle cx="40" cy="160" r="8"></circle>
+      </g>
+    </svg>
+    <div style="position: relative; display: flex; justify-content: space-between; align-items: center; gap: 8px">
+      <span style="padding: 4px 10px; border-radius: 99px; background: #E3F1E8; color: #0B5D3B; font-size: 11.5px; font-weight: 800; letter-spacing: 0.06em; text-transform: uppercase">Unité 1 · Niveau A1</span>
+      <a href="#guide" style="height: 36px; padding: 0 12px; border-radius: 99px; background: rgba(255,255,255,0.16); color: #FFFFFF; text-decoration: none; font-size: 13px; font-weight: 800; display: flex; align-items: center; gap: 6px">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 4h6a4 4 0 0 1 4 4v13a3 3 0 0 0-3-3H2z"></path><path d="M22 4h-6a4 4 0 0 0-4 4v13a3 3 0 0 1 3-3h7z"></path></svg>
+        Guide
+      </a>
+    </div>
+    <h2 style="position: relative; margin: 14px 0 4px; font-family: 'Bricolage Grotesque', sans-serif; font-weight: 800; font-size: 26px; line-height: 1.1; letter-spacing: -0.02em">Module 1 · Le présent</h2>
+    <p style="position: relative; margin: 0; font-size: 15px; line-height: 1.4; color: #D5EADD">Dire où tu es et ce que tu fais : <strong style="color: #F7D867; font-weight: 800">mangi fi…</strong></p>
+    <div style="position: relative; display: flex; align-items: center; gap: 10px; margin-top: 16px">
+      <div style="flex-grow: 1; height: 10px; border-radius: 99px; background: rgba(255,255,255,0.18); overflow: hidden">
+        <div style="width: 40%; height: 100%; border-radius: 99px; background: #F2C230"></div>
+      </div>
+      <span style="font-size: 13px; font-weight: 800; color: #FFFFFF">2 / 5 leçons</span>
+    </div>
+  </section>
+
+  <div style="margin: 18px 16px 0; padding: 12px 14px; border-radius: 18px; background: #FFFFFF; box-shadow: 0 1px 2px rgba(30,27,22,0.06); display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px">
+    <div style="display: flex; align-items: center; gap: 10px">
+      <div style="width: 40px; height: 40px; border-radius: 50%; background: #FCEFC7; display: flex; align-items: center; justify-content: center; flex-shrink: 0">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="#F2C230" stroke="#8A5A00" stroke-width="2" stroke-linejoin="round" aria-hidden="true"><path d="M13 2 4 14h7l-1 8 9-12h-7z"></path></svg>
+      </div>
+      <div style="display: flex; flex-direction: column">
+        <span style="font-size: 17px; font-weight: 800; line-height: 1.1">320 XP</span>
+        <span style="font-size: 12px; color: #5E564C">Total gagné</span>
+      </div>
+    </div>
+    <div style="display: flex; align-items: center; gap: 10px; border-left: 1px solid #F0EADF; padding-left: 12px">
+      <svg width="40" height="40" viewBox="0 0 40 40" role="img" aria-label="Objectif du jour : 60 %" style="flex-shrink: 0">
+        <circle cx="20" cy="20" r="16" fill="none" stroke="#E6DFD3" stroke-width="5"></circle>
+        <circle cx="20" cy="20" r="16" fill="none" stroke="#0B5D3B" stroke-width="5" stroke-linecap="round" stroke-dasharray="60.3 100.5" transform="rotate(-90 20 20)"></circle>
+      </svg>
+      <div style="display: flex; flex-direction: column">
+        <span style="font-size: 17px; font-weight: 800; line-height: 1.1">6 / 10 min</span>
+        <span style="font-size: 12px; color: #5E564C">Objectif du jour</span>
+      </div>
+    </div>
+  </div>
+
+  <section aria-label="Leçons du module 1" style="position: relative; height: 940px; margin-top: 8px">
+    <svg width="390" height="940" viewBox="0 0 390 940" aria-hidden="true" style="position: absolute; left: 0; top: 0">
+      <path d="M230 360 C230 430 140 440 140 500 C140 560 250 550 250 610 C250 670 150 670 150 730 C150 790 195 800 195 860" fill="none" stroke="#E2D9C9" stroke-width="10" stroke-linecap="round" stroke-dasharray="1 20"></path>
+      <path d="M195 70 C195 130 120 140 120 200 C120 270 230 290 230 360" fill="none" stroke="#0B5D3B" stroke-width="10" stroke-linecap="round"></path>
+    </svg>
+
+    <a href="#salutations" aria-label="Salutations, terminée, 3 étoiles" style="position: absolute; left: 159px; top: 34px; width: 72px; height: 72px; border-radius: 50%; background: #0B5D3B; box-shadow: 0 6px 0 #063A24; display: flex; align-items: center; justify-content: center; text-decoration: none">
+      <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"></path></svg>
+    </a>
+    <div style="position: absolute; left: 195px; top: 118px; transform: translateX(-50%); display: flex; align-items: center; gap: 6px; padding: 4px 10px; border-radius: 99px; background: #FFFFFF; box-shadow: 0 1px 2px rgba(30,27,22,0.08); white-space: nowrap">
+      <span style="font-size: 13.5px; font-weight: 800">Salutations</span>
+      <span style="display: flex; gap: 1px" aria-hidden="true">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="#F2C230" stroke="#B8890F" stroke-width="1.5" stroke-linejoin="round"><path d="m12 2 3.1 6.3 6.9 1-5 4.9 1.2 6.8L12 17.8 5.8 21l1.2-6.8-5-4.9 6.9-1z"></path></svg>
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="#F2C230" stroke="#B8890F" stroke-width="1.5" stroke-linejoin="round"><path d="m12 2 3.1 6.3 6.9 1-5 4.9 1.2 6.8L12 17.8 5.8 21l1.2-6.8-5-4.9 6.9-1z"></path></svg>
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="#F2C230" stroke="#B8890F" stroke-width="1.5" stroke-linejoin="round"><path d="m12 2 3.1 6.3 6.9 1-5 4.9 1.2 6.8L12 17.8 5.8 21l1.2-6.8-5-4.9 6.9-1z"></path></svg>
+      </span>
+    </div>
+
+    <a href="#pronoms" aria-label="Pronoms, terminée, 2 étoiles" style="position: absolute; left: 84px; top: 164px; width: 72px; height: 72px; border-radius: 50%; background: #0B5D3B; box-shadow: 0 6px 0 #063A24; display: flex; align-items: center; justify-content: center; text-decoration: none">
+      <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"></path></svg>
+    </a>
+    <div style="position: absolute; left: 120px; top: 248px; transform: translateX(-50%); display: flex; align-items: center; gap: 6px; padding: 4px 10px; border-radius: 99px; background: #FFFFFF; box-shadow: 0 1px 2px rgba(30,27,22,0.08); white-space: nowrap">
+      <span style="font-size: 13.5px; font-weight: 800">Pronoms</span>
+      <span style="display: flex; gap: 1px" aria-hidden="true">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="#F2C230" stroke="#B8890F" stroke-width="1.5" stroke-linejoin="round"><path d="m12 2 3.1 6.3 6.9 1-5 4.9 1.2 6.8L12 17.8 5.8 21l1.2-6.8-5-4.9 6.9-1z"></path></svg>
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="#F2C230" stroke="#B8890F" stroke-width="1.5" stroke-linejoin="round"><path d="m12 2 3.1 6.3 6.9 1-5 4.9 1.2 6.8L12 17.8 5.8 21l1.2-6.8-5-4.9 6.9-1z"></path></svg>
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="#E6DFD3" stroke="#CFC6B8" stroke-width="1.5" stroke-linejoin="round"><path d="m12 2 3.1 6.3 6.9 1-5 4.9 1.2 6.8L12 17.8 5.8 21l1.2-6.8-5-4.9 6.9-1z"></path></svg>
+      </span>
+    </div>
+
+    <div style="position: absolute; left: 230px; top: 278px; transform: translateX(-50%); display: flex; flex-direction: column; align-items: center">
+      <span style="padding: 7px 14px; border-radius: 12px; background: #1E1B16; color: #FFFFFF; font-size: 13px; font-weight: 800; letter-spacing: 0.04em; text-transform: uppercase; white-space: nowrap">Commencer</span>
+      <svg width="14" height="8" viewBox="0 0 14 8" aria-hidden="true" style="display: block"><path d="M0 0h14L7 8z" fill="#1E1B16"></path></svg>
+    </div>
+    <div style="position: absolute; left: 178px; top: 308px; width: 104px; height: 104px; border-radius: 50%; background: rgba(242,194,48,0.28)" aria-hidden="true"></div>
+    <a href="06-lecon-classes-nominales.html" aria-label="Commencer la leçon Présent d'action" style="position: absolute; left: 188px; top: 316px; width: 84px; height: 84px; border-radius: 50%; background: #F2C230; box-shadow: 0 6px 0 #B8890F; display: flex; align-items: center; justify-content: center; text-decoration: none">
+      <svg width="34" height="34" viewBox="0 0 24 24" fill="#3A2A00" aria-hidden="true"><path d="M8 5.5v13a1 1 0 0 0 1.5.9l10.2-6.5a1 1 0 0 0 0-1.8L9.5 4.6A1 1 0 0 0 8 5.5z"></path></svg>
+    </a>
+    <div style="position: absolute; left: 230px; top: 424px; transform: translateX(-50%); display: flex; flex-direction: column; align-items: center; padding: 6px 14px; border-radius: 14px; background: #FFFFFF; box-shadow: 0 1px 2px rgba(30,27,22,0.08); white-space: nowrap">
+      <span style="font-size: 15px; font-weight: 800">Présent d'action</span>
+      <span style="font-size: 12px; font-weight: 700; color: #5E564C">Leçon 3 · 5 min</span>
+    </div>
+
+    <div style="position: absolute; left: 20px; top: 300px; width: 132px; display: flex; flex-direction: column; align-items: flex-start; gap: 8px">
+      <div style="padding: 8px 12px; border-radius: 16px 16px 16px 4px; background: #FFFFFF; box-shadow: 0 6px 16px -8px rgba(30,27,22,0.3)">
+        <span style="display: block; font-size: 14px; font-weight: 800; line-height: 1.2">Dalal ak jàmm !</span>
+        <span style="display: block; font-size: 12px; line-height: 1.3; color: #5E564C">On reprend là où tu t'es arrêté ?</span>
+      </div>
+      <img src="assets/mascotte.png" alt="" style="width: 64px; height: 64px; border-radius: 50%; object-fit: cover; box-shadow: 0 0 0 3px #FFFFFF, 0 6px 14px -6px rgba(30,27,22,0.4)">
+    </div>
+
+    <button type="button" disabled aria-label="Coffre secret, +15 XP, verrouillé" style="position: absolute; left: 108px; top: 468px; width: 64px; height: 64px; border-radius: 20px; border: 2px solid #F2C230; background: #FCEFC7; box-shadow: 0 5px 0 #E8CF86; display: flex; align-items: center; justify-content: center; padding: 0">
+      <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#8A5A00" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="9" width="18" height="11" rx="2"></rect><path d="M3 13h18"></path><path d="M5 9V7a3 3 0 0 1 3-3h8a3 3 0 0 1 3 3v2"></path><rect x="10" y="11" width="4" height="4" rx="1" fill="#F2C230"></rect></svg>
+    </button>
+    <div style="position: absolute; left: 140px; top: 544px; transform: translateX(-50%); padding: 4px 10px; border-radius: 99px; background: #FCEFC7; white-space: nowrap; font-size: 12.5px; font-weight: 800; color: #5A4300">Coffre · +15 XP</div>
+
+    <button type="button" disabled aria-label="Voici et voilà, verrouillée" style="position: absolute; left: 214px; top: 574px; width: 72px; height: 72px; border-radius: 50%; border: none; background: #ECE5D9; box-shadow: 0 6px 0 #D6CCBB; display: flex; align-items: center; justify-content: center; padding: 0">
+      <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#857A6B" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="5" y="11" width="14" height="10" rx="2"></rect><path d="M8 11V7a4 4 0 0 1 8 0v4"></path></svg>
+    </button>
+    <span style="position: absolute; left: 250px; top: 658px; transform: translateX(-50%); white-space: nowrap; font-size: 13.5px; font-weight: 700; color: #5E564C">Voici &amp; voilà</span>
+
+    <button type="button" disabled aria-label="Le pluriel, verrouillée" style="position: absolute; left: 114px; top: 694px; width: 72px; height: 72px; border-radius: 50%; border: none; background: #ECE5D9; box-shadow: 0 6px 0 #D6CCBB; display: flex; align-items: center; justify-content: center; padding: 0">
+      <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#857A6B" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="5" y="11" width="14" height="10" rx="2"></rect><path d="M8 11V7a4 4 0 0 1 8 0v4"></path></svg>
+    </button>
+    <span style="position: absolute; left: 150px; top: 778px; transform: translateX(-50%); white-space: nowrap; font-size: 13.5px; font-weight: 700; color: #5E564C">Le pluriel</span>
+
+    <button type="button" disabled aria-label="Grand quiz du module, verrouillé" style="position: absolute; left: 157px; top: 822px; width: 76px; height: 76px; border-radius: 22px; border: none; background: #ECE5D9; box-shadow: 0 6px 0 #D6CCBB; transform: rotate(45deg); display: flex; align-items: center; justify-content: center; padding: 0">
+      <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#857A6B" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="transform: rotate(-45deg)"><path d="M8 21h8"></path><path d="M12 17v4"></path><path d="M7 4h10v5a5 5 0 0 1-10 0z"></path><path d="M17 5h3v2a3 3 0 0 1-3 3"></path><path d="M7 5H4v2a3 3 0 0 0 3 3"></path></svg>
+    </button>
+    <span style="position: absolute; left: 195px; top: 914px; transform: translateX(-50%); white-space: nowrap; font-size: 14px; font-weight: 800; color: #3D3730">Grand quiz du module</span>
+  </section>
+
+  <a href="#module-2" style="margin: 16px 16px 0; padding: 14px 16px; border-radius: 20px; border: 2px dashed #DCD2C2; display: flex; align-items: center; gap: 14px; text-decoration: none; color: #1E1B16">
+    <div style="width: 48px; height: 48px; border-radius: 14px; background: #ECE5D9; display: flex; align-items: center; justify-content: center; flex-shrink: 0">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#857A6B" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="5" y="11" width="14" height="10" rx="2"></rect><path d="M8 11V7a4 4 0 0 1 8 0v4"></path></svg>
+    </div>
+    <div style="flex-grow: 1; display: flex; flex-direction: column; gap: 1px">
+      <span style="font-size: 11.5px; font-weight: 800; letter-spacing: 0.1em; text-transform: uppercase; color: #5E564C">Module 2</span>
+      <span style="font-family: 'Bricolage Grotesque', sans-serif; font-size: 18px; font-weight: 800">La famille &amp; la maison</span>
+      <span style="font-size: 12.5px; color: #5E564C">Termine le module 1 pour le débloquer</span>
+    </div>
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#857A6B" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 6 6 6-6 6"></path></svg>
+  </a>
+
+  <nav aria-label="Navigation principale" style="position: absolute; left: 0; right: 0; bottom: 0; height: 84px; box-sizing: border-box; padding: 8px 8px 14px; background: #FFFFFF; border-top: 1px solid #F0EADF; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr))">
+    <a href="#parcours" aria-current="page" style="display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 3px; text-decoration: none; color: #0B5D3B">
+      <span style="width: 56px; height: 32px; border-radius: 99px; background: #E3F1E8; display: flex; align-items: center; justify-content: center">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#0B5D3B" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 4 3 6v14l6-2 6 2 6-2V4l-6 2z"></path><path d="M9 4v14M15 6v14"></path></svg>
+      </span>
+      <span style="font-size: 12px; font-weight: 800">Parcours</span>
+    </a>
+    <a href="#revision" style="display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 3px; text-decoration: none; color: #5E564C">
+      <span style="width: 56px; height: 32px; display: flex; align-items: center; justify-content: center">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#5E564C" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12a9 9 0 0 1-15.5 6.2L3 16"></path><path d="M3 21v-5h5"></path><path d="M3 12a9 9 0 0 1 15.5-6.2L21 8"></path><path d="M21 3v5h-5"></path></svg>
+      </span>
+      <span style="font-size: 12px; font-weight: 700">Révision</span>
+    </a>
+    <a href="#lexique" style="display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 3px; text-decoration: none; color: #5E564C">
+      <span style="width: 56px; height: 32px; display: flex; align-items: center; justify-content: center">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#5E564C" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 4h6a4 4 0 0 1 4 4v13a3 3 0 0 0-3-3H2z"></path><path d="M22 4h-6a4 4 0 0 0-4 4v13a3 3 0 0 1 3-3h7z"></path></svg>
+      </span>
+      <span style="font-size: 12px; font-weight: 700">Lexique</span>
+    </a>
+    <a href="#profil" style="display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 3px; text-decoration: none; color: #5E564C">
+      <span style="width: 56px; height: 32px; display: flex; align-items: center; justify-content: center">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#5E564C" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="8" r="4"></circle><path d="M4 21a8 8 0 0 1 16 0"></path></svg>
+      </span>
+      <span style="font-size: 12px; font-weight: 700">Profil</span>
+    </a>
+  </nav>
+</div>
+</template>
+<script src="runtime.js"></script>
+<script>
+class Component extends DCLogic {
+  renderVals() {
+    return {};
+  }
+}
+WL.mount(Component, {});
+</script>
+</body>
+</html>
