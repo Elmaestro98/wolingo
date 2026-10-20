@@ -17,12 +17,18 @@ type SettingsState = {
   reminderTime: number;
   /** null tant que l'utilisateur n'a pas choisi */
   startLevel: StartLevel | null;
+  /**
+   * Version Premium : vies illimitées.
+   * Pour l'instant activée par un interrupteur de test (le paiement est hors V1).
+   */
+  isPremium: boolean;
 
   // ---- Les ACTIONS : les seules façons de modifier les données ----
   setDailyGoal: (minutes: DailyGoalMinutes) => void;
   setReminder: (enabled: boolean, time: number) => void;
   completeOnboarding: (level: StartLevel) => void;
   resetOnboarding: () => void;
+  setPremium: (isPremium: boolean) => void;
 };
 
 /**
@@ -38,12 +44,14 @@ export const useSettingsStore = create<SettingsState>()(
       reminderEnabled: true,
       reminderTime: 1140,
       startLevel: null,
+      isPremium: false,
 
       // `set` modifie le magasin, puis prévient tous les écrans qui l'utilisent
       setDailyGoal: (minutes) => set({ dailyGoalMinutes: minutes }),
       setReminder: (enabled, time) => set({ reminderEnabled: enabled, reminderTime: time }),
       completeOnboarding: (level) => set({ startLevel: level, hasCompletedOnboarding: true }),
       resetOnboarding: () => set({ hasCompletedOnboarding: false }),
+      setPremium: (isPremium) => set({ isPremium }),
     }),
     {
       // Nom de la sauvegarde sur le téléphone

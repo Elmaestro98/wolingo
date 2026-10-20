@@ -62,7 +62,8 @@ export function FillBlankStep({ step, checked, onAnswerChange }: FillBlankStepPr
         <View className="mt-[18px] flex-row flex-wrap items-center justify-center gap-x-2.5 gap-y-2">
           <Text className="font-title text-[30px] text-ink">{step.before}</Text>
           <BlankSlot word={selectedWord} isWrong={isWrong} />
-          <Text className="font-title text-[30px] text-ink">{step.after}</Text>
+          {/* Le trou peut être en fin de phrase (« nit ___ ») : rien à afficher après */}
+          {step.after !== "" && <Text className="font-title text-[30px] text-ink">{step.after}</Text>}
         </View>
 
         <Text className="mt-3.5 text-center font-body text-[14.5px] italic text-muted">« {step.translation} »</Text>

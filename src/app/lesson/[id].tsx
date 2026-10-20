@@ -12,12 +12,17 @@ import { LessonComplete } from "@/components/lesson/lesson-complete";
 import { LessonHeader } from "@/components/lesson/lesson-header";
 import { MatchPairsStep } from "@/components/lesson/match-pairs-step";
 import { MultipleChoiceStep } from "@/components/lesson/multiple-choice-step";
+import { OutOfHearts } from "@/components/lesson/out-of-hearts";
 import { WriteTranslationStep } from "@/components/lesson/write-translation-step";
+import { DeremStep } from "@/components/lesson/derem-step";
 import { Button } from "@/components/ui/button";
 import { PlaceholderScreen } from "@/components/ui/placeholder-screen";
 import { LESSONS, type LessonStep } from "@/content/lessons";
+import { findDeremAnswerIndex } from "@/lib/derem";
+import { computeHearts } from "@/lib/hearts";
 import { computeLessonResult, XP_PER_EXERCISE, type LessonResult } from "@/lib/lesson-result";
-import { MAX_HEARTS, useProgressStore } from "@/stores/progress-store";
+import { useProgressStore } from "@/stores/progress-store";
+import { useSettingsStore } from "@/stores/settings-store";
 
 /** Le lecteur de leçon : affiche les étapes une par une et gère le cycle Vérifier → Correction. */
 export default function LessonScreen() {
@@ -35,7 +40,6 @@ export default function LessonScreen() {
   // null = pas encore de réponse ; true / false = réponse juste / fausse
   const [answerIsCorrect, setAnswerIsCorrect] = useState<boolean | null>(null);
   const [isChecked, setIsChecked] = useState(false);
-  const [hearts, setHearts] = useState(MAX_HEARTS);
   // Le bilan de la leçon, pour calculer XP, précision et étoiles à la fin
   const [correctCount, setCorrectCount] = useState(0);
   const [mistakeCount, setMistakeCount] = useState(0);
@@ -48,6 +52,17 @@ export default function LessonScreen() {
   // L'action du magasin qui enregistre une leçon terminée, et la série (mise à jour juste après)
   const completeLesson = useProgressStore((state) => state.completeLesson);
   const streakDays = useProgressStore((state) => state.streakDays);
+
+  // Les vies : sauvegardées dans le magasin (elles se rechargent même app fermée)
+  const isPremium = useSettingsStore((state) => state.isPremium);
+  const savedHearts = useProgressStore((state) => state.hearts);
+  const heartsRefillStartedAt = useProgressStore((state) => state.heartsRefillStartedAt);
+  const loseStoredHeart = useProgressStore((state) => state.loseHeart);
+
+  const heartsState = { hearts: savedHearts, refillStartedAt: heartsRefillStartedAt };
+  // Vies À CET INSTANT (sauvegardées + regagnées depuis)
+  const currentHearts = computeHearts(heartsState, Date.now()).hearts;
+  const isOutOfHearts = !isPremium && currentHearts === 0;
 
   if (!lesson) {
     return (
@@ -71,6 +86,12 @@ export default function LessonScreen() {
         onContinue={() => router.back()}
       />
     );
+  }
+
+  // Plus de vies (version gratuite) : la leçon s'arrête.
+  // « && !isChecked » : on laisse d'abord l'utilisateur lire la correction de sa dernière erreur.
+  if (isOutOfHearts && !isChecked) {
+    return <OutOfHearts savedHearts={heartsState} onBack={() => router.back()} />;
   }
 
   // ---- Valeurs calculées ----
@@ -99,12 +120,13 @@ export default function LessonScreen() {
     setIsChecked(false);
   }
 
-  /** Retire une vie (sans descendre sous 0) et fait vibrer « erreur ». */
+  /** Une erreur : vibration, compteur d'erreurs, et une vie en moins (sauf Premium : vies illimitées). */
   function loseHeart() {
     Haptics.notificationAsync(Haptics.NotificationFeedbackType.Error);
-    // Forme « fonction » de set : part de la valeur la plus récente, même si on l'appelle plusieurs fois de suite
-    setHearts((current) => Math.max(current - 1, 0));
     setMistakeCount((current) => current + 1);
+    if (!isPremium) {
+      loseStoredHeart();
+    }
   }
 
   /** Affiche la correction. Appelée par « Vérifier », ou directement par un exercice auto-vérifié. */
@@ -142,7 +164,8 @@ export default function LessonScreen() {
     <SafeAreaView edges={["top"]} className="flex-1 bg-cream">
       {/* Sur iPhone, quand le clavier s'ouvre, tout ce qui est dedans remonte (le bouton reste visible) */}
       <KeyboardAvoidingView behavior={Platform.OS === "ios" ? "padding" : undefined} style={{ flex: 1 }}>
-        <LessonHeader progress={progress} hearts={hearts} onClose={handleClose} />
+        {/* null = vies illimitées (affiche « ∞ ») */}
+        <LessonHeader progress={progress} hearts={isPremium ? null : currentHearts} onClose={handleClose} />
 
         {/* key={stepIndex} : à chaque nouvelle étape, tout est recréé à neuf (défilement ET choix de l'exercice).
           keyboardShouldPersistTaps : un toucher sur un bouton (ex. « ë ») agit même si le clavier est ouvert */}
@@ -225,6 +248,8 @@ function StepView({ step, checked, onAnswerChange, onMistake }: StepViewProps) {
       return <BuildSentenceStep step={step} checked={checked} onAnswerChange={onAnswerChange} />;
     case "write_translation":
       return <WriteTranslationStep step={step} checked={checked} onAnswerChange={onAnswerChange} />;
+    case "derem":
+      return <DeremStep step={step} checked={checked} onAnswerChange={onAnswerChange} />;
   }
 }
 
@@ -239,6 +264,14 @@ function getCorrectAnswer(step: LessonStep): string {
       return step.answer.join(" "); // ["Joob", "angiy", "dem"] → "Joob angiy dem"
     case "write_translation":
       return step.acceptedAnswers[0]; // la première réponse acceptée est la « référence »
+    case "derem": {
+      // La bonne réponse est calculée, comme dans l'exercice
+      const index = findDeremAnswerIndex(
+        step.priceCfa,
+        step.choices.map((choice) => choice.derem),
+      );
+      return step.choices[index]?.wolof ?? "";
+    }
     default:
       return "";
   }

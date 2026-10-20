@@ -4,7 +4,8 @@ import { Pressable, Text, View } from "react-native";
 type LessonHeaderProps = {
   /** Avancement dans la leçon, entre 0 et 1 */
   progress: number;
-  hearts: number;
+  /** Vies restantes ; null = illimitées (Premium) */
+  hearts: number | null;
   onClose: () => void;
 };
 
@@ -31,9 +32,13 @@ export function LessonHeader({ progress, hearts, onClose }: LessonHeaderProps) {
         <View className="h-full rounded-full bg-green" style={{ width: `${progress * 100}%` }} />
       </View>
 
-      <View accessible accessibilityLabel={`${hearts} vies`} className="h-10 flex-row items-center gap-1 px-2.5">
+      <View
+        accessible
+        accessibilityLabel={hearts === null ? "Vies illimitées" : `${hearts} vies`}
+        className="h-10 flex-row items-center gap-1 px-2.5"
+      >
         <Ionicons name="heart" size={20} color="#E5484D" />
-        <Text className="font-body-black text-base text-[#B42318]">{hearts}</Text>
+        <Text className="font-body-black text-base text-[#B42318]">{hearts === null ? "∞" : hearts}</Text>
       </View>
     </View>
   );

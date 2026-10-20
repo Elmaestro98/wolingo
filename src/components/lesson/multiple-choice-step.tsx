@@ -2,7 +2,8 @@ import Ionicons from "@expo/vector-icons/Ionicons";
 import { useState } from "react";
 import { Image, Pressable, Text, View } from "react-native";
 
-import { CHOICE_LOOK_CLASSES, getChoiceLook, type ChoiceLook } from "@/components/lesson/choice-look";
+import { getChoiceLook } from "@/components/lesson/choice-look";
+import { ChoiceOption } from "@/components/lesson/choice-option";
 import { Colors } from "@/constants/theme";
 import { CONTENT_IMAGES } from "@/content/images";
 import type { MultipleChoiceStepData } from "@/content/lessons";
@@ -49,7 +50,8 @@ export function MultipleChoiceStep({ step, checked, onAnswerChange }: MultipleCh
               <Text className="font-title text-[30px] leading-[32px] text-ink">{step.prompt}</Text>
               {step.pronunciation && (
                 <Text className="font-body text-[13px] text-muted">
-                  se prononce <Text className="font-body-bold italic text-[#3D3730]">[{step.pronunciation}]</Text>
+                  se prononce{" "}
+                  <Text className="font-body-bold italic text-[#3D3730]">[{step.pronunciation}]</Text>
                 </Text>
               )}
             </View>
@@ -73,7 +75,7 @@ export function MultipleChoiceStep({ step, checked, onAnswerChange }: MultipleCh
           <ChoiceOption
             key={choice}
             label={choice}
-            number={index + 1}
+            badge={String(index + 1)}
             look={getChoiceLook(index, selectedIndex, step.answerIndex, checked)}
             disabled={checked}
             onPress={() => handleSelect(index)}
@@ -81,47 +83,5 @@ export function MultipleChoiceStep({ step, checked, onAnswerChange }: MultipleCh
         ))}
       </View>
     </View>
-  );
-}
-
-// ---------------------------------------------------------------------------
-// Un choix de réponse
-// ---------------------------------------------------------------------------
-
-type ChoiceOptionProps = {
-  label: string;
-  number: number;
-  look: ChoiceLook;
-  disabled: boolean;
-  onPress: () => void;
-};
-
-function ChoiceOption({ label, number, look, disabled, onPress }: ChoiceOptionProps) {
-  const classes = CHOICE_LOOK_CLASSES[look];
-
-  return (
-    <Pressable
-      onPress={onPress}
-      disabled={disabled}
-      accessibilityRole="radio"
-      accessibilityState={{ checked: look === "selected", disabled }}
-      className={`h-[60px] flex-row items-center gap-3.5 rounded-2xl border-2 border-b-[6px] px-3.5 ${classes.card}`}
-    >
-      <View className={`h-8 w-8 items-center justify-center rounded-[10px] ${classes.badge}`}>
-        <Text className={`font-body-black text-[15px] ${classes.badgeText}`}>{number}</Text>
-      </View>
-      <Text className={`flex-1 font-body-black text-[17px] ${classes.text}`}>{label}</Text>
-
-      {look === "correct" && (
-        <View className="h-7 w-7 items-center justify-center rounded-full bg-green">
-          <Ionicons name="checkmark" size={16} color={Colors.white} />
-        </View>
-      )}
-      {look === "wrong" && (
-        <View className="h-7 w-7 items-center justify-center rounded-full bg-red">
-          <Ionicons name="close" size={16} color={Colors.white} />
-        </View>
-      )}
-    </Pressable>
   );
 }

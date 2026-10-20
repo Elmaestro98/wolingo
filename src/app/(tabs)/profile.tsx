@@ -1,5 +1,6 @@
 import { Alert, Text, View } from 'react-native';
 
+import { DevMenu } from '@/components/dev/dev-menu';
 import { Button } from '@/components/ui/button';
 import { PlaceholderScreen } from '@/components/ui/placeholder-screen';
 import { formatTime } from '@/lib/time';
@@ -44,6 +45,9 @@ export default function ProfileScreen() {
       {/* Remet hasCompletedOnboarding à false : la garde de la racine réaffiche l'onboarding */}
       <Button title="Revoir l'accueil" variant="white" onPress={resetOnboarding} />
       <Button title="Réinitialiser la progression" variant="danger" onPress={handleResetProgress} />
+
+      {/* Visible uniquement pendant le développement */}
+      <DevMenu />
     </PlaceholderScreen>
   );
 }

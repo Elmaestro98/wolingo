@@ -3,9 +3,7 @@ import { create } from "zustand";
 import { createJSONStorage, persist } from "zustand/middleware";
 
 import { getStreakAfterLesson, toDateKey } from "@/lib/dates";
-
-/** Nombre de vies au début de chaque leçon. */
-export const MAX_HEARTS = 5;
+import { loseOneHeart, MAX_HEARTS } from "@/lib/hearts";
 
 /**
  * PROVISOIRE : les leçons 1 et 2 du module 1 n'ont pas encore de contenu.
@@ -24,8 +22,14 @@ type ProgressState = {
   /** Minutes d'apprentissage le jour `todayDateKey` */
   minutesToday: number;
   todayDateKey: string | null;
+  /** Vies au moment de la dernière perte (version gratuite). Les vies ACTUELLES se calculent avec computeHearts. */
+  hearts: number;
+  /** Heure (ms) du début de la recharge ; null si les vies sont pleines */
+  heartsRefillStartedAt: number | null;
 
   completeLesson: (lessonId: string, result: { stars: number; xp: number; minutes: number }) => void;
+  /** Retire une vie (à n'appeler que pour un utilisateur gratuit) */
+  loseHeart: () => void;
   resetProgress: () => void;
 };
 
@@ -36,6 +40,8 @@ const INITIAL_PROGRESS = {
   lastActiveDateKey: null,
   minutesToday: 0,
   todayDateKey: null,
+  hearts: MAX_HEARTS,
+  heartsRefillStartedAt: null,
 };
 
 /** Le magasin de la progression de l'apprenant, sauvegardé sur le téléphone. */
@@ -53,7 +59,10 @@ export const useProgressStore = create<ProgressState>()(
 
           return {
             // On garde le MEILLEUR score : refaire une leçon moins bien ne fait pas perdre d'étoiles
-            completedLessons: { ...state.completedLessons, [lessonId]: Math.max(previousStars, result.stars) },
+            completedLessons: {
+              ...state.completedLessons,
+              [lessonId]: Math.max(previousStars, result.stars),
+            },
             totalXp: state.totalXp + result.xp,
             streakDays: getStreakAfterLesson(state.streakDays, state.lastActiveDateKey, today),
             lastActiveDateKey: todayKey,
@@ -61,6 +70,15 @@ export const useProgressStore = create<ProgressState>()(
             minutesToday: (state.todayDateKey === todayKey ? state.minutesToday : 0) + result.minutes,
             todayDateKey: todayKey,
           };
+        }),
+
+      loseHeart: () =>
+        set((state) => {
+          const next = loseOneHeart(
+            { hearts: state.hearts, refillStartedAt: state.heartsRefillStartedAt },
+            Date.now(),
+          );
+          return { hearts: next.hearts, heartsRefillStartedAt: next.refillStartedAt };
         }),
 
       resetProgress: () => set(INITIAL_PROGRESS),

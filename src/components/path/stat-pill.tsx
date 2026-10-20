@@ -5,7 +5,8 @@ import { Text, View } from "react-native";
 type StatPillProps = {
   icon: ComponentProps<typeof Ionicons>["name"];
   iconColor: string;
-  value: number;
+  /** Un nombre, ou un texte (ex. « ∞ » pour des vies illimitées) */
+  value: number | string;
   /** Texte lu par VoiceOver (ex. « Série de 5 jours ») */
   accessibilityLabel: string;
 };

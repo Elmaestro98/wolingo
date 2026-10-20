@@ -10,7 +10,9 @@ import { StatPill } from "@/components/path/stat-pill";
 import { MODULES } from "@/content/modules";
 import { getDisplayedStreak, toDateKey } from "@/lib/dates";
 import { getPathItemStates } from "@/lib/path";
-import { MAX_HEARTS, useProgressStore } from "@/stores/progress-store";
+import { useNow } from "@/hooks/use-now";
+import { computeHearts } from "@/lib/hearts";
+import { useProgressStore } from "@/stores/progress-store";
 import { useSettingsStore } from "@/stores/settings-store";
 
 /** Écran 05 de la maquette : le Parcours (onglet principal). */
@@ -25,9 +27,19 @@ export default function PathScreen() {
   const lastActiveDateKey = useProgressStore((state) => state.lastActiveDateKey);
   const minutesToday = useProgressStore((state) => state.minutesToday);
   const todayDateKey = useProgressStore((state) => state.todayDateKey);
+  const isPremium = useSettingsStore((state) => state.isPremium);
+  const savedHearts = useProgressStore((state) => state.hearts);
+  const heartsRefillStartedAt = useProgressStore((state) => state.heartsRefillStartedAt);
+
+  // L'heure actuelle, mise à jour toutes les 30 s : les vies regagnées apparaissent toutes seules
+  const nowMs = useNow(30_000);
+  const currentHearts = computeHearts(
+    { hearts: savedHearts, refillStartedAt: heartsRefillStartedAt },
+    nowMs,
+  ).hearts;
 
   // Valeurs à afficher AUJOURD'HUI (une série cassée s'affiche 0 ; les minutes d'hier ne comptent pas)
-  const now = new Date();
+  const now = new Date(nowMs);
   const displayedStreak = getDisplayedStreak(streakDays, lastActiveDateKey, now);
   const displayedMinutes = todayDateKey === toDateKey(now) ? minutesToday : 0;
 
@@ -62,7 +74,12 @@ export default function PathScreen() {
               value={displayedStreak}
               accessibilityLabel={`Série de ${displayedStreak} jours`}
             />
-            <StatPill icon="heart" iconColor="#E5484D" value={MAX_HEARTS} accessibilityLabel={`${MAX_HEARTS} vies`} />
+            <StatPill
+              icon="heart"
+              iconColor="#E5484D"
+              value={isPremium ? "∞" : currentHearts}
+              accessibilityLabel={isPremium ? "Vies illimitées" : `${currentHearts} vies`}
+            />
           </View>
         </View>
 
@@ -76,12 +93,7 @@ export default function PathScreen() {
             }}
           />
 
-          <DailyStats
-            totalXp={totalXp}
-            minutesToday={displayedMinutes}
-            dailyGoalMinutes={dailyGoalMinutes}
-          />
-
+          <DailyStats totalXp={totalXp} minutesToday={displayedMinutes} dailyGoalMinutes={dailyGoalMinutes} />
         </View>
 
         {/* Le chemin prend toute la largeur de l'écran (pas de marge) pour que le zigzag soit centré */}
