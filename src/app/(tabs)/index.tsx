@@ -7,9 +7,10 @@ import { LessonPath } from "@/components/path/lesson-path";
 import { ModuleCard } from "@/components/path/module-card";
 import { NextModuleCard } from "@/components/path/next-module-card";
 import { StatPill } from "@/components/path/stat-pill";
-import { DEMO_PROGRESS } from "@/content/demo-progress";
 import { MODULES } from "@/content/modules";
+import { getDisplayedStreak, toDateKey } from "@/lib/dates";
 import { getPathItemStates } from "@/lib/path";
+import { MAX_HEARTS, useProgressStore } from "@/stores/progress-store";
 import { useSettingsStore } from "@/stores/settings-store";
 
 /** Écran 05 de la maquette : le Parcours (onglet principal). */
@@ -17,16 +18,29 @@ export default function PathScreen() {
   // Le vrai objectif choisi pendant l'onboarding (la maquette affichait toujours 10)
   const dailyGoalMinutes = useSettingsStore((state) => state.dailyGoalMinutes);
 
+  // La vraie progression, lue dans le magasin (l'écran se redessine dès qu'elle change)
+  const completedLessons = useProgressStore((state) => state.completedLessons);
+  const totalXp = useProgressStore((state) => state.totalXp);
+  const streakDays = useProgressStore((state) => state.streakDays);
+  const lastActiveDateKey = useProgressStore((state) => state.lastActiveDateKey);
+  const minutesToday = useProgressStore((state) => state.minutesToday);
+  const todayDateKey = useProgressStore((state) => state.todayDateKey);
+
+  // Valeurs à afficher AUJOURD'HUI (une série cassée s'affiche 0 ; les minutes d'hier ne comptent pas)
+  const now = new Date();
+  const displayedStreak = getDisplayedStreak(streakDays, lastActiveDateKey, now);
+  const displayedMinutes = todayDateKey === toDateKey(now) ? minutesToday : 0;
+
   // Le module en cours (pour l'instant : toujours le premier) et celui d'après
   const currentModule = MODULES[0];
   const nextModule = MODULES[1]; // undefined s'il n'y a pas de module suivant
 
   // Calculs à partir des données : seules les étapes de type « lesson » comptent
   const lessons = currentModule.items.filter((item) => item.kind === "lesson");
-  const completedCount = lessons.filter((lesson) => lesson.id in DEMO_PROGRESS.completedLessons).length;
+  const completedCount = lessons.filter((lesson) => lesson.id in completedLessons).length;
 
   // État de chaque étape du chemin (terminée / en cours / verrouillée)
-  const pathStates = getPathItemStates(currentModule.items, DEMO_PROGRESS.completedLessons);
+  const pathStates = getPathItemStates(currentModule.items, completedLessons);
 
   return (
     // edges={["top"]} : on protège seulement le haut (encoche) ; le bas est géré par la barre d'onglets
@@ -45,15 +59,10 @@ export default function PathScreen() {
             <StatPill
               icon="flame"
               iconColor="#F59F0B"
-              value={DEMO_PROGRESS.streakDays}
-              accessibilityLabel={`Série de ${DEMO_PROGRESS.streakDays} jours`}
+              value={displayedStreak}
+              accessibilityLabel={`Série de ${displayedStreak} jours`}
             />
-            <StatPill
-              icon="heart"
-              iconColor="#E5484D"
-              value={DEMO_PROGRESS.hearts}
-              accessibilityLabel={`${DEMO_PROGRESS.hearts} vies`}
-            />
+            <StatPill icon="heart" iconColor="#E5484D" value={MAX_HEARTS} accessibilityLabel={`${MAX_HEARTS} vies`} />
           </View>
         </View>
 
@@ -68,8 +77,8 @@ export default function PathScreen() {
           />
 
           <DailyStats
-            totalXp={DEMO_PROGRESS.totalXp}
-            minutesToday={DEMO_PROGRESS.minutesToday}
+            totalXp={totalXp}
+            minutesToday={displayedMinutes}
             dailyGoalMinutes={dailyGoalMinutes}
           />
 

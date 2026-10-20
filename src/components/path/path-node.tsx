@@ -21,7 +21,7 @@ export function PathNode({ state, onPress }: PathNodeProps) {
     <View className="items-center">
       {/* Zone de hauteur fixe : toutes les icônes ont leur centre à la même hauteur */}
       <View style={{ height: NODE_AREA_HEIGHT }} className="items-center justify-center">
-        {item.kind === "chest" && <ChestIcon />}
+        {item.kind === "chest" && <ChestIcon isOpen={status === "completed"} />}
         {item.kind === "quiz" && <QuizIcon />}
         {item.kind === "lesson" && status === "completed" && (
           <CompletedLessonIcon title={item.title} onPress={onPress} />
@@ -93,14 +93,16 @@ function LockedLessonIcon({ title }: { title: string }) {
   );
 }
 
-function ChestIcon() {
+function ChestIcon({ isOpen }: { isOpen: boolean }) {
   return (
     <View
       accessible
-      accessibilityLabel="Coffre secret, verrouillé"
-      className="h-16 w-16 items-center justify-center rounded-[20px] border-2 border-b-[7px] border-yellow border-b-[#E8CF86] bg-yellow-light"
+      accessibilityLabel={isOpen ? "Coffre ouvert" : "Coffre secret, verrouillé"}
+      className={`h-16 w-16 items-center justify-center rounded-[20px] border-2 border-b-[7px] ${
+        isOpen ? "border-yellow border-b-[#B8890F] bg-yellow" : "border-yellow border-b-[#E8CF86] bg-yellow-light"
+      }`}
     >
-      <Ionicons name="gift-outline" size={28} color={Colors.yellowText} />
+      <Ionicons name={isOpen ? "gift" : "gift-outline"} size={28} color={isOpen ? "#3A2A00" : Colors.yellowText} />
     </View>
   );
 }

@@ -35,6 +35,11 @@ export function getPathItemStates(
     if (stars > 0) {
       return { item, status: "completed", stars, lessonNumber };
     }
+    // Un coffre ne bloque jamais le chemin : il s'ouvre tout seul dès que tout ce qui précède est terminé.
+    // (Plus tard : créditer ses XP en bonus.)
+    if (item.kind === "chest" && !currentFound) {
+      return { item, status: "completed", stars: 0, lessonNumber };
+    }
     if (!currentFound) {
       currentFound = true;
       return { item, status: "current", stars: 0, lessonNumber };
