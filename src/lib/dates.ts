@@ -9,6 +9,13 @@ export function toDateKey(date: Date): string {
   return `${year}-${month}-${day}`;
 }
 
+/** Clé du jour situé `days` jours plus tard (ex. addDaysToKey(…20 octobre, 3) → "2026-10-23"). */
+export function addDaysToKey(date: Date, days: number): string {
+  const later = new Date(date);
+  later.setDate(date.getDate() + days); // gère tout seul les changements de mois et d'année
+  return toDateKey(later);
+}
+
 /** Clé du jour d'avant (ex. "2026-10-19" pour "2026-10-20"). */
 export function getYesterdayKey(today: Date): string {
   const yesterday = new Date(today);
@@ -22,7 +29,11 @@ export function getYesterdayKey(today: Date): string {
  * - Dernière leçon hier → +1
  * - Sinon (première fois, ou jour sauté) → la série repart à 1
  */
-export function getStreakAfterLesson(currentStreak: number, lastActiveKey: string | null, today: Date): number {
+export function getStreakAfterLesson(
+  currentStreak: number,
+  lastActiveKey: string | null,
+  today: Date,
+): number {
   if (lastActiveKey === toDateKey(today)) return currentStreak;
   if (lastActiveKey === getYesterdayKey(today)) return currentStreak + 1;
   return 1;

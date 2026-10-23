@@ -11,7 +11,7 @@ type BuildSentenceStepProps = {
   step: BuildSentenceStepData;
   checked: boolean;
   /** null = aucune tuile posée (le bouton « Vérifier » se grise) */
-  onAnswerChange: (isCorrect: boolean | null) => void;
+  onAnswerChange: (isCorrect: boolean | null, answerText?: string) => void;
 };
 
 /** Hauteur d'une ligne de la zone réponse (tuile + espace) : sert aussi à tracer les lignes. */
@@ -35,8 +35,8 @@ export function BuildSentenceStep({ step, checked, onAnswerChange }: BuildSenten
       return;
     }
     // Compare la phrase construite à la bonne réponse, mot par mot
-    const builtWords = newPlaced.map((tileIndex) => step.tiles[tileIndex]);
-    onAnswerChange(builtWords.join(" ") === step.answer.join(" "));
+    const builtSentence = newPlaced.map((tileIndex) => step.tiles[tileIndex]).join(" ");
+    onAnswerChange(builtSentence === step.answer.join(" "), builtSentence);
   }
 
   function addTile(tileIndex: number) {

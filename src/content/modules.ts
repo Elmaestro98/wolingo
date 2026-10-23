@@ -37,7 +37,7 @@ export const MODULES: Module[] = [
     level: "A1",
     title: "Le présent",
     subtitle: "Dire où tu es et ce que tu fais :",
-    example: "mangi fi…",
+    example: "mangi fii…",
     items: [
       { id: "u1-l1", kind: "lesson", title: "Salutations", minutes: 5 },
       { id: "u1-l2", kind: "lesson", title: "Pronoms", minutes: 5 },
@@ -49,12 +49,38 @@ export const MODULES: Module[] = [
     ],
   },
   {
+    // Plan du cahier des charges (section 4) ; contenu : unité 2 du cours de Xavier Bry
     id: "u2",
     number: 2,
     level: "A1",
-    title: "La famille & la maison",
-    subtitle: "Parler de tes proches et de ton foyer :",
-    example: "sama kër…",
-    items: [],
+    title: "Pronoms objets et relatifs",
+    subtitle: "Dire « je le mange », « celui qui… » :",
+    example: "maŋ koy lekk…",
+    items: [
+      { id: "u2-l1", kind: "lesson", title: "Pronoms objets", minutes: 5 },
+      { id: "u2-l2", kind: "lesson", title: "Le progressif", minutes: 5 },
+      { id: "u2-chest", kind: "chest", title: "Coffre", xpReward: 15 },
+      { id: "u2-l3", kind: "lesson", title: "Le relatif « qui »", minutes: 5 },
+      { id: "u2-l4", kind: "lesson", title: "Au marché", minutes: 5 },
+      { id: "u2-quiz", kind: "quiz", title: "Grand quiz du module" },
+    ],
+  },
+  {
+    // Plan du cahier des charges (section 4) ; contenu : unité 3 du cours de Xavier Bry
+    id: "u3",
+    number: 3,
+    level: "A1",
+    title: "Possessif et accompli",
+    subtitle: "Dire « mon livre », « il a mangé » :",
+    example: "sumë tééré…",
+    items: [
+      { id: "u3-l1", kind: "lesson", title: "Le possessif", minutes: 5 },
+      { id: "u3-l2", kind: "lesson", title: "« De » : -u", minutes: 5 },
+      { id: "u3-chest", kind: "chest", title: "Coffre", xpReward: 15 },
+      { id: "u3-l3", kind: "lesson", title: "L'accompli", minutes: 5 },
+      { id: "u3-l4", kind: "lesson", title: "La négation", minutes: 5 },
+      { id: "u3-l5", kind: "lesson", title: "La famille", minutes: 5 },
+      { id: "u3-quiz", kind: "quiz", title: "Grand quiz du module" },
+    ],
   },
 ];

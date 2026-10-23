@@ -10,7 +10,7 @@ import { CFA_PER_DEREM, deremToCfa, findDeremAnswerIndex, formatNumber } from "@
 type DeremStepProps = {
   step: DeremStepData;
   checked: boolean;
-  onAnswerChange: (isCorrect: boolean) => void;
+  onAnswerChange: (isCorrect: boolean, answerText: string) => void;
 };
 
 /** Lettres des repères : A, B, C, D… */
@@ -28,7 +28,7 @@ export function DeremStep({ step, checked, onAnswerChange }: DeremStepProps) {
 
   function handleSelect(index: number) {
     setSelectedIndex(index);
-    onAnswerChange(index === answerIndex);
+    onAnswerChange(index === answerIndex, step.choices[index].wolof);
   }
 
   return (

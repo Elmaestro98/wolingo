@@ -17,15 +17,23 @@ import { StatusBar } from 'expo-status-bar';
 import { useEffect } from 'react';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 
+import { useReminderSync } from '@/hooks/use-reminder-sync';
+import { configureNotifications } from '@/services/notifications';
 import { useSettingsStore } from '@/stores/settings-store';
 
 // Garde l'écran de démarrage (logo) affiché tant qu'on ne dit pas de le cacher
 SplashScreen.preventAutoHideAsync();
 
+// Une seule fois au démarrage : nos notifications s'affichent même app ouverte
+configureNotifications();
+
 export default function RootLayout() {
   // Lit dans le magasin : l'onboarding est-il terminé ?
   // (Les hooks doivent TOUJOURS être appelés avant le premier `return`.)
   const hasCompletedOnboarding = useSettingsStore((state) => state.hasCompletedOnboarding);
+
+  // Le rappel quotidien du téléphone suit les réglages (heure, activé, durée)
+  useReminderSync();
 
   // Charge les 6 fichiers de police ; `fontsLoaded` passe à true quand c'est fini
   const [fontsLoaded, fontError] = useFonts({

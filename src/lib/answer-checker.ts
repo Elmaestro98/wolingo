@@ -1,7 +1,8 @@
 /**
  * Correcteur tolérant des réponses tapées au clavier (cahier des charges : « correction tolérante »).
- * - exact : identique aux accents près (majuscules, ponctuation et espaces ignorés)
- * - near  : identique SI on oublie les accents (ë → e, é → e…) : accepté, mais signalé
+ * - exact : identique (majuscules, ponctuation et espaces ignorés)
+ * - near  : identique SI on oublie les accents (ë → e…) ou les doubles lettres (fii → fi) : accepté, mais signalé
+ *           (cahier des charges : « doubles lettres signalées mais acceptées au niveau 1 »)
  * - wrong : différent
  */
 export type AnswerVerdict = "exact" | "near" | "wrong";
@@ -28,6 +29,17 @@ export function removeAccents(text: string): string {
     .replace(/\u0000/g, "ñ"); //       on remet ñ
 }
 
+/** Réduit les lettres doublées à une seule : « fii » → « fi », « léén » → « lén ». */
+export function collapseDoubleLetters(text: string): string {
+  // (.)\1+ : une lettre, suivie d'elle-même une ou plusieurs fois → remplacée par une seule
+  return text.replace(/(.)\1+/g, "$1");
+}
+
+/** La version « tolérante » d'une réponse : sans accents ni doubles lettres. */
+function tolerant(text: string): string {
+  return collapseDoubleLetters(removeAccents(normalizeAnswer(text)));
+}
+
 /** Compare la réponse tapée à toutes les réponses acceptées et rend le meilleur verdict. */
 export function checkTypedAnswer(typed: string, acceptedAnswers: string[]): AnswerVerdict {
   const typedNormalized = normalizeAnswer(typed);
@@ -37,9 +49,9 @@ export function checkTypedAnswer(typed: string, acceptedAnswers: string[]): Answ
   if (acceptedAnswers.some((answer) => normalizeAnswer(answer) === typedNormalized)) {
     return "exact";
   }
-  // 2e passage : juste si on ignore les accents ?
-  const typedWithoutAccents = removeAccents(typedNormalized);
-  if (acceptedAnswers.some((answer) => removeAccents(normalizeAnswer(answer)) === typedWithoutAccents)) {
+  // 2e passage : juste si on ignore les accents et les doubles lettres ?
+  const typedTolerant = tolerant(typed);
+  if (acceptedAnswers.some((answer) => tolerant(answer) === typedTolerant)) {
     return "near";
   }
   return "wrong";

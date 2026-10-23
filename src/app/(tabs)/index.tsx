@@ -9,7 +9,7 @@ import { NextModuleCard } from "@/components/path/next-module-card";
 import { StatPill } from "@/components/path/stat-pill";
 import { MODULES } from "@/content/modules";
 import { getDisplayedStreak, toDateKey } from "@/lib/dates";
-import { getPathItemStates } from "@/lib/path";
+import { getCurrentModule, getPathItemStates, isModuleCompleted } from "@/lib/path";
 import { useNow } from "@/hooks/use-now";
 import { computeHearts } from "@/lib/hearts";
 import { useProgressStore } from "@/stores/progress-store";
@@ -43,9 +43,9 @@ export default function PathScreen() {
   const displayedStreak = getDisplayedStreak(streakDays, lastActiveDateKey, now);
   const displayedMinutes = todayDateKey === toDateKey(now) ? minutesToday : 0;
 
-  // Le module en cours (pour l'instant : toujours le premier) et celui d'après
-  const currentModule = MODULES[0];
-  const nextModule = MODULES[1]; // undefined s'il n'y a pas de module suivant
+  // Le module en cours (le premier non validé qui a du contenu) et celui juste après
+  const currentModule = getCurrentModule(MODULES, completedLessons);
+  const nextModule = MODULES[MODULES.indexOf(currentModule) + 1]; // undefined s'il n'y en a pas
 
   // Calculs à partir des données : seules les étapes de type « lesson » comptent
   const lessons = currentModule.items.filter((item) => item.kind === "lesson");
@@ -53,6 +53,9 @@ export default function PathScreen() {
 
   // État de chaque étape du chemin (terminée / en cours / verrouillée)
   const pathStates = getPathItemStates(currentModule.items, completedLessons);
+
+  // Le module est validé quand son Grand quiz est réussi
+  const isCurrentModuleCompleted = isModuleCompleted(currentModule, completedLessons);
 
   return (
     // edges={["top"]} : on protège seulement le haut (encoche) ; le bas est géré par la barre d'onglets
@@ -104,7 +107,11 @@ export default function PathScreen() {
         {/* Le module suivant, s'il existe ( && : rien n'est affiché sinon ) */}
         {nextModule && (
           <View className="mt-4 px-4">
-            <NextModuleCard module={nextModule} previousModuleNumber={currentModule.number} />
+            <NextModuleCard
+              module={nextModule}
+              previousModuleNumber={currentModule.number}
+              isUnlocked={isCurrentModuleCompleted}
+            />
           </View>
         )}
       </ScrollView>

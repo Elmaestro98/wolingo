@@ -14,7 +14,7 @@ type WriteTranslationStepProps = {
   step: WriteTranslationStepData;
   checked: boolean;
   /** null = champ vide (le bouton « Vérifier » se grise) */
-  onAnswerChange: (isCorrect: boolean | null) => void;
+  onAnswerChange: (isCorrect: boolean | null, answerText?: string) => void;
 };
 
 /** Exercice « écrire en wolof » (écran 12) : taper la traduction, avec correction tolérante. */
@@ -31,7 +31,7 @@ export function WriteTranslationStep({ step, checked, onAnswerChange }: WriteTra
       return;
     }
     // « near » (accents oubliés) compte comme juste : c'est la correction tolérante
-    onAnswerChange(checkTypedAnswer(newText, step.acceptedAnswers) !== "wrong");
+    onAnswerChange(checkTypedAnswer(newText, step.acceptedAnswers) !== "wrong", newText);
   }
 
   // Après vérification : le verdict sert à colorer le champ et à afficher la remarque « presque »
@@ -84,11 +84,12 @@ export function WriteTranslationStep({ step, checked, onAnswerChange }: WriteTra
         )}
       </View>
 
-      {/* Après vérification : remarque si les accents ont été oubliés */}
+      {/* Après vérification : remarque si les accents ou les doubles lettres ont été oubliés */}
       {verdict === "near" && (
         <Text className="rounded-xl bg-yellow-light px-3 py-2.5 font-body text-[13.5px] leading-5 text-[#5A4300]">
           <Text className="font-body-black">Presque parfait ! </Text>
-          Attention aux accents : <Text className="font-body-black">{step.acceptedAnswers[0]}</Text>
+          Attention aux accents et aux lettres doublées :{" "}
+          <Text className="font-body-black">{step.acceptedAnswers[0]}</Text>
         </Text>
       )}
 

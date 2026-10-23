@@ -41,3 +41,6 @@ example
 # generated native folders
 /ios
 /android
+
+# Fichiers générés pour la relecture (npm run content:export)
+content-review/

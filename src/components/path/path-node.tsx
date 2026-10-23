@@ -2,7 +2,8 @@ import Ionicons from "@expo/vector-icons/Ionicons";
 import { Pressable, Text, View } from "react-native";
 
 import { Colors } from "@/constants/theme";
-import type { PathItemState } from "@/lib/path";
+import type { PathItemState, PathItemStatus } from "@/lib/path";
+import { QUIZ_QUESTION_COUNT } from "@/lib/quiz";
 
 /** Hauteur de la zone de l'icône : le centre de l'icône est à la moitié (utilisé pour tracer le chemin). */
 export const NODE_AREA_HEIGHT = 104;
@@ -22,7 +23,7 @@ export function PathNode({ state, onPress }: PathNodeProps) {
       {/* Zone de hauteur fixe : toutes les icônes ont leur centre à la même hauteur */}
       <View style={{ height: NODE_AREA_HEIGHT }} className="items-center justify-center">
         {item.kind === "chest" && <ChestIcon isOpen={status === "completed"} />}
-        {item.kind === "quiz" && <QuizIcon />}
+        {item.kind === "quiz" && <QuizIcon status={status} onPress={onPress} />}
         {item.kind === "lesson" && status === "completed" && (
           <CompletedLessonIcon title={item.title} onPress={onPress} />
         )}
@@ -54,9 +55,10 @@ function CompletedLessonIcon({ title, onPress }: { title: string; onPress: () =>
   );
 }
 
-function CurrentLessonIcon({ title, onPress }: { title: string; onPress: () => void }) {
+/** Halo jaune + bulle noire « COMMENCER » : signale l'étape à faire maintenant (leçon ou quiz). */
+function StartBubble() {
   return (
-    <View className="items-center justify-center">
+    <>
       {/* Halo jaune transparent derrière le bouton */}
       <View className="absolute h-[104px] w-[104px] rounded-full bg-yellow/30" />
 
@@ -68,6 +70,14 @@ function CurrentLessonIcon({ title, onPress }: { title: string; onPress: () => v
         {/* Triangle dessiné avec des bordures : seule la bordure du haut est colorée */}
         <View className="h-0 w-0 border-l-[7px] border-r-[7px] border-t-[8px] border-l-transparent border-r-transparent border-t-ink" />
       </View>
+    </>
+  );
+}
+
+function CurrentLessonIcon({ title, onPress }: { title: string; onPress: () => void }) {
+  return (
+    <View className="items-center justify-center">
+      <StartBubble />
 
       <Pressable
         onPress={onPress}
@@ -99,23 +109,61 @@ function ChestIcon({ isOpen }: { isOpen: boolean }) {
       accessible
       accessibilityLabel={isOpen ? "Coffre ouvert" : "Coffre secret, verrouillé"}
       className={`h-16 w-16 items-center justify-center rounded-[20px] border-2 border-b-[7px] ${
-        isOpen ? "border-yellow border-b-[#B8890F] bg-yellow" : "border-yellow border-b-[#E8CF86] bg-yellow-light"
+        isOpen
+          ? "border-yellow border-b-[#B8890F] bg-yellow"
+          : "border-yellow border-b-[#E8CF86] bg-yellow-light"
       }`}
     >
-      <Ionicons name={isOpen ? "gift" : "gift-outline"} size={28} color={isOpen ? "#3A2A00" : Colors.yellowText} />
+      <Ionicons
+        name={isOpen ? "gift" : "gift-outline"}
+        size={28}
+        color={isOpen ? "#3A2A00" : Colors.yellowText}
+      />
     </View>
   );
 }
 
-function QuizIcon() {
-  return (
-    // Carré tourné de 45° = losange ; l'icône est retournée de -45° pour rester droite
+// Apparence du losange du quiz selon son état (classes écrites EN ENTIER pour Tailwind)
+const QUIZ_LOOKS = {
+  locked: { box: "border-[#D6CCBB] bg-sand", icon: "trophy-outline", color: "#857A6B" },
+  current: { box: "border-[#B8890F] bg-yellow", icon: "trophy", color: "#3A2A00" },
+  completed: { box: "border-green-shadow bg-green", icon: "trophy", color: Colors.white },
+} as const;
+
+function QuizIcon({ status, onPress }: { status: PathItemStatus; onPress: () => void }) {
+  const look = QUIZ_LOOKS[status];
+
+  // Carré tourné de 45° = losange ; l'icône est retournée de -45° pour rester droite
+  const diamond = (
     <View
-      accessible
-      accessibilityLabel="Grand quiz du module, verrouillé"
-      className="h-[72px] w-[72px] rotate-45 items-center justify-center rounded-[22px] border-b-[6px] border-[#D6CCBB] bg-sand"
+      className={`h-[72px] w-[72px] rotate-45 items-center justify-center rounded-[22px] border-b-[6px] ${look.box}`}
     >
-      <Ionicons name="trophy-outline" size={30} color="#857A6B" style={{ transform: [{ rotate: "-45deg" }] }} />
+      <Ionicons name={look.icon} size={30} color={look.color} style={{ transform: [{ rotate: "-45deg" }] }} />
+    </View>
+  );
+
+  // Verrouillé : rien à toucher
+  if (status === "locked") {
+    return (
+      <View accessible accessibilityLabel="Grand quiz du module, verrouillé">
+        {diamond}
+      </View>
+    );
+  }
+
+  return (
+    <View className="items-center justify-center">
+      {status === "current" && <StartBubble />}
+      <Pressable
+        onPress={onPress}
+        accessibilityRole="button"
+        accessibilityLabel={
+          status === "current" ? "Commencer le Grand quiz du module" : "Refaire le Grand quiz"
+        }
+        className="active:opacity-80"
+      >
+        {diamond}
+      </Pressable>
     </View>
   );
 }
@@ -137,6 +185,17 @@ function NodeLabel({ state }: { state: PathItemState }) {
     );
   }
 
+  if (item.kind === "quiz" && status === "current") {
+    return (
+      <View className="items-center rounded-[14px] bg-white px-3.5 py-1.5">
+        <Text className="font-body-black text-[15px] text-ink">{item.title}</Text>
+        <Text className="font-body-bold text-xs text-muted">
+          {QUIZ_QUESTION_COUNT} questions · tout le module
+        </Text>
+      </View>
+    );
+  }
+
   if (item.kind === "quiz") {
     return <Text className="font-body-black text-sm text-[#3D3730]">{item.title}</Text>;
   }
@@ -148,7 +207,12 @@ function NodeLabel({ state }: { state: PathItemState }) {
         <View className="flex-row gap-px">
           {/* 3 étoiles : jaune si gagnée, grise sinon */}
           {[1, 2, 3].map((star) => (
-            <Ionicons key={star} name="star" size={12} color={star <= stars ? Colors.yellow : Colors.disabled} />
+            <Ionicons
+              key={star}
+              name="star"
+              size={12}
+              color={star <= stars ? Colors.yellow : Colors.disabled}
+            />
           ))}
         </View>
       </View>

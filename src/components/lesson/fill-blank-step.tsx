@@ -10,7 +10,7 @@ import type { FillBlankStepData } from "@/content/lessons";
 type FillBlankStepProps = {
   step: FillBlankStepData;
   checked: boolean;
-  onAnswerChange: (isCorrect: boolean) => void;
+  onAnswerChange: (isCorrect: boolean, answerText: string) => void;
 };
 
 /** Exercice « compléter la phrase » (écran 10) : choisir le mot qui remplit le trou. */
@@ -21,7 +21,12 @@ export function FillBlankStep({ step, checked, onAnswerChange }: FillBlankStepPr
 
   function handleSelect(index: number) {
     setSelectedIndex(index);
-    onAnswerChange(index === step.answerIndex);
+    onAnswerChange(index === step.answerIndex, buildSentence(step.choices[index]));
+  }
+
+  /** La phrase complète avec le mot choisi dans le trou : « Xar bi » + « angiy » + « lekk xob wi » */
+  function buildSentence(word: string): string {
+    return [step.before, word, step.after].filter((part) => part !== "").join(" ");
   }
 
   // Le mot affiché dans le trou (null tant que rien n'est choisi)
@@ -32,7 +37,9 @@ export function FillBlankStep({ step, checked, onAnswerChange }: FillBlankStepPr
     <View className="gap-5">
       {/* Consigne */}
       <View className="gap-1">
-        <Text className="font-body-black text-xs uppercase tracking-[1.7px] text-yellow-text">{step.eyebrow}</Text>
+        <Text className="font-body-black text-xs uppercase tracking-[1.7px] text-yellow-text">
+          {step.eyebrow}
+        </Text>
         <Text className="font-title text-2xl text-ink">{step.question}</Text>
       </View>
 
@@ -66,13 +73,17 @@ export function FillBlankStep({ step, checked, onAnswerChange }: FillBlankStepPr
           {step.after !== "" && <Text className="font-title text-[30px] text-ink">{step.after}</Text>}
         </View>
 
-        <Text className="mt-3.5 text-center font-body text-[14.5px] italic text-muted">« {step.translation} »</Text>
+        <Text className="mt-3.5 text-center font-body text-[14.5px] italic text-muted">
+          « {step.translation} »
+        </Text>
       </View>
 
       {/* Titre des choix + bouton Indice */}
       <View className="gap-3">
         <View className="flex-row items-center justify-between">
-          <Text className="font-body-black text-xs uppercase tracking-[1.4px] text-muted">{step.choicesLabel}</Text>
+          <Text className="font-body-black text-xs uppercase tracking-[1.4px] text-muted">
+            {step.choicesLabel}
+          </Text>
           {step.hint && !checked && (
             <Pressable
               // ! inverse la valeur : ouvert → fermé, fermé → ouvert
@@ -96,7 +107,8 @@ export function FillBlankStep({ step, checked, onAnswerChange }: FillBlankStepPr
         {/* Grille de 2 colonnes : chaque bouton prend ~la moitié (basis-[45%]) et grandit (grow) */}
         <View className="flex-row flex-wrap gap-2.5" accessibilityRole="radiogroup">
           {step.choices.map((choice, index) => {
-            const classes = CHOICE_LOOK_CLASSES[getChoiceLook(index, selectedIndex, step.answerIndex, checked)];
+            const classes =
+              CHOICE_LOOK_CLASSES[getChoiceLook(index, selectedIndex, step.answerIndex, checked)];
             return (
               <Pressable
                 key={choice}
@@ -119,7 +131,9 @@ export function FillBlankStep({ step, checked, onAnswerChange }: FillBlankStepPr
 /** Le « trou » de la phrase : vide (pointillés), rempli (vert) ou faux (rouge barré). */
 function BlankSlot({ word, isWrong }: { word: string | null; isWrong: boolean }) {
   if (word === null) {
-    return <View className="h-[52px] min-w-[118px] rounded-xl border-b-[3px] border-dashed border-[#CFC6B8] bg-[#F3EEE5]" />;
+    return (
+      <View className="h-[52px] min-w-[118px] rounded-xl border-b-[3px] border-dashed border-[#CFC6B8] bg-[#F3EEE5]" />
+    );
   }
 
   return (
@@ -128,7 +142,9 @@ function BlankSlot({ word, isWrong }: { word: string | null; isWrong: boolean })
         isWrong ? "border-red bg-red-light" : "border-green bg-green-light"
       }`}
     >
-      <Text className={`font-title text-[30px] ${isWrong ? "text-red line-through" : "text-green"}`}>{word}</Text>
+      <Text className={`font-title text-[30px] ${isWrong ? "text-red line-through" : "text-green"}`}>
+        {word}
+      </Text>
     </View>
   );
 }

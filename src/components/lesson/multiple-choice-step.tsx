@@ -12,8 +12,8 @@ type MultipleChoiceStepProps = {
   step: MultipleChoiceStepData;
   /** true une fois que l'utilisateur a touché « Vérifier » : on montre la correction */
   checked: boolean;
-  /** Prévient le lecteur (le parent) à chaque choix : la réponse est-elle juste ? */
-  onAnswerChange: (isCorrect: boolean) => void;
+  /** Prévient le lecteur (le parent) à chaque choix : la réponse est-elle juste ? + le texte choisi */
+  onAnswerChange: (isCorrect: boolean, answerText: string) => void;
 };
 
 /** Exercice QCM (écran 08) : traduire une phrase wolof en choisissant parmi 4 propositions. */
@@ -23,7 +23,7 @@ export function MultipleChoiceStep({ step, checked, onAnswerChange }: MultipleCh
 
   function handleSelect(index: number) {
     setSelectedIndex(index);
-    onAnswerChange(index === step.answerIndex); // on remonte l'info au lecteur
+    onAnswerChange(index === step.answerIndex, step.choices[index]); // on remonte l'info au lecteur
   }
 
   return (

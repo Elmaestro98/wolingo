@@ -11,6 +11,10 @@ export const CONTENT_IMAGES = {
   sheep: require("@/assets/images/content/sheep.png"),
   awa: require("@/assets/images/content/awa.png"),
   coin500: require("@/assets/images/content/coin-500.jpg"),
+  door: require("@/assets/images/content/door.jpg"),
+  pot: require("@/assets/images/content/pot.jpg"),
+  person: require("@/assets/images/content/person.jpg"),
+  house: require("@/assets/images/content/house.jpg"),
 } satisfies Record<string, ImageSourcePropType>;
 
 /** Les noms d'images autorisés : "man" | … (TypeScript refusera un nom qui n'existe pas) */

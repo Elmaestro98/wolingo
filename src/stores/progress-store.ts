@@ -4,12 +4,7 @@ import { createJSONStorage, persist } from "zustand/middleware";
 
 import { getStreakAfterLesson, toDateKey } from "@/lib/dates";
 import { loseOneHeart, MAX_HEARTS } from "@/lib/hearts";
-
-/**
- * PROVISOIRE : les leçons 1 et 2 du module 1 n'ont pas encore de contenu.
- * On les considère comme terminées pour pouvoir accéder à la leçon 3.
- */
-const LESSONS_WITHOUT_CONTENT_YET: Record<string, number> = { "u1-l1": 3, "u1-l2": 2 };
+import { scheduleAfterMistake, scheduleAfterSuccess, type ReviewItems } from "@/lib/review";
 
 type ProgressState = {
   /** Leçons terminées → meilleur nombre d'étoiles obtenu (1 à 3) */
@@ -26,15 +21,21 @@ type ProgressState = {
   hearts: number;
   /** Heure (ms) du début de la recharge ; null si les vies sont pleines */
   heartsRefillStartedAt: number | null;
+  /** Exercices ratés à revoir (révision espacée J+1, J+3, J+7), rangés par référence « leçon#position » */
+  reviewItems: ReviewItems;
 
   completeLesson: (lessonId: string, result: { stars: number; xp: number; minutes: number }) => void;
   /** Retire une vie (à n'appeler que pour un utilisateur gratuit) */
   loseHeart: () => void;
+  /** Exercice raté : il reviendra demain en révision */
+  scheduleReview: (stepRef: string) => void;
+  /** Exercice réussi en révision : palier suivant, ou retiré s'il est maîtrisé */
+  markReviewSuccess: (stepRef: string) => void;
   resetProgress: () => void;
 };
 
 const INITIAL_PROGRESS = {
-  completedLessons: LESSONS_WITHOUT_CONTENT_YET,
+  completedLessons: {},
   totalXp: 0,
   streakDays: 0,
   lastActiveDateKey: null,
@@ -42,6 +43,7 @@ const INITIAL_PROGRESS = {
   todayDateKey: null,
   hearts: MAX_HEARTS,
   heartsRefillStartedAt: null,
+  reviewItems: {},
 };
 
 /** Le magasin de la progression de l'apprenant, sauvegardé sur le téléphone. */
@@ -79,6 +81,24 @@ export const useProgressStore = create<ProgressState>()(
             Date.now(),
           );
           return { hearts: next.hearts, heartsRefillStartedAt: next.refillStartedAt };
+        }),
+
+      scheduleReview: (stepRef) =>
+        set((state) => ({
+          // { ...ancien, [clé]: nouveau } : ajoute ou remplace UNE entrée, sans toucher aux autres
+          reviewItems: { ...state.reviewItems, [stepRef]: scheduleAfterMistake(new Date()) },
+        })),
+
+      markReviewSuccess: (stepRef) =>
+        set((state) => {
+          const item = state.reviewItems[stepRef];
+          if (!item) return {}; // rien à faire : l'exercice n'était pas en révision
+          const next = scheduleAfterSuccess(item, new Date());
+          // Maîtrisé (next = null) → on retire l'entrée : on garde toutes les AUTRES
+          const others = Object.fromEntries(
+            Object.entries(state.reviewItems).filter(([ref]) => ref !== stepRef),
+          );
+          return { reviewItems: next ? { ...others, [stepRef]: next } : others };
         }),
 
       resetProgress: () => set(INITIAL_PROGRESS),

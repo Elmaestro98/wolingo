@@ -4,6 +4,7 @@ import { Pressable, Text, View } from "react-native";
 
 import { Colors } from "@/constants/theme";
 import type { MatchPairsStepData } from "@/content/lessons";
+import { shuffle } from "@/lib/random";
 
 type MatchPairsStepProps = {
   step: MatchPairsStepData;
@@ -14,16 +15,6 @@ type MatchPairsStepProps = {
   /** Prévient le lecteur à chaque mauvaise paire (il retire une vie) */
   onMistake: () => void;
 };
-
-/** Mélange une liste au hasard (algorithme de Fisher-Yates). Renvoie une NOUVELLE liste. */
-function shuffle<T>(items: T[]): T[] {
-  const result = [...items];
-  for (let i = result.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1));
-    [result[i], result[j]] = [result[j], result[i]]; // échange les deux éléments
-  }
-  return result;
-}
 
 /**
  * Exercice « associer » (écran 11) : toucher un nom, puis son article.
