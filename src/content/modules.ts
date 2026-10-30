@@ -83,4 +83,57 @@ export const MODULES: Module[] = [
       { id: "u3-quiz", kind: "quiz", title: "Grand quiz du module" },
     ],
   },
+  {
+    // Plan du cahier des charges (section 4) ; contenu : unité 4 du cours de Xavier Bry
+    id: "u4",
+    number: 4,
+    level: "A2",
+    title: "Questions et nombres",
+    subtitle: "Poser des questions, compter, payer :",
+    example: "ban tééré ?…",
+    items: [
+      { id: "u4-l1", kind: "lesson", title: "Quel… ?", minutes: 5 },
+      { id: "u4-l2", kind: "lesson", title: "« C'est… que »", minutes: 5 },
+      { id: "u4-l3", kind: "lesson", title: "Où, comment, quand ?", minutes: 5 },
+      { id: "u4-chest", kind: "chest", title: "Coffre", xpReward: 15 },
+      { id: "u4-l4", kind: "lesson", title: "Qui ? Quoi ?", minutes: 5 },
+      { id: "u4-l5", kind: "lesson", title: "Les nombres", minutes: 5 },
+      { id: "u4-l6", kind: "lesson", title: "L'argent en dërëm", minutes: 5 },
+      { id: "u4-quiz", kind: "quiz", title: "Grand quiz du module" },
+    ],
+  },
+  {
+    // Plan du cahier des charges (section 4) ; contenu : unité 5 du cours de Xavier Bry
+    id: "u5",
+    number: 5,
+    level: "A2",
+    title: "Subordonnées",
+    subtitle: "Dire « je sais où ils vont » :",
+    example: "xamnaa fu ñuy dem…",
+    items: [
+      { id: "u5-l1", kind: "lesson", title: "Le pronom dépendant", minutes: 5 },
+      { id: "u5-l2", kind: "lesson", title: "Où, comment : fu, nu", minutes: 5 },
+      { id: "u5-chest", kind: "chest", title: "Coffre", xpReward: 15 },
+      { id: "u5-l3", kind: "lesson", title: "Qui, ce que : ku, li…", minutes: 5 },
+      { id: "u5-l4", kind: "lesson", title: "« Le livre que… »", minutes: 5 },
+      { id: "u5-quiz", kind: "quiz", title: "Grand quiz du module" },
+    ],
+  },
+  {
+    // Plan du cahier des charges (section 4) ; contenu : unité 6 du cours de Xavier Bry
+    id: "u6",
+    number: 6,
+    level: "A2",
+    title: "Indéfini, impératif, futur",
+    subtitle: "Dire « prends ! », « je lirai » :",
+    example: "jelal !…",
+    items: [
+      { id: "u6-l1", kind: "lesson", title: "« Un, une » : ab, aw…", minutes: 5 },
+      { id: "u6-l2", kind: "lesson", title: "L'impératif", minutes: 5 },
+      { id: "u6-chest", kind: "chest", title: "Coffre", xpReward: 15 },
+      { id: "u6-l3", kind: "lesson", title: "« Ne… pas ! » : bul", minutes: 5 },
+      { id: "u6-l4", kind: "lesson", title: "Le futur", minutes: 5 },
+      { id: "u6-quiz", kind: "quiz", title: "Grand quiz du module" },
+    ],
+  },
 ];

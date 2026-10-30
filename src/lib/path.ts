@@ -73,6 +73,28 @@ export function getCurrentModule(modules: Module[], completedLessons: Record<str
   );
 }
 
+/** État d'un module dans le sélecteur du Parcours. */
+export type ModuleStatus = "completed" | "current" | "locked";
+
+/**
+ * L'état de chaque module, pour le sélecteur :
+ * - validé (Grand quiz réussi) → on peut le revoir ;
+ * - en cours (celui de getCurrentModule) → celui qu'on est en train de faire ;
+ * - verrouillé → tous les autres, y compris les modules encore sans contenu.
+ */
+export function getModuleStatuses(
+  modules: Module[],
+  completedLessons: Record<string, number>,
+): { module: Module; status: ModuleStatus }[] {
+  const currentModule = getCurrentModule(modules, completedLessons);
+  return modules.map((moduleData) => {
+    let status: ModuleStatus = "locked";
+    if (isModuleCompleted(moduleData, completedLessons)) status = "completed";
+    else if (moduleData.id === currentModule.id) status = "current";
+    return { module: moduleData, status };
+  });
+}
+
 /** Toutes les leçons du module sont-elles terminées ? (condition pour passer le quiz) */
 export function areAllLessonsCompleted(items: PathItem[], completedLessons: Record<string, number>): boolean {
   // every : vrai seulement si CHAQUE leçon a au moins une étoile

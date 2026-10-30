@@ -2,6 +2,7 @@ import type { Module, PathItem } from "@/content/modules";
 import {
   areAllLessonsCompleted,
   getCurrentModule,
+  getModuleStatuses,
   getPathItemStates,
   getZigzagOffset,
   isModuleCompleted,
@@ -101,6 +102,24 @@ describe("module en cours sur le Parcours", () => {
   it("saute les modules encore vides et reste sur le dernier jouable", () => {
     const allDone = { "m1-l1": 3, "m1-quiz": 3, "m2-l1": 3, "m2-quiz": 3 };
     expect(getCurrentModule(MODULES_FOR_TEST, allDone).id).toBe("m2");
+  });
+
+  /** Raccourci : la liste des états des modules, dans l'ordre */
+  function moduleStatuses(completed: Record<string, number>) {
+    return getModuleStatuses(MODULES_FOR_TEST, completed).map((entry) => entry.status);
+  }
+
+  it("sélecteur : au départ, module 1 en cours, les autres verrouillés", () => {
+    expect(moduleStatuses({})).toEqual(["current", "locked", "locked"]);
+  });
+
+  it("sélecteur : module 1 validé → revoyable, module 2 en cours", () => {
+    expect(moduleStatuses({ "m1-l1": 3, "m1-quiz": 2 })).toEqual(["completed", "current", "locked"]);
+  });
+
+  it("sélecteur : un module sans contenu reste verrouillé, même quand tout est validé", () => {
+    const allDone = { "m1-l1": 3, "m1-quiz": 3, "m2-l1": 3, "m2-quiz": 3 };
+    expect(moduleStatuses(allDone)).toEqual(["completed", "completed", "locked"]);
   });
 });
 

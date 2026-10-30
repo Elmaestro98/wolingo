@@ -43,7 +43,10 @@ export function DeremStep({ step, checked, onAnswerChange }: DeremStepProps) {
 
       {/* Le prix, avec la pièce */}
       <View className="flex-row items-center gap-3.5 rounded-[22px] bg-white p-3.5">
-        <Image source={CONTENT_IMAGES[step.image]} className="h-[108px] w-[108px]" resizeMode="contain" />
+        {/* Photo facultative : seulement si on a celle du bon billet / de la bonne pièce */}
+        {step.image && (
+          <Image source={CONTENT_IMAGES[step.image]} className="h-[108px] w-[108px]" resizeMode="contain" />
+        )}
         <View className="flex-1 items-start gap-2">
           <Text className="font-title text-[32px] leading-[34px] text-ink">
             {formatNumber(step.priceCfa)} F CFA

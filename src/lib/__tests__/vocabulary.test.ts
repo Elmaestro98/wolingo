@@ -14,8 +14,9 @@ describe("banque de mots (Lexique)", () => {
     expect(new Set(keys).size).toBe(keys.length);
   });
 
-  it("ne contient que des leçons du Parcours (pas le module 4 hors parcours)", () => {
-    expect(VOCABULARY.every((entry) => entry.lessonId !== "u4-derem")).toBe(true);
+  it("ne contient que des mots de leçons présentes sur le Parcours", () => {
+    const pathLessonIds = MODULES.flatMap((moduleData) => moduleData.items.map((item) => item.id));
+    expect(VOCABULARY.every((entry) => pathLessonIds.includes(entry.lessonId))).toBe(true);
   });
 
   it("trouve un mot en wolof, même sans les accents", () => {

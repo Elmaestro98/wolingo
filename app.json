@@ -37,7 +37,8 @@
       ],
       "expo-audio",
       "expo-sqlite",
-      "expo-asset"
+      "expo-asset",
+      "expo-image"
     ],
     "experiments": {
       "typedRoutes": false,

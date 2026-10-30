@@ -229,7 +229,8 @@ export type DeremStepData = {
   type: "derem";
   eyebrow: string;
   question: string;
-  image: ContentImageName;
+  /** Photo de la pièce ou du billet (facultative : seulement si on a la bonne) */
+  image?: ContentImageName;
   priceCfa: number;
   choices: DeremChoice[];
   explanation: string;
@@ -1945,13 +1946,531 @@ export const LESSONS: Record<string, Lesson> = {
     ],
   },
 
-  // ---------------------------------------------------------------------------
-  // Module 4 : l'argent en dërëm (cahier des charges : « nombres en base cinq ; argent en dërëm »)
-  // ⚠️ Le module 4 n'est pas encore sur le Parcours : leçon accessible via le menu développeur du Profil.
-  // ---------------------------------------------------------------------------
-  "u4-derem": {
-    id: "u4-derem",
-    title: "Au marché : les dërëm",
+  // ===========================================================================
+  // MODULE 4 · Questions et nombres
+  // Source : « Initiation au Wolof — Méthode rapide » (Xavier Bry), UNITÉ 4.
+  // ===========================================================================
+
+  // ---- Leçon 1 : « quel… ? » = consonne de classe + an (unité 4, § 1) ----
+  "u4-l1": {
+    id: "u4-l1",
+    title: "Quel… ?",
+    newWords: [
+      { wolof: "ban", french: "quel (classe b)" },
+      { wolof: "gan", french: "quel (classe g)" },
+      { wolof: "muus", french: "chat" },
+      { wolof: "suuf", french: "terre, sol" },
+    ],
+    steps: [
+      {
+        type: "lesson_card",
+        eyebrow: "Module 4 · Leçon 1",
+        title: "Quel… ?",
+        intro: "Comme pour les articles, on part de la consonne de classe du nom.",
+        blocks: [
+          {
+            type: "rule",
+            title: "La règle",
+            text: "Consonne de classe + an. Le mot interrogatif peut se placer avant ou après le nom.",
+            tiles: [
+              {
+                formula: "b + an = ban",
+                meaning: "tééré (b)",
+                example: "Ban tééré ?",
+                exampleTranslation: "Quel livre ?",
+                tone: "green",
+              },
+              {
+                formula: "g + an = gan",
+                meaning: "kër (g)",
+                example: "Kër gan ?",
+                exampleTranslation: "Quelle maison ?",
+                tone: "yellow",
+              },
+            ],
+          },
+          {
+            type: "context_examples",
+            title: "Exemples du cours",
+            examples: [
+              { wolof: "Lan cin ?", french: "Quelle marmite ?" },
+              { wolof: "Wan fas ?", french: "Quel cheval ?" },
+              { wolof: "Kan nit ?", french: "Quelle personne ?" },
+              { wolof: "Yan tééré ?", french: "Quels livres ?", note: "Au pluriel : y + an = yan" },
+            ],
+          },
+          {
+            type: "tip",
+            speaker: "Awa",
+            image: "awa",
+            text: "de plus en plus, on utilise ban pour tous les noms, placé devant : ban cin ?",
+          },
+        ],
+      },
+      {
+        type: "match_pairs",
+        eyebrow: "Quel… ?",
+        question: "Associe chaque nom à son « quel »",
+        instruction: "Touche un nom, puis le mot interrogatif qui va avec.",
+        pairs: [
+          { wolof: "tééré", french: "le livre", article: "ban" },
+          { wolof: "kër", french: "la maison", article: "gan" },
+          { wolof: "cin", french: "la marmite", article: "lan" },
+          { wolof: "fas", french: "le cheval", article: "wan" },
+        ],
+        explanation: "Consonne de classe + an : tééré ban, kër gan, cin lan, fas wan.",
+      },
+      {
+        type: "multiple_choice",
+        eyebrow: "Quel… ?",
+        question: "Que veut dire cette question ?",
+        prompt: "Ban tééré ?",
+        choices: ["Quel livre ?", "Quelle maison ?", "Qui lit ?", "Où est le livre ?"],
+        answerIndex: 0,
+        explanation: "tééré est de la classe b → ban tééré ? : quel livre ?",
+      },
+      {
+        type: "fill_blank",
+        eyebrow: "Quel… ?",
+        question: "Complète la question",
+        speaker: { name: "Awa", subtitle: "cherche une adresse", image: "awa" },
+        before: "Kër",
+        after: "?",
+        translation: "Quelle maison ?",
+        choicesLabel: "Choisis l'interrogatif",
+        choices: ["gan", "ban", "lan", "kan"],
+        answerIndex: 0,
+        hint: "On dit kër gi : la consonne de classe est g.",
+        explanation: "kër (g) → gan : kër gan ?",
+      },
+      {
+        type: "write_translation",
+        eyebrow: "Traduction écrite",
+        question: "Écris en wolof",
+        speaker: { name: "Awa", image: "awa" },
+        sourceText: "Quel livre ?",
+        acceptedAnswers: ["Ban tééré", "Tééré ban"],
+        hint: "livre = tééré (classe b) · quel = b + an",
+        explanation: "Ban tééré ? ou Tééré ban ? : les deux ordres sont possibles.",
+      },
+    ],
+  },
+
+  // ---- Leçon 2 : « c'est… que » = emphatique objet (unité 4, § 2) ----
+  "u4-l2": {
+    id: "u4-l2",
+    title: "« C'est… que »",
+    newWords: [
+      { wolof: "laa", french: "(c'est…) que je" },
+      { wolof: "ngë", french: "(c'est…) que tu" },
+      { wolof: "lë", french: "(c'est…) qu'il, qu'elle" },
+      { wolof: "leñu", french: "(c'est…) que nous, qu'ils" },
+    ],
+    steps: [
+      {
+        type: "lesson_card",
+        eyebrow: "Module 4 · Leçon 2",
+        title: "« C'est… que »",
+        intro:
+          "Pour poser une question, ou insister sur un mot, on le met en tête : complément + pronom + verbe.",
+        blocks: [
+          {
+            type: "conjugation",
+            title: "Les pronoms de cette tournure (+ progressif)",
+            rows: [
+              {
+                pronoun: "je",
+                pronounFrench: "moi",
+                stem: "laa",
+                ending: "y",
+                french: "laay : que je (suis en train de)",
+              },
+              { pronoun: "tu", pronounFrench: "toi", stem: "ngë", ending: "y", french: "ngëy" },
+              { pronoun: "il, elle", pronounFrench: "lui, elle", stem: "lë", ending: "y", french: "lëy" },
+              { pronoun: "nous", pronounFrench: "nous", stem: "leñu", ending: "y", french: "leñuy" },
+              { pronoun: "vous", pronounFrench: "vous", stem: "ngéén", ending: " di", french: "ngéén di" },
+              {
+                pronoun: "ils, elles",
+                pronounFrench: "eux, elles",
+                stem: "leñu",
+                ending: "y",
+                french: "leñuy",
+              },
+            ],
+          },
+          {
+            type: "context_examples",
+            title: "Question → réponse (exemples du cours)",
+            examples: [
+              { wolof: "Ban taksi laa jel ?", french: "Quel taxi ai-je pris ?" },
+              { wolof: "Taksi bi laa jel", french: "C'est ce taxi que j'ai pris." },
+              { wolof: "Gan kër leñu dem ?", french: "À quelle maison sommes-nous allés ?" },
+              { wolof: "Kër gë leñu dem", french: "C'est à cette maison-là que nous sommes allés." },
+            ],
+          },
+        ],
+      },
+      {
+        type: "multiple_choice",
+        eyebrow: "« C'est… que »",
+        question: "Que veut dire cette phrase ?",
+        prompt: "Taksi bi laa jel",
+        choices: [
+          "C'est ce taxi que j'ai pris.",
+          "Quel taxi ai-je pris ?",
+          "Tu as pris ce taxi.",
+          "Ce taxi m'a laissé.",
+        ],
+        answerIndex: 0,
+        explanation: "Le complément (taksi bi) passe en tête, puis laa (que je) + jel (prendre).",
+      },
+      {
+        type: "match_pairs",
+        eyebrow: "« C'est… que »",
+        question: "Associe chaque personne à son pronom",
+        instruction: "Touche une personne, puis le pronom de la tournure « c'est… que ».",
+        pairs: [
+          { wolof: "je", french: "emphatique", article: "laa" },
+          { wolof: "tu", french: "emphatique", article: "ngë" },
+          { wolof: "il, elle", french: "emphatique", article: "lë" },
+          { wolof: "vous", french: "emphatique", article: "ngéén" },
+        ],
+        explanation: "je laa, tu ngë, il / elle lë, nous et ils leñu, vous ngéén.",
+      },
+      {
+        type: "build_sentence",
+        eyebrow: "« C'est… que »",
+        question: "Construis la question en wolof",
+        sourceText: "Quel taxi ai-je pris ?",
+        answer: ["Ban", "taksi", "laa", "jel"],
+        tiles: ["laa", "taksi", "Gan", "jel", "Ban", "lë"],
+        explanation: "Ban taksi (quel taxi) + laa (que je) + jel (prendre).",
+      },
+      {
+        type: "fill_blank",
+        eyebrow: "« C'est… que »",
+        question: "Complète la réponse",
+        speaker: { name: "Awa", subtitle: "te montre la maison", image: "awa" },
+        before: "Kër gë",
+        after: "dem",
+        translation: "C'est à cette maison-là que nous sommes allés",
+        choicesLabel: "Choisis le pronom",
+        choices: ["leñu", "laa", "ngë", "lë"],
+        answerIndex: 0,
+        hint: "« nous » dans cette tournure : leñu.",
+        explanation: "Kër gë (cette maison-là) + leñu (que nous) + dem (aller).",
+      },
+    ],
+  },
+
+  // ---- Leçon 3 : où, comment, quand ? (unité 4, § 3) ----
+  "u4-l3": {
+    id: "u4-l3",
+    title: "Où, comment, quand ?",
+    newWords: [
+      { wolof: "fan", french: "où ?" },
+      { wolof: "nan, naka", french: "comment ?" },
+      { wolof: "kañ", french: "quand ?" },
+      { wolof: "lu tax", french: "pourquoi ?" },
+    ],
+    steps: [
+      {
+        type: "lesson_card",
+        eyebrow: "Module 4 · Leçon 3",
+        title: "Où, comment, quand ?",
+        intro: "Encore la terminaison -an, et la tournure inversée de la leçon précédente.",
+        blocks: [
+          {
+            type: "rule",
+            title: "Une lettre + an",
+            tiles: [
+              {
+                formula: "f + an = fan",
+                meaning: "où ? (le lieu)",
+                example: "Fan leñuy dem ?",
+                exampleTranslation: "Où allons-nous ?",
+                tone: "green",
+              },
+              {
+                formula: "n + an = nan",
+                meaning: "comment ? (la manière)",
+                example: "Nan ngë fëy dem ?",
+                exampleTranslation: "Comment y vas-tu ?",
+                tone: "yellow",
+              },
+            ],
+          },
+          {
+            type: "context_examples",
+            title: "Exemples du cours",
+            examples: [
+              { wolof: "Kañ ngë fii ñow ?", french: "Quand es-tu venu ?", note: "Le temps : kañ (quand)" },
+              {
+                wolof: "Naka ngë ko defé ?",
+                french: "Comment l'as-tu fait ?",
+                note: "naka = nan ; au passé, le verbe prend -é",
+              },
+              { wolof: "Fan ngéén lekké ?", french: "Où avez-vous mangé ?" },
+            ],
+          },
+        ],
+      },
+      {
+        type: "match_pairs",
+        eyebrow: "Où, comment, quand ?",
+        question: "Associe chaque question à sa traduction",
+        instruction: "Touche un mot français, puis le mot wolof.",
+        pairs: [
+          { wolof: "où ?", french: "interrogatif", article: "fan" },
+          { wolof: "comment ?", french: "interrogatif", article: "nan" },
+          { wolof: "quand ?", french: "interrogatif", article: "kañ" },
+          { wolof: "pourquoi ?", french: "interrogatif", article: "lu tax" },
+        ],
+        explanation: "où = fan, comment = nan (ou naka), quand = kañ, pourquoi = lu tax.",
+      },
+      {
+        type: "multiple_choice",
+        eyebrow: "Où ?",
+        question: "Que veut dire cette question ?",
+        prompt: "Fan leñuy dem ?",
+        choices: ["Où allons-nous ?", "Quand partons-nous ?", "Comment y allons-nous ?", "Qui part ?"],
+        answerIndex: 0,
+        explanation: "fan = où ; leñuy = que nous (sommes en train de) ; dem = aller.",
+      },
+      {
+        type: "multiple_choice",
+        eyebrow: "Quand ?",
+        question: "Que veut dire cette question ?",
+        prompt: "Kañ ngë fii ñow ?",
+        choices: ["Quand es-tu venu ?", "Où es-tu venu ?", "Pourquoi es-tu venu ?", "Qui est venu ici ?"],
+        answerIndex: 0,
+        explanation: "kañ = quand ; ngë = tu ; fii = ici ; ñow = venir.",
+      },
+      {
+        type: "write_translation",
+        eyebrow: "Traduction écrite",
+        question: "Écris en wolof",
+        speaker: { name: "Awa", image: "awa" },
+        sourceText: "comment ?",
+        acceptedAnswers: ["nan", "naka"],
+        hint: "La manière : n + an",
+        explanation: "nan ? (ou naka ?) : comment ?",
+      },
+    ],
+  },
+
+  // ---- Leçon 4 : qui ? quoi ? (unité 4, § 4) ----
+  "u4-l4": {
+    id: "u4-l4",
+    title: "Qui ? Quoi ?",
+    newWords: [
+      { wolof: "kan", french: "qui ?" },
+      { wolof: "lan", french: "que ? quoi ?" },
+      { wolof: "dembë", french: "hier" },
+      { wolof: "subë", french: "demain" },
+    ],
+    steps: [
+      {
+        type: "lesson_card",
+        eyebrow: "Module 4 · Leçon 4",
+        title: "Qui ? Quoi ?",
+        intro: "Toujours la même recette : une lettre + an.",
+        blocks: [
+          {
+            type: "rule",
+            title: "La personne et la chose",
+            tiles: [
+              {
+                formula: "k + an = kan",
+                meaning: "qui ? (pluriel : ñan)",
+                example: "Kan lë gis dembë ?",
+                exampleTranslation: "Qui a-t-il vu hier ?",
+                tone: "green",
+              },
+              {
+                formula: "l + an = lan",
+                meaning: "que ? quoi ?",
+                example: "Lan leñuy def subë ?",
+                exampleTranslation: "Que ferons-nous demain ?",
+                tone: "yellow",
+              },
+            ],
+          },
+          {
+            type: "context_examples",
+            title: "Quand « qui » est le sujet : + mo (ou ño au pluriel)",
+            examples: [
+              { wolof: "Kan mo lëy xool ?", french: "Qui te regarde ?" },
+              { wolof: "Ku lëy xool ?", french: "Qui te regarde ?", note: "La forme courte, très utilisée" },
+              { wolof: "Ñan ño fii ñow dembë ?", french: "Qui sont venus hier ?" },
+            ],
+          },
+        ],
+      },
+      {
+        type: "multiple_choice",
+        eyebrow: "Qui ?",
+        question: "Que veut dire cette question ?",
+        prompt: "Kan mo lëy xool ?",
+        choices: ["Qui te regarde ?", "Que regardes-tu ?", "Qui as-tu vu ?", "Où regardes-tu ?"],
+        answerIndex: 0,
+        explanation: "kan mo = qui (sujet) ; lëy = te ; xool = regarder.",
+      },
+      {
+        type: "multiple_choice",
+        eyebrow: "Quoi ?",
+        question: "Que veut dire cette question ?",
+        prompt: "Lan leñuy def subë ?",
+        choices: [
+          "Que ferons-nous demain ?",
+          "Qu'avons-nous fait hier ?",
+          "Qui viendra demain ?",
+          "Où irons-nous demain ?",
+        ],
+        answerIndex: 0,
+        explanation: "lan = que ; leñuy = nous (progressif = futur ici) ; subë = demain.",
+      },
+      {
+        type: "build_sentence",
+        eyebrow: "Qui ?",
+        question: "Construis la question en wolof",
+        sourceText: "Qui te regarde ?",
+        answer: ["Kan", "mo", "lëy", "xool"],
+        tiles: ["lëy", "Lan", "xool", "mo", "Kan", "ño"],
+        explanation: "Kan mo (qui, sujet) + lëy (te) + xool (regarder).",
+      },
+      {
+        type: "write_translation",
+        eyebrow: "Traduction écrite",
+        question: "Écris en wolof",
+        speaker: { name: "Awa", image: "awa" },
+        sourceText: "qui ? (une personne)",
+        acceptedAnswers: ["kan"],
+        hint: "La personne : k + an",
+        explanation: "kan ? : qui ? (au pluriel : ñan ?)",
+      },
+    ],
+  },
+
+  // ---- Leçon 5 : les nombres, en base cinq (unité 4, vocabulaire) ----
+  "u4-l5": {
+    id: "u4-l5",
+    title: "Les nombres",
+    newWords: [
+      { wolof: "ñaar", french: "deux" },
+      { wolof: "juroom", french: "cinq" },
+      { wolof: "fuk", french: "dix" },
+      { wolof: "ñaata", french: "combien ?" },
+    ],
+    steps: [
+      {
+        type: "lesson_card",
+        eyebrow: "Module 4 · Leçon 5",
+        title: "Les nombres",
+        intro: "Le wolof compte en base cinq : après cinq, on dit « cinq et un », « cinq et deux »…",
+        blocks: [
+          {
+            type: "related_words",
+            title: "De 1 à 5",
+            words: [
+              { wolof: "benn", french: "1 (b + enn)" },
+              { wolof: "ñaar", french: "2" },
+              { wolof: "ñett", french: "3" },
+              { wolof: "ñeent", french: "4" },
+              { wolof: "juroom", french: "5" },
+            ],
+          },
+          {
+            type: "rule",
+            title: "La base cinq",
+            text: "6 = 5 + 1, 7 = 5 + 2… Mais attention : 10 ne se dit pas « deux fois cinq ».",
+            tiles: [
+              { formula: "juroom benn", meaning: "6 (cinq et un)", tone: "green" },
+              { formula: "juroom ñeent", meaning: "9 (cinq et quatre)", tone: "yellow" },
+            ],
+          },
+          {
+            type: "related_words",
+            title: "Les dizaines et plus",
+            words: [
+              { wolof: "fuk", french: "10" },
+              { wolof: "fuk ak benn", french: "11" },
+              { wolof: "ñaar fuk", french: "20" },
+              { wolof: "fanweer", french: "30 (les jours d'un mois)" },
+              { wolof: "téémer", french: "100" },
+              { wolof: "junni", french: "1 000" },
+            ],
+          },
+          {
+            type: "tip",
+            speaker: "Awa",
+            image: "awa",
+            text: "devant un nom, le nombre prend un i : ñaari fan (deux jours), ñetti nit (trois personnes).",
+          },
+        ],
+      },
+      {
+        type: "match_pairs",
+        eyebrow: "Les nombres",
+        question: "Associe chaque chiffre à son nom",
+        instruction: "Touche un chiffre, puis son nom en wolof.",
+        pairs: [
+          { wolof: "1", french: "un", article: "benn" },
+          { wolof: "2", french: "deux", article: "ñaar" },
+          { wolof: "3", french: "trois", article: "ñett" },
+          { wolof: "5", french: "cinq", article: "juroom" },
+        ],
+        explanation: "benn (1), ñaar (2), ñett (3), ñeent (4), juroom (5).",
+      },
+      {
+        type: "multiple_choice",
+        eyebrow: "La base cinq",
+        question: "Quel nombre est-ce ?",
+        prompt: "juroom ñaar",
+        choices: ["7", "52", "10", "25"],
+        answerIndex: 0,
+        explanation: "juroom (5) + ñaar (2) = 7.",
+      },
+      {
+        type: "multiple_choice",
+        eyebrow: "Les dizaines",
+        question: "Quel nombre est-ce ?",
+        prompt: "fuk ak benn",
+        choices: ["11", "10", "15", "6"],
+        answerIndex: 0,
+        explanation: "fuk (10) ak (et) benn (1) = 11.",
+      },
+      {
+        type: "multiple_choice",
+        eyebrow: "Version du cours",
+        question: "Que veut dire cette question ?",
+        prompt: "Ñaata jën ngëy jel tey ?",
+        choices: [
+          "Combien de poissons vas-tu prendre aujourd'hui ?",
+          "Quel poisson as-tu pris hier ?",
+          "Où achètes-tu le poisson ?",
+          "Pourquoi prends-tu du poisson ?",
+        ],
+        answerIndex: 0,
+        explanation: "ñaata = combien ; ngëy = tu (en train de / futur) ; jel = prendre ; tey = aujourd'hui.",
+      },
+      {
+        type: "write_translation",
+        eyebrow: "Traduction écrite",
+        question: "Écris ce nombre en wolof",
+        speaker: { name: "Awa", image: "awa" },
+        sourceText: "huit (8)",
+        acceptedAnswers: ["juroom ñett", "juroom ñet"],
+        hint: "8 = 5 + 3",
+        explanation: "juroom (5) + ñett (3) = 8.",
+      },
+    ],
+  },
+
+  // ---- Leçon 6 : l'argent en dërëm (unité 4, note 2 : le tableau des pièces et billets) ----
+  "u4-l6": {
+    id: "u4-l6",
+    title: "L'argent en dërëm",
     newWords: [
       { wolof: "dërëm", french: "pièce de 5 F CFA" },
       { wolof: "fuki dërëm", french: "50 F CFA" },
@@ -1960,13 +2479,35 @@ export const LESSONS: Record<string, Lesson> = {
     ],
     steps: [
       {
-        type: "explanation",
-        eyebrow: "Au marché · La monnaie",
-        title: "On compte en dërëm",
-        text: "Au marché, les prix se disent souvent en dërëm : 1 dërëm = 5 F CFA. Pour trouver le nombre de dërëm, divise le prix par 5.",
-        examples: [
-          { wolof: "fuki dërëm", french: "10 dërëm = 50 F CFA" },
-          { wolof: "téémeri dërëm", french: "100 dërëm = 500 F CFA" },
+        type: "lesson_card",
+        eyebrow: "Module 4 · Leçon 6",
+        title: "L'argent en dërëm",
+        intro:
+          "L'argent se compte en unités de cinq francs : 1 dërëm = 5 F CFA. Pour trouver les dërëm, divise le prix par 5.",
+        blocks: [
+          {
+            type: "related_words",
+            title: "Les pièces et billets courants (tableau du cours)",
+            words: [
+              { wolof: "ñaari dërëm", french: "10 F CFA" },
+              { wolof: "juroomi dërëm", french: "25 F CFA" },
+              { wolof: "fuki dërëm", french: "50 F CFA" },
+              { wolof: "ñaar fuki dërëm", french: "100 F CFA" },
+              { wolof: "fanweeri dërëm", french: "150 F CFA" },
+              { wolof: "juroom fuki dërëm", french: "250 F CFA" },
+              { wolof: "téémeri dërëm", french: "500 F CFA" },
+              { wolof: "ñaar téémeri dërëm", french: "1 000 F CFA" },
+              { wolof: "juroom téémeri dërëm", french: "2 500 F CFA" },
+              { wolof: "junni dërëm", french: "5 000 F CFA" },
+              { wolof: "ñaar junni dërëm", french: "10 000 F CFA" },
+            ],
+          },
+          {
+            type: "tip",
+            speaker: "Awa",
+            image: "awa",
+            text: "devant « dërëm », le nombre prend un i, comme devant tout nom : fuk → fuki dërëm.",
+          },
         ],
       },
       {
@@ -1982,6 +2523,1014 @@ export const LESSONS: Record<string, Lesson> = {
           { wolof: "ñaar fuki dërëm", derem: 20 },
         ],
         explanation: "500 F ÷ 5 = 100 dërëm, soit téémeri dërëm.",
+      },
+      {
+        type: "derem",
+        eyebrow: "Au marché · La monnaie",
+        question: "Comment dit-on ce prix en wolof ?",
+        priceCfa: 100,
+        choices: [
+          { wolof: "fuki dërëm", derem: 10 },
+          { wolof: "ñaar fuki dërëm", derem: 20 },
+          { wolof: "téémeri dërëm", derem: 100 },
+          { wolof: "juroomi dërëm", derem: 5 },
+        ],
+        explanation: "100 F ÷ 5 = 20 dërëm, soit ñaar fuki dërëm.",
+      },
+      {
+        type: "derem",
+        eyebrow: "Au marché · La monnaie",
+        question: "Comment dit-on ce prix en wolof ?",
+        priceCfa: 50,
+        choices: [
+          { wolof: "juroom fuki dërëm", derem: 50 },
+          { wolof: "fuki dërëm", derem: 10 },
+          { wolof: "ñaari dërëm", derem: 2 },
+          { wolof: "juroomi dërëm", derem: 5 },
+        ],
+        explanation: "50 F ÷ 5 = 10 dërëm, soit fuki dërëm. (Juroom fuki dërëm = 50 dërëm = 250 F !)",
+      },
+      {
+        type: "derem",
+        eyebrow: "Au marché · La monnaie",
+        question: "Comment dit-on ce prix en wolof ?",
+        priceCfa: 1000,
+        choices: [
+          { wolof: "junni dërëm", derem: 1000 },
+          { wolof: "ñaar téémeri dërëm", derem: 200 },
+          { wolof: "téémeri dërëm", derem: 100 },
+          { wolof: "ñaar junni dërëm", derem: 2000 },
+        ],
+        explanation: "1 000 F ÷ 5 = 200 dërëm, soit ñaar téémeri dërëm. (Junni dërëm, c'est 5 000 F !)",
+      },
+    ],
+  },
+
+  // =========================================================================
+  // MODULE 5 : Subordonnées (unité 5 du cours de Xavier Bry)
+  // =========================================================================
+
+  // ---- Leçon 1 : le pronom sujet dépendant (unité 5, § 1) ----
+  "u5-l1": {
+    id: "u5-l1",
+    title: "Le pronom dépendant",
+    newWords: [
+      { wolof: "ma, ngë, mu", french: "je, tu, il/elle (dans une subordonnée)" },
+      { wolof: "nu / ñu, ngéén, ñu", french: "nous, vous, ils/elles (dans une subordonnée)" },
+      { wolof: "séeti", french: "rendre visite" },
+      { wolof: "nopi", french: "se taire" },
+    ],
+    steps: [
+      {
+        type: "lesson_card",
+        eyebrow: "Module 5 · Leçon 1",
+        title: "Le pronom dépendant",
+        intro:
+          "Dans « j'ai vu le taxi qu'elle a pris », « elle » est le sujet d'une proposition subordonnée. En wolof, il prend alors une autre forme : la forme dépendante.",
+        blocks: [
+          {
+            type: "related_words",
+            title: "Les pronoms sujets dépendants",
+            words: [
+              { wolof: "ma", french: "je" },
+              { wolof: "ngë", french: "tu" },
+              { wolof: "mu", french: "il, elle" },
+              { wolof: "nu / ñu", french: "nous" },
+              { wolof: "ngéén", french: "vous" },
+              { wolof: "ñu", french: "ils, elles" },
+            ],
+          },
+          {
+            type: "context_examples",
+            title: "Exemples du cours",
+            examples: [
+              { wolof: "Bëggnaa mu séeti yaayam.", french: "Je veux qu'elle aille rendre visite à sa mère." },
+              { wolof: "Santnaa léén ñu nopi.", french: "Je leur ai ordonné de se taire." },
+              {
+                wolof: "Waaxnaa lë ngë naanul bièer téy.",
+                french: "Je t'ai dit de ne pas boire de bière aujourd'hui.",
+                note: "La négation : on ajoute simplement -ul au verbe (naan → naanul)",
+              },
+            ],
+          },
+        ],
+      },
+      {
+        type: "match_pairs",
+        eyebrow: "Le pronom dépendant",
+        question: "Associe chaque pronom à sa forme dépendante",
+        instruction: "Touche un mot français, puis le mot wolof.",
+        pairs: [
+          { wolof: "je", french: "dans une subordonnée", article: "ma" },
+          { wolof: "tu", french: "dans une subordonnée", article: "ngë" },
+          { wolof: "il, elle", french: "dans une subordonnée", article: "mu" },
+          { wolof: "vous", french: "dans une subordonnée", article: "ngéén" },
+        ],
+        explanation: "je = ma, tu = ngë, il/elle = mu, vous = ngéén (nous = nu ou ñu, ils/elles = ñu).",
+      },
+      {
+        type: "multiple_choice",
+        eyebrow: "Le pronom dépendant",
+        question: "Que veut dire cette phrase ?",
+        prompt: "Bëggnaa mu séeti yaayam.",
+        choices: [
+          "Je veux qu'elle aille rendre visite à sa mère.",
+          "Elle veut rendre visite à sa mère.",
+          "Je veux rendre visite à ma mère.",
+          "Je veux que tu rendes visite à ta mère.",
+        ],
+        answerIndex: 0,
+        explanation:
+          "Bëggnaa = je veux ; mu = qu'elle (forme dépendante) ; séeti = rendre visite ; yaayam = sa mère.",
+      },
+      {
+        type: "fill_blank",
+        eyebrow: "Le pronom dépendant",
+        question: "Complète la phrase",
+        speaker: { name: "Awa", subtitle: "a perdu patience", image: "awa" },
+        before: "Santnaa léén",
+        after: "nopi.",
+        translation: "Je leur ai ordonné de se taire.",
+        choicesLabel: "Choisis le pronom",
+        choices: ["ñu", "mu", "ma", "ngë"],
+        answerIndex: 0,
+        hint: "« ils, elles » dans une subordonnée",
+        explanation: "ñu = ils/elles (forme dépendante) : « qu'ils se taisent ».",
+      },
+      {
+        type: "multiple_choice",
+        eyebrow: "La négation : -ul",
+        question: "Que veut dire cette phrase ?",
+        prompt: "Waaxnaa lë ngë naanul bièer téy.",
+        choices: [
+          "Je t'ai dit de ne pas boire de bière aujourd'hui.",
+          "Je t'ai dit de boire de la bière aujourd'hui.",
+          "Tu m'as dit de ne pas boire de bière aujourd'hui.",
+          "Je ne t'ai pas dit de boire de la bière.",
+        ],
+        answerIndex: 0,
+        explanation:
+          "Waaxnaa lë = je t'ai dit ; ngë = que tu ; naanul = ne pas boire (naan + -ul) ; téy = aujourd'hui.",
+      },
+      {
+        type: "write_translation",
+        eyebrow: "Traduction écrite",
+        question: "Écris en wolof",
+        speaker: { name: "Awa", image: "awa" },
+        sourceText: "il, elle (dans une subordonnée)",
+        acceptedAnswers: ["mu"],
+        hint: "Bëggnaa … séeti yaayam.",
+        explanation: "mu : il/elle, forme dépendante (Bëggnaa mu séeti yaayam).",
+      },
+    ],
+  },
+
+  // ---- Leçon 2 : où, comment dans une subordonnée (unité 5, § 2) ----
+  "u5-l2": {
+    id: "u5-l2",
+    title: "Où, comment : fu, nu",
+    newWords: [
+      { wolof: "fu", french: "où (je sais où…)" },
+      { wolof: "nu", french: "comment (je sais comment…)" },
+      { wolof: "fo, no", french: "fu + ngë, nu + ngë" },
+      { wolof: "toog", french: "être assis" },
+    ],
+    steps: [
+      {
+        type: "lesson_card",
+        eyebrow: "Module 5 · Leçon 2",
+        title: "Où, comment : fu, nu",
+        intro:
+          "Pour dire « je sais où… », « tu vois comment… », on garde la lettre de la question et on ajoute -u.",
+        blocks: [
+          {
+            type: "rule",
+            title: "Une lettre + u",
+            text: "Schéma : fu / nu + pronom dépendant + (y = di, au progressif) + verbe",
+            tiles: [
+              {
+                formula: "f + u = fu",
+                meaning: "où (le lieu)",
+                example: "Xamngë fu ñuy dem ?",
+                exampleTranslation: "Sais-tu où ils vont ?",
+                tone: "green",
+              },
+              {
+                formula: "n + u = nu",
+                meaning: "comment (la manière)",
+                example: "Xamnaa nu nuy def.",
+                exampleTranslation: "Je sais comment nous allons faire.",
+                tone: "yellow",
+              },
+            ],
+          },
+          {
+            type: "context_examples",
+            title: "Exemples du cours",
+            examples: [
+              { wolof: "Gisulo fu taksi bë dem ?", french: "Tu n'as pas vu où ce taxi-là est parti ?" },
+              {
+                wolof: "Waaxnë më nu ñu tog cééb bi.",
+                french: "Elle m'a dit comment elles ont cuisiné le riz.",
+              },
+              {
+                wolof: "Gisngë nu may def ?",
+                french: "Vois-tu comment je fais ?",
+                note: "Contractions : fu + ngë → fo ; nu + ngë → no",
+              },
+            ],
+          },
+        ],
+      },
+      {
+        type: "multiple_choice",
+        eyebrow: "Où : fu",
+        question: "Que veut dire cette phrase ?",
+        prompt: "Xamngë fu ñuy dem ?",
+        choices: [
+          "Sais-tu où ils vont ?",
+          "Sais-tu comment ils vont ?",
+          "Sais-tu quand ils viennent ?",
+          "Où vont-ils ?",
+        ],
+        answerIndex: 0,
+        explanation: "Xamngë = sais-tu ; fu = où ; ñuy = ils (dépendant) + y, le progressif ; dem = aller.",
+      },
+      {
+        type: "multiple_choice",
+        eyebrow: "Comment : nu",
+        question: "Que veut dire cette phrase ?",
+        prompt: "Waaxnë më nu ñu tog cééb bi.",
+        choices: [
+          "Elle m'a dit comment elles ont cuisiné le riz.",
+          "Elle m'a dit où elles ont cuisiné le riz.",
+          "Elle m'a dit quand elles ont cuisiné le riz.",
+          "Je lui ai dit comment cuisiner le riz.",
+        ],
+        answerIndex: 0,
+        explanation:
+          "Waaxnë më = elle m'a dit ; nu = comment ; ñu = elles (dépendant) ; tog = cuisiner ; cééb bi = le riz.",
+      },
+      {
+        type: "fill_blank",
+        eyebrow: "Comment : nu",
+        question: "Complète la question",
+        speaker: { name: "Awa", subtitle: "te montre sa recette", image: "awa" },
+        before: "Gisngë",
+        after: "may def ?",
+        translation: "Vois-tu comment je fais ?",
+        choicesLabel: "Choisis le mot",
+        choices: ["nu", "fu", "ku", "lu"],
+        answerIndex: 0,
+        hint: "La manière : n + u",
+        explanation: "nu = comment ; may = ma (je, dépendant) + y (progressif).",
+      },
+      {
+        type: "build_sentence",
+        eyebrow: "Comment : nu",
+        question: "Construis la phrase en wolof",
+        sourceText: "Je sais comment nous allons faire.",
+        answer: ["Xamnaa", "nu", "nuy", "def"],
+        tiles: ["nuy", "fu", "def", "Xamnaa", "ñuy", "nu"],
+        explanation: "Xamnaa (je sais) + nu (comment) + nuy (nous, dépendant + progressif) + def (faire).",
+      },
+      {
+        type: "write_translation",
+        eyebrow: "Traduction écrite",
+        question: "Écris en wolof",
+        speaker: { name: "Awa", image: "awa" },
+        sourceText: "Sais-tu où ils vont ?",
+        acceptedAnswers: ["Xamngë fu ñuy dem ?", "Xam ngë fu ñuy dem ?"],
+        hint: "Xamngë + où (f + u) + ils, au progressif + aller",
+        explanation:
+          "Xamngë fu ñuy dem ? : xamngë = sais-tu ; fu = où ; ñuy = ils (+ progressif) ; dem = aller.",
+      },
+    ],
+  },
+
+  // ---- Leçon 3 : qui, ce qui, ce que (unité 5, § 3) ----
+  "u5-l3": {
+    id: "u5-l3",
+    title: "Qui, ce que : ku, li…",
+    newWords: [
+      { wolof: "ku", french: "qui (sujet)" },
+      { wolof: "ki", french: "qui (objet)" },
+      { wolof: "lu", french: "ce qui" },
+      { wolof: "li", french: "ce que" },
+    ],
+    steps: [
+      {
+        type: "lesson_card",
+        eyebrow: "Module 5 · Leçon 3",
+        title: "Qui, ce qui, ce que",
+        intro:
+          "On distingue le sujet (« je sais qui t'a vu ») de l'objet (« je sais qui tu as vu »). La personne prend k-, la chose prend l-.",
+        blocks: [
+          {
+            type: "rule",
+            title: "La personne : k-",
+            tiles: [
+              {
+                formula: "k + u = ku",
+                meaning: "qui (sujet)",
+                example: "Xamnaa ku léén gis.",
+                exampleTranslation: "Je sais qui vous a vus.",
+                tone: "green",
+              },
+              {
+                formula: "k + i = ki",
+                meaning: "qui (objet)",
+                example: "Xamnaa ki ngéén gis.",
+                exampleTranslation: "Je sais qui vous avez vu.",
+                tone: "yellow",
+              },
+            ],
+          },
+          {
+            type: "rule",
+            title: "La chose : l-",
+            text: "Au cas objet, le sujet de la subordonnée prend la forme dépendante (ngéén, ma, mu…).",
+            tiles: [
+              {
+                formula: "l + u = lu",
+                meaning: "ce qui (sujet)",
+                example: "Xamnaa lu lë jot.",
+                exampleTranslation: "Je sais ce qui t'arrive.",
+                tone: "green",
+              },
+              {
+                formula: "l + i = li",
+                meaning: "ce que (objet)",
+                example: "Xamnaa li ngéén gis.",
+                exampleTranslation: "Je sais ce que vous avez vu.",
+                tone: "yellow",
+              },
+            ],
+          },
+          {
+            type: "tip",
+            speaker: "Awa",
+            image: "awa",
+            text: "« Xamngë li ngëy tëru, xamulo lu lëy tëru ! » : tu sais ce que tu guettes, tu ignores ce qui te guette ! Contractions : ki + ngë → ko ; li + ngë → lo.",
+          },
+        ],
+      },
+      {
+        type: "match_pairs",
+        eyebrow: "Qui, ce que",
+        question: "Associe chaque mot à sa traduction",
+        instruction: "Touche un mot français, puis le mot wolof.",
+        pairs: [
+          { wolof: "qui", french: "sujet", article: "ku" },
+          { wolof: "qui", french: "objet", article: "ki" },
+          { wolof: "ce qui", french: "sujet", article: "lu" },
+          { wolof: "ce que", french: "objet", article: "li" },
+        ],
+        explanation: "La personne : ku (sujet), ki (objet). La chose : lu (ce qui), li (ce que).",
+      },
+      {
+        type: "multiple_choice",
+        eyebrow: "Qui : ku",
+        question: "Que veut dire cette question ?",
+        prompt: "Ku léén gis ?",
+        choices: ["Qui vous a vus ?", "Qui avez-vous vu ?", "Que voyez-vous ?", "Où vous a-t-il vus ?"],
+        answerIndex: 0,
+        explanation: "ku = qui (sujet) ; léén = vous (objet) ; gis = voir.",
+      },
+      {
+        type: "multiple_choice",
+        eyebrow: "Ce que : li",
+        question: "Que veut dire cette phrase ?",
+        prompt: "Gisnaa li Juuf bind ci téeréem.",
+        choices: [
+          "J'ai vu ce que Diouf a écrit dans son cahier.",
+          "Diouf a vu ce que j'ai écrit dans mon cahier.",
+          "J'ai vu qui a écrit dans le cahier de Diouf.",
+          "J'ai écrit ce que Diouf a vu.",
+        ],
+        answerIndex: 0,
+        explanation:
+          "Gisnaa = j'ai vu ; li = ce que ; Juuf bind = Diouf a écrit ; ci téeréem = dans son cahier.",
+      },
+      {
+        type: "fill_blank",
+        eyebrow: "Ce que : li",
+        question: "Complète la phrase",
+        speaker: { name: "Awa", subtitle: "a tout compris", image: "awa" },
+        before: "Xamnaa",
+        after: "ngéén gis.",
+        translation: "Je sais ce que vous avez vu.",
+        choicesLabel: "Choisis le mot",
+        choices: ["li", "lu", "ku", "fu"],
+        answerIndex: 0,
+        hint: "Une chose, complément d'objet : l + i",
+        explanation: "li = ce que (objet) ; ngéén = vous, forme dépendante.",
+      },
+      {
+        type: "write_translation",
+        eyebrow: "Traduction écrite",
+        question: "Écris en wolof",
+        speaker: { name: "Awa", image: "awa" },
+        sourceText: "qui (sujet : « je sais qui vous a vus »)",
+        acceptedAnswers: ["ku"],
+        hint: "La personne, sujet : k + u",
+        explanation: "ku : qui, sujet (Xamnaa ku léén gis).",
+      },
+    ],
+  },
+
+  // ---- Leçon 4 : le relatif objet après un nom (unité 5, § 4) ----
+  "u5-l4": {
+    id: "u5-l4",
+    title: "« Le livre que… »",
+    newWords: [
+      { wolof: "jang", french: "lire" },
+      { wolof: "jafé", french: "être cher" },
+      { wolof: "rafet", french: "être joli" },
+      { wolof: "cin", french: "marmite" },
+      { wolof: "yaq", french: "être hors d'usage" },
+    ],
+    steps: [
+      {
+        type: "lesson_card",
+        eyebrow: "Module 5 · Leçon 4",
+        title: "« Le livre que… »",
+        intro:
+          "« Le livre que nous avons lu », c'est « celui que nous avons lu » : on reprend simplement l'article (bi, bë, gëlé…) suivi du pronom dépendant.",
+        blocks: [
+          {
+            type: "context_examples",
+            title: "nom + article + pronom dépendant + verbe",
+            examples: [
+              { wolof: "Tééré bi ñu jang, jafénë.", french: "Le livre que nous avons lu est cher." },
+              { wolof: "Jelnaa taksi bë ngëy gis.", french: "J'ai pris le taxi que tu vois là." },
+              { wolof: "Kër gëlé ñu gis rafetnë.", french: "La maison là-bas que nous avons vue est jolie." },
+              { wolof: "Cin li ma jel dembë yaqnë.", french: "La marmite que j'ai prise hier est fichue." },
+            ],
+          },
+          {
+            type: "context_examples",
+            title: "Ne pas confondre",
+            examples: [
+              {
+                wolof: "Tééré bi ñu jang",
+                french: "le livre que nous avons lu",
+                note: "Pronom dépendant (ñu) : c'est une subordonnée",
+              },
+              {
+                wolof: "Tééré bi leñu jang",
+                french: "c'est ce livre que nous avons lu",
+                note: "Pronom indépendant (leñu) : c'est une phrase entière",
+              },
+            ],
+          },
+        ],
+      },
+      {
+        type: "multiple_choice",
+        eyebrow: "Le relatif objet",
+        question: "Que veut dire cette phrase ?",
+        prompt: "Jelnaa taksi bë ngëy gis.",
+        choices: [
+          "J'ai pris le taxi que tu vois là.",
+          "Tu as pris le taxi que je vois là.",
+          "C'est ce taxi que tu vois là.",
+          "J'ai vu le taxi que tu as pris.",
+        ],
+        answerIndex: 0,
+        explanation:
+          "Jelnaa = j'ai pris ; taksi bë = le taxi là ; ngëy = que tu (dépendant + progressif) ; gis = voir.",
+      },
+      {
+        type: "multiple_choice",
+        eyebrow: "Ne pas confondre",
+        question: "Que veut dire ce groupe de mots ?",
+        prompt: "Tééré bi leñu jang",
+        choices: [
+          "C'est ce livre que nous avons lu.",
+          "Le livre que nous avons lu",
+          "Le livre qu'ils lisent",
+          "Nous avons lu un livre.",
+        ],
+        answerIndex: 0,
+        explanation:
+          "leñu est le pronom indépendant : c'est une phrase entière (« c'est ce livre que… »). Avec ñu, ce serait « le livre que nous avons lu ».",
+      },
+      {
+        type: "fill_blank",
+        eyebrow: "Le relatif objet",
+        question: "Complète la phrase",
+        speaker: { name: "Awa", subtitle: "fait le ménage", image: "awa" },
+        before: "Cin li",
+        after: "jel dembë yaqnë.",
+        translation: "La marmite que j'ai prise hier est fichue.",
+        choicesLabel: "Choisis le pronom",
+        choices: ["ma", "laa", "mu", "ngë"],
+        answerIndex: 0,
+        hint: "« je » dans une subordonnée",
+        explanation: "ma = je, forme dépendante : « la marmite que j'ai prise ».",
+      },
+      {
+        type: "build_sentence",
+        eyebrow: "Le relatif objet",
+        question: "Construis la phrase en wolof",
+        sourceText: "Le livre que nous avons lu est cher.",
+        answer: ["Tééré", "bi", "ñu", "jang", "jafénë"],
+        tiles: ["jang", "leñu", "Tééré", "jafénë", "ñu", "bi", "yaqnë"],
+        explanation: "Tééré bi (le livre) + ñu (nous, dépendant) + jang (lire) + jafénë (est cher).",
+      },
+      {
+        type: "write_translation",
+        eyebrow: "Traduction écrite",
+        question: "Écris en wolof",
+        speaker: { name: "Awa", image: "awa" },
+        sourceText: "le livre que nous avons lu",
+        acceptedAnswers: ["Tééré bi ñu jang"],
+        hint: "Tééré bi + nous (dépendant) + lire",
+        explanation: "Tééré bi ñu jang : ñu (dépendant) en fait une subordonnée.",
+      },
+    ],
+  },
+
+  // =========================================================================
+  // MODULE 6 : Indéfini, impératif, futur (unité 6 du cours de Xavier Bry)
+  // =========================================================================
+
+  // ---- Leçon 1 : l'article indéfini (unité 6, § 1) ----
+  "u6-l1": {
+    id: "u6-l1",
+    title: "« Un, une » : ab, aw…",
+    newWords: [
+      { wolof: "siis", french: "chaise" },
+      { wolof: "fas", french: "cheval" },
+      { wolof: "gaal", french: "pirogue" },
+      { wolof: "saxar", french: "fumée" },
+      { wolof: "ay", french: "des" },
+    ],
+    steps: [
+      {
+        type: "lesson_card",
+        eyebrow: "Module 6 · Leçon 1",
+        title: "« Un, une » : ab, aw, al…",
+        intro:
+          "Tu connais déjà la consonne de chaque nom (siis bi, fas wi…). Pour dire « un, une », on la fait précéder de a-, et on la place AVANT le nom.",
+        blocks: [
+          {
+            type: "rule",
+            title: "a + consonne, devant le nom",
+            tiles: [
+              {
+                formula: "a + b = ab",
+                meaning: "siis (b-) → ab siis",
+                example: "ab siis",
+                exampleTranslation: "une chaise",
+                tone: "green",
+              },
+              {
+                formula: "a + w = aw",
+                meaning: "fas (w-) → aw fas",
+                example: "aw fas",
+                exampleTranslation: "un cheval",
+                tone: "yellow",
+              },
+            ],
+          },
+          {
+            type: "context_examples",
+            title: "Exemples du cours",
+            examples: [
+              { wolof: "al cin", french: "une marmite", note: "cin prend l-" },
+              { wolof: "ag gaal", french: "une pirogue", note: "gaal prend g-" },
+              { wolof: "as saxar", french: "une fumée", note: "saxar prend s-" },
+              { wolof: "ak nit", french: "une personne", note: "nit prend k-" },
+              {
+                wolof: "ay jigéen",
+                french: "des femmes",
+                note: "Au pluriel, la consonne est toujours y- : ay",
+              },
+            ],
+          },
+        ],
+      },
+      {
+        type: "match_pairs",
+        eyebrow: "L'article indéfini",
+        question: "Associe chaque nom à son article « un, une »",
+        instruction: "Touche un nom, puis son article.",
+        pairs: [
+          { wolof: "siis", french: "chaise", article: "ab" },
+          { wolof: "fas", french: "cheval", article: "aw" },
+          { wolof: "cin", french: "marmite", article: "al" },
+          { wolof: "gaal", french: "pirogue", article: "ag" },
+        ],
+        explanation: "ab siis, aw fas, al cin, ag gaal : a + la consonne du nom.",
+      },
+      {
+        type: "multiple_choice",
+        eyebrow: "L'article indéfini",
+        question: "Que veut dire ce groupe de mots ?",
+        prompt: "al cin",
+        image: "pot",
+        choices: ["une marmite", "la marmite", "des marmites", "ma marmite"],
+        answerIndex: 0,
+        explanation: "al = a + l (la consonne de cin) : « une marmite ». « La marmite » se dit cin li.",
+      },
+      {
+        type: "fill_blank",
+        eyebrow: "L'article indéfini",
+        question: "Complète : « une personne »",
+        speaker: { name: "Awa", subtitle: "te présente quelqu'un", image: "awa" },
+        before: "",
+        after: "nit",
+        translation: "une personne",
+        choicesLabel: "Choisis l'article",
+        choices: ["ak", "ab", "ay", "al"],
+        answerIndex: 0,
+        hint: "On dit nit ki : la consonne est k",
+        explanation: "nit prend k- (nit ki), donc « une personne » = ak nit.",
+      },
+      {
+        type: "multiple_choice",
+        eyebrow: "Au pluriel",
+        question: "Que veut dire ce groupe de mots ?",
+        prompt: "ay jigéen",
+        choices: ["des femmes", "une femme", "la femme", "ma femme"],
+        answerIndex: 0,
+        explanation: "Au pluriel, la consonne est toujours y- : ay = « des ».",
+      },
+      {
+        type: "write_translation",
+        eyebrow: "Traduction écrite",
+        question: "Écris en wolof",
+        speaker: { name: "Awa", image: "awa" },
+        sourceText: "un cheval",
+        acceptedAnswers: ["aw fas"],
+        hint: "fas prend w-",
+        explanation: "aw fas : a + w (la consonne de fas), placé devant le nom.",
+      },
+    ],
+  },
+
+  // ---- Leçon 2 : l'impératif (unité 6, § 2) ----
+  "u6-l2": {
+    id: "u6-l2",
+    title: "L'impératif",
+    newWords: [
+      { wolof: "jelal !", french: "prends !" },
+      { wolof: "demléén !", french: "partez !" },
+      { wolof: "indil !", french: "apporte !" },
+      { wolof: "xool më !", french: "regarde-moi !" },
+    ],
+    steps: [
+      {
+        type: "lesson_card",
+        eyebrow: "Module 6 · Leçon 2",
+        title: "L'impératif : jelal !",
+        intro: "Pour donner un ordre, on ajoute une terminaison au verbe.",
+        blocks: [
+          {
+            type: "rule",
+            title: "Verbe + terminaison",
+            tiles: [
+              {
+                formula: "verbe + al",
+                meaning: "à une personne (tu)",
+                example: "jel + al → Jelal !",
+                exampleTranslation: "Prends !",
+                tone: "green",
+              },
+              {
+                formula: "verbe + léén",
+                meaning: "à plusieurs (vous)",
+                example: "dem + léén → Demléén !",
+                exampleTranslation: "Partez !",
+                tone: "yellow",
+              },
+            ],
+          },
+          {
+            type: "context_examples",
+            title: "Les cas particuliers",
+            examples: [
+              {
+                wolof: "Indil !",
+                french: "Apporte !",
+                note: "Verbe terminé par une voyelle : on ajoute seulement -l",
+              },
+              {
+                wolof: "Xool më !",
+                french: "Regarde-moi !",
+                note: "Suivi d'un pronom objet (më, lë, ko…), la terminaison tombe : xoolal + më → xool më",
+              },
+              { wolof: "Indi léén !", french: "Apporte-les !" },
+              {
+                wolof: "Dil def spoor bës bu nekk.",
+                french: "Fais du sport chaque jour.",
+                note: "Action qui dure ou se répète : di + l → dil (di + léen → diléen)",
+              },
+            ],
+          },
+        ],
+      },
+      {
+        type: "multiple_choice",
+        eyebrow: "L'impératif",
+        question: "Que veut dire cet ordre ?",
+        prompt: "Demléén !",
+        choices: ["Partez !", "Pars !", "Partons !", "Ne partez pas !"],
+        answerIndex: 0,
+        explanation: "dem (partir) + léén (à plusieurs) : « Partez ! ».",
+      },
+      {
+        type: "fill_blank",
+        eyebrow: "L'impératif",
+        question: "Complète : « Apporte ! »",
+        speaker: { name: "Awa", subtitle: "a besoin d'aide", image: "awa" },
+        before: "",
+        after: "!",
+        translation: "Apporte !",
+        choicesLabel: "Choisis la forme",
+        choices: ["Indil", "Indial", "Indiléén", "Bul indi"],
+        answerIndex: 0,
+        hint: "indi se termine par une voyelle",
+        explanation: "indi se termine par une voyelle : on ajoute seulement -l → indil !",
+      },
+      {
+        type: "multiple_choice",
+        eyebrow: "Avec un pronom",
+        question: "Que veut dire cet ordre ?",
+        prompt: "Xool më !",
+        choices: ["Regarde-moi !", "Regarde-le !", "Ne me regarde pas !", "Je regarde."],
+        answerIndex: 0,
+        explanation: "xoolal + më → xool më : devant le pronom më (moi), la terminaison -al tombe.",
+      },
+      {
+        type: "build_sentence",
+        eyebrow: "Avec un pronom",
+        question: "Construis l'ordre en wolof",
+        sourceText: "Apporte-les !",
+        answer: ["Indi", "léén"],
+        tiles: ["léén", "Indil", "ko", "Indi"],
+        explanation: "indil + léén → indi léén : devant un pronom objet, la terminaison -l tombe.",
+      },
+      {
+        type: "write_translation",
+        eyebrow: "Traduction écrite",
+        question: "Écris en wolof",
+        speaker: { name: "Awa", image: "awa" },
+        sourceText: "Prends !",
+        acceptedAnswers: ["Jelal !"],
+        hint: "jel + al",
+        explanation: "Jelal ! : jel (prendre) + al.",
+      },
+    ],
+  },
+
+  // ---- Leçon 3 : l'impératif négatif (unité 6, § 2) ----
+  "u6-l3": {
+    id: "u6-l3",
+    title: "« Ne… pas ! » : bul",
+    newWords: [
+      { wolof: "bul", french: "ne… pas ! (à une personne)" },
+      { wolof: "buléén", french: "ne… pas ! (à plusieurs)" },
+      { wolof: "nellaw", french: "dormir" },
+      { wolof: "tooñ", french: "taquiner" },
+    ],
+    steps: [
+      {
+        type: "lesson_card",
+        eyebrow: "Module 6 · Leçon 3",
+        title: "« Ne… pas ! » : bul",
+        intro: "Pour interdire, on ne touche pas au verbe : on met bul (ou buléén) devant.",
+        blocks: [
+          {
+            type: "rule",
+            title: "bul / buléén + verbe",
+            tiles: [
+              {
+                formula: "bul + verbe",
+                meaning: "à une personne (tu)",
+                example: "Bul nellaw !",
+                exampleTranslation: "Ne dors pas !",
+                tone: "green",
+              },
+              {
+                formula: "buléén + verbe",
+                meaning: "à plusieurs (vous)",
+                example: "Buléén dem foofu !",
+                exampleTranslation: "Ne partez pas là-bas !",
+                tone: "yellow",
+              },
+            ],
+          },
+          {
+            type: "context_examples",
+            title: "Devant un pronom, le -l de bul tombe",
+            examples: [
+              { wolof: "Bu ko def !", french: "Ne le fais pas !", note: "bul ko def → bu ko def" },
+              { wolof: "Bu më tooñ !", french: "Ne me taquine pas !" },
+              { wolof: "Bu fë dem !", french: "N'y va pas !" },
+              {
+                wolof: "Bul jel taksi bi, jelal boobu !",
+                french: "Ne prends pas ce taxi-ci, prends celui-là !",
+              },
+            ],
+          },
+          {
+            type: "tip",
+            speaker: "Awa",
+            image: "awa",
+            text: "l'impératif progressif (dil, diléen) n'a pas de forme négative.",
+          },
+        ],
+      },
+      {
+        type: "multiple_choice",
+        eyebrow: "« Ne… pas ! »",
+        question: "Que veut dire cet ordre ?",
+        prompt: "Bul nellaw !",
+        choices: ["Ne dors pas !", "Dors !", "Ne dormez pas !", "Je ne dors pas."],
+        answerIndex: 0,
+        explanation: "bul (ne… pas, à une personne) + nellaw (dormir).",
+      },
+      {
+        type: "fill_blank",
+        eyebrow: "« Ne… pas ! »",
+        question: "Complète : « Ne partez pas là-bas ! »",
+        speaker: { name: "Awa", subtitle: "vous met en garde", image: "awa" },
+        before: "",
+        after: "dem foofu !",
+        translation: "Ne partez pas là-bas !",
+        choicesLabel: "Choisis le mot",
+        choices: ["Buléén", "Bul", "Demléén", "Duma"],
+        answerIndex: 0,
+        hint: "On parle à plusieurs personnes",
+        explanation: "buléén = ne… pas, quand on parle à plusieurs personnes.",
+      },
+      {
+        type: "multiple_choice",
+        eyebrow: "Devant un pronom",
+        question: "Que veut dire cet ordre ?",
+        prompt: "Bu ko def !",
+        choices: ["Ne le fais pas !", "Fais-le !", "Ne partez pas !", "Il ne le fera pas."],
+        answerIndex: 0,
+        explanation: "bul ko def → bu ko def : devant le pronom ko (le), le -l de bul tombe.",
+      },
+      {
+        type: "build_sentence",
+        eyebrow: "Devant un pronom",
+        question: "Construis l'ordre en wolof",
+        sourceText: "Ne me taquine pas !",
+        answer: ["Bu", "më", "tooñ"],
+        tiles: ["më", "Bul", "tooñ", "Bu", "ko"],
+        explanation: "Bu (bul sans son -l, devant un pronom) + më (moi) + tooñ (taquiner).",
+      },
+      {
+        type: "write_translation",
+        eyebrow: "Traduction écrite",
+        question: "Écris en wolof",
+        speaker: { name: "Awa", image: "awa" },
+        sourceText: "N'y va pas !",
+        acceptedAnswers: ["Bu fë dem !"],
+        hint: "bul + fë (y) + dem ; attention au -l",
+        explanation: "Bu fë dem ! : devant fë, le -l de bul tombe.",
+      },
+    ],
+  },
+
+  // ---- Leçon 4 : le futur (unité 6, § 3) ----
+  "u6-l4": {
+    id: "u6-l4",
+    title: "Le futur",
+    newWords: [
+      { wolof: "di naa", french: "je …rai (di naa jang : je lirai)" },
+      { wolof: "duma", french: "je ne …rai pas" },
+      { wolof: "gaw", french: "se dépêcher" },
+      { wolof: "subë teel", french: "le matin tôt" },
+    ],
+    steps: [
+      {
+        type: "lesson_card",
+        eyebrow: "Module 6 · Leçon 4",
+        title: "Le futur : di naa",
+        intro: "Le futur se construit avec l'auxiliaire di, suivi du pronom sujet, puis du verbe.",
+        blocks: [
+          {
+            type: "conjugation",
+            title: "Le futur (forme affirmative)",
+            rows: [
+              {
+                pronoun: "man",
+                pronounFrench: "je",
+                stem: "di ",
+                ending: "naa",
+                french: "je lirai : di naa jang",
+              },
+              { pronoun: "yow", pronounFrench: "tu", stem: "di ", ending: "ngë", french: "tu liras" },
+              {
+                pronoun: "moom",
+                pronounFrench: "il, elle",
+                stem: "di ",
+                ending: "në",
+                french: "il/elle lira",
+              },
+              { pronoun: "ñun", pronounFrench: "nous", stem: "di ", ending: "nëñu", french: "nous lirons" },
+              { pronoun: "yéén", pronounFrench: "vous", stem: "di ", ending: "ngéén", french: "vous lirez" },
+              {
+                pronoun: "ñoom",
+                pronounFrench: "ils, elles",
+                stem: "di ",
+                ending: "nëñu",
+                french: "ils/elles liront",
+              },
+            ],
+          },
+          {
+            type: "related_words",
+            title: "À la forme négative, di devient du-",
+            words: [
+              { wolof: "duma", french: "je ne …rai pas" },
+              { wolof: "do", french: "tu ne …ras pas" },
+              { wolof: "du", french: "il/elle ne …ra pas" },
+              { wolof: "duñu", french: "nous ne …rons pas" },
+              { wolof: "dungéen", french: "vous ne …rez pas" },
+              { wolof: "duñu", french: "ils/elles ne …ront pas" },
+            ],
+          },
+          {
+            type: "context_examples",
+            title: "Exemples du cours",
+            examples: [
+              { wolof: "Di naa jang tééré bi subë.", french: "Je lirai ce livre demain." },
+              { wolof: "Duma dem ja subë.", french: "Je n'irai pas au marché demain." },
+              {
+                wolof: "Kañ ngë koy takk ?",
+                french: "Quand l'épouseras-tu ?",
+                note: "Dans la tournure inversée, le futur ressemble au présent progressif",
+              },
+            ],
+          },
+        ],
+      },
+      {
+        type: "multiple_choice",
+        eyebrow: "Le futur",
+        question: "Que veut dire cette phrase ?",
+        prompt: "Di naa jang tééré bi subë.",
+        choices: [
+          "Je lirai ce livre demain.",
+          "J'ai lu ce livre hier.",
+          "Je lis ce livre maintenant.",
+          "Je ne lirai pas ce livre demain.",
+        ],
+        answerIndex: 0,
+        explanation: "Di naa = je (futur) ; jang = lire ; tééré bi = ce livre ; subë = demain.",
+      },
+      {
+        type: "match_pairs",
+        eyebrow: "Le futur négatif",
+        question: "Associe chaque pronom à sa forme négative",
+        instruction: "Touche un pronom, puis sa forme négative.",
+        pairs: [
+          { wolof: "je", french: "ne …rai pas", article: "duma" },
+          { wolof: "tu", french: "ne …ras pas", article: "do" },
+          { wolof: "il, elle", french: "ne …ra pas", article: "du" },
+          { wolof: "vous", french: "ne …rez pas", article: "dungéen" },
+        ],
+        explanation: "duma (je), do (tu), du (il/elle), duñu (nous, ils/elles), dungéen (vous).",
+      },
+      {
+        type: "fill_blank",
+        eyebrow: "Le futur négatif",
+        question: "Complète la phrase",
+        speaker: { name: "Awa", subtitle: "a changé ses plans", image: "awa" },
+        before: "",
+        after: "dem ja subë.",
+        translation: "Je n'irai pas au marché demain.",
+        choicesLabel: "Choisis la forme",
+        choices: ["Duma", "Di naa", "Do", "Bul"],
+        answerIndex: 0,
+        hint: "« je », à la forme négative",
+        explanation: "duma = je ne …rai pas : « Duma dem ja subë ».",
+      },
+      {
+        type: "build_sentence",
+        eyebrow: "Le futur",
+        question: "Construis la phrase en wolof",
+        sourceText: "Tu iras là-bas les jours qui viennent.",
+        answer: ["Di", "ngë", "fë", "dem", "fan", "yiy", "ñew"],
+        tiles: ["fë", "naa", "ñew", "Di", "dem", "do", "yiy", "ngë", "fan"],
+        explanation: "Di ngë (tu, futur) + fë (là-bas) + dem (aller) + fan yiy ñew (les jours qui viennent).",
+      },
+      {
+        type: "write_translation",
+        eyebrow: "Traduction écrite",
+        question: "Écris en wolof",
+        speaker: { name: "Awa", image: "awa" },
+        sourceText: "Nous ne le mangerons pas.",
+        acceptedAnswers: ["Duñu ko lekk."],
+        hint: "nous (futur négatif) + le + manger",
+        explanation: "Duñu ko lekk : duñu = nous ne …rons pas ; ko = le ; lekk = manger.",
       },
     ],
   },

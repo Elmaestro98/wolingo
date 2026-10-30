@@ -1,15 +1,17 @@
 import { router } from "expo-router";
-import { ScrollView, Text, View } from "react-native";
+import { useRef, useState } from "react";
+import { ScrollView, Text, View, type ScrollViewInstance } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 import { DailyStats } from "@/components/path/daily-stats";
 import { LessonPath } from "@/components/path/lesson-path";
 import { ModuleCard } from "@/components/path/module-card";
+import { ModuleSelector } from "@/components/path/module-selector";
 import { NextModuleCard } from "@/components/path/next-module-card";
 import { StatPill } from "@/components/path/stat-pill";
 import { MODULES } from "@/content/modules";
 import { getDisplayedStreak, toDateKey } from "@/lib/dates";
-import { getCurrentModule, getPathItemStates, isModuleCompleted } from "@/lib/path";
+import { getCurrentModule, getModuleStatuses, getPathItemStates, isModuleCompleted } from "@/lib/path";
 import { useNow } from "@/hooks/use-now";
 import { computeHearts } from "@/lib/hearts";
 import { useProgressStore } from "@/stores/progress-store";
@@ -43,9 +45,27 @@ export default function PathScreen() {
   const displayedStreak = getDisplayedStreak(streakDays, lastActiveDateKey, now);
   const displayedMinutes = todayDateKey === toDateKey(now) ? minutesToday : 0;
 
-  // Le module en cours (le premier non validé qui a du contenu) et celui juste après
-  const currentModule = getCurrentModule(MODULES, completedLessons);
+  // Le module choisi dans le sélecteur. null = « pas de choix » → on suit le module en cours
+  const [selectedModuleId, setSelectedModuleId] = useState<string | null>(null);
+
+  // Une « télécommande » vers le ScrollView, pour le remonter en haut quand on change de module
+  const scrollRef = useRef<ScrollViewInstance>(null);
+
+  // L'état de chaque module (validé / en cours / verrouillé) pour le sélecteur
+  const moduleStatuses = getModuleStatuses(MODULES, completedLessons);
+
+  // Le module affiché : celui choisi s'il n'est pas verrouillé, sinon le module en cours
+  const selectedEntry = moduleStatuses.find((entry) => entry.module.id === selectedModuleId);
+  const currentModule =
+    selectedEntry && selectedEntry.status !== "locked"
+      ? selectedEntry.module
+      : getCurrentModule(MODULES, completedLessons);
   const nextModule = MODULES[MODULES.indexOf(currentModule) + 1]; // undefined s'il n'y en a pas
+
+  function handleSelectModule(moduleId: string) {
+    setSelectedModuleId(moduleId);
+    scrollRef.current?.scrollTo({ y: 0, animated: true });
+  }
 
   // Calculs à partir des données : seules les étapes de type « lesson » comptent
   const lessons = currentModule.items.filter((item) => item.kind === "lesson");
@@ -61,7 +81,7 @@ export default function PathScreen() {
     // edges={["top"]} : on protège seulement le haut (encoche) ; le bas est géré par la barre d'onglets
     <SafeAreaView edges={["top"]} className="flex-1 bg-cream">
       {/* ScrollView : tout son contenu peut défiler verticalement */}
-      <ScrollView contentContainerClassName="pb-8" showsVerticalScrollIndicator={false}>
+      <ScrollView ref={scrollRef} contentContainerClassName="pb-8" showsVerticalScrollIndicator={false}>
         {/* En-tête : titre à gauche, pastilles à droite */}
         <View className="flex-row items-center justify-between px-6 pb-2.5 pt-3.5">
           <View>
@@ -86,7 +106,14 @@ export default function PathScreen() {
           </View>
         </View>
 
-        <View className="mt-1.5 gap-[18px] px-4">
+        {/* Le sélecteur de modules : il défile sur toute la largeur, d'où sa place hors du bloc px-4 */}
+        <ModuleSelector
+          modules={moduleStatuses}
+          selectedModuleId={currentModule.id}
+          onSelect={handleSelectModule}
+        />
+
+        <View className="mt-3 gap-[18px] px-4">
           <ModuleCard
             module={currentModule}
             completedLessons={completedCount}

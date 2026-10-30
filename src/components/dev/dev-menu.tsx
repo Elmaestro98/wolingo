@@ -19,6 +19,7 @@ export function DevMenu() {
   const isPremium = useSettingsStore((state) => state.isPremium);
   const setPremium = useSettingsStore((state) => state.setPremium);
   const completeLesson = useProgressStore((state) => state.completeLesson);
+  const resetProgress = useProgressStore((state) => state.resetProgress);
   const dailyGoalMinutes = useSettingsStore((state) => state.dailyGoalMinutes);
 
   if (!__DEV__) return null;
@@ -39,6 +40,15 @@ export function DevMenu() {
     MODULES[0].items
       .filter((item) => item.kind === "lesson")
       .forEach((lesson) => completeLesson(lesson.id, { stars: 3, xp: 0, minutes: 0 }));
+  }
+
+  /** Raccourci de test : efface toute la progression (leçons, XP, série, vies, révisions). Les réglages sont gardés. */
+  function confirmResetProgress() {
+    // On demande confirmation : une fois effacée, la progression ne revient pas
+    Alert.alert("Remettre la progression à zéro ?", "Leçons, XP, série, vies et révisions seront effacées.", [
+      { text: "Annuler", style: "cancel" },
+      { text: "Tout effacer", style: "destructive", onPress: resetProgress },
+    ]);
   }
 
   /** Raccourci de test : toutes les révisions programmées deviennent « à revoir aujourd'hui ». */
@@ -89,6 +99,12 @@ export function DevMenu() {
       <Pressable onPress={handleTestReminder} className="rounded-full bg-white px-3 py-2 active:bg-sand">
         <Text className="text-center font-body-bold text-[13px] text-ink">
           🔔 Recevoir le rappel dans 5 secondes
+        </Text>
+      </Pressable>
+
+      <Pressable onPress={confirmResetProgress} className="rounded-full bg-white px-3 py-2 active:bg-sand">
+        <Text className="text-center font-body-bold text-[13px] text-red">
+          🗑 Remettre la progression à zéro
         </Text>
       </Pressable>
 
