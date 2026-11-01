@@ -136,4 +136,14 @@ export const MODULES: Module[] = [
       { id: "u6-quiz", kind: "quiz", title: "Grand quiz du module" },
     ],
   },
+  {
+    // Plan du cahier des charges (section 4) ; contenu : unité 7 du cours de Xavier Bry
+    id: "u7",
+    number: 7,
+    level: "A2",
+    title: "Emphatique sujet, injonctif",
+    subtitle: "Dire « c'est moi qui… » :",
+    example: "maa ko jel…",
+    items: [{ id: "u7-l1", kind: "lesson", title: "« C'est moi qui… »", minutes: 5 }],
+  },
 ];

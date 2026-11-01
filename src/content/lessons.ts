@@ -3534,4 +3534,147 @@ export const LESSONS: Record<string, Lesson> = {
       },
     ],
   },
+
+  // =========================================================================
+  // MODULE 7 : emphatique sujet, indéfinis, subordonnées, injonctif (unité 7)
+  // =========================================================================
+
+  // ---- Leçon 1 : l'emphatique sujet (unité 7, § 1) ----
+  "u7-l1": {
+    id: "u7-l1",
+    title: "« C'est moi qui… » : l'emphatique sujet",
+    newWords: [
+      { wolof: "raxas", french: "laver" },
+      { wolof: "oto", french: "voiture" },
+      { wolof: "defar", french: "réparer" },
+      { wolof: "jel", french: "prendre" },
+      { wolof: "maa", french: "c'est moi qui" },
+      { wolof: "yaa", french: "c'est toi qui" },
+      { wolof: "moo", french: "c'est lui / elle qui" },
+    ],
+    steps: [
+      {
+        type: "lesson_card",
+        eyebrow: "Module 7 · Leçon 1",
+        title: "« C'est moi qui… »",
+        intro:
+          "Pour insister sur celui qui fait l'action, on place le sujet en début de phrase, suivi de l'auxiliaire a.",
+        blocks: [
+          {
+            type: "rule",
+            title: "Avec un nom : sujet + a",
+            tiles: [
+              {
+                formula: "Joob + a",
+                meaning: "c'est Diop qui…",
+                example: "Joob a raxas oto bi",
+                exampleTranslation: "C'est Diop qui a lavé cette voiture.",
+                tone: "green",
+              },
+            ],
+          },
+          {
+            type: "rule",
+            title: "Avec un pronom : a se contracte",
+            tiles: [
+              {
+                formula: "man + a = maa",
+                meaning: "c'est moi qui…",
+                example: "Maa ko jel",
+                exampleTranslation: "C'est moi qui l'ai pris.",
+                tone: "green",
+              },
+              { formula: "yow + a = yaa", meaning: "c'est toi qui…", tone: "yellow" },
+              { formula: "moom + a = moo", meaning: "c'est lui / elle qui…", tone: "green" },
+            ],
+          },
+          {
+            type: "context_examples",
+            title: "Avec di, qui devient -y",
+            examples: [
+              { wolof: "Benéen yoon, yaay dem", french: "La prochaine fois, c'est toi qui partiras." },
+              {
+                wolof: "Maa koy defar subë",
+                french: "C'est moi qui le réparerai demain.",
+                note: "Le pronom ko est avant le verbe : c'est lui qui prend le -y",
+              },
+            ],
+          },
+        ],
+      },
+      {
+        type: "multiple_choice",
+        eyebrow: "L'emphatique sujet",
+        question: "Que veut dire cette phrase ?",
+        prompt: "Joob a raxas oto bi",
+        choices: [
+          "C'est Diop qui a lavé cette voiture.",
+          "C'est cette voiture que Diop a lavée.",
+          "Diop lavera cette voiture.",
+          "Lave cette voiture, Diop !",
+        ],
+        answerIndex: 0,
+        explanation: "Le sujet Joob vient en tête, suivi de a : l'accent est mis sur Diop.",
+      },
+      {
+        type: "match_pairs",
+        eyebrow: "Les contractions",
+        question: "Associe chaque pronom à sa forme emphatique",
+        instruction: "Touche un pronom, puis sa forme.",
+        pairs: [
+          { wolof: "man", french: "moi", article: "maa" },
+          { wolof: "yow", french: "toi", article: "yaa" },
+          { wolof: "moom", french: "lui / elle", article: "moo" },
+        ],
+        explanation: "man + a = maa, yow + a = yaa, moom + a = moo.",
+      },
+      {
+        type: "multiple_choice",
+        eyebrow: "Les contractions",
+        question: "Que veut dire cette phrase ?",
+        prompt: "Maa ko jel",
+        choices: [
+          "C'est moi qui l'ai pris.",
+          "C'est toi qui l'as pris.",
+          "C'est lui qui l'a pris.",
+          "Je ne l'ai pas pris.",
+        ],
+        answerIndex: 0,
+        explanation: "maa = man + a : « c'est moi qui… ».",
+      },
+      {
+        type: "fill_blank",
+        eyebrow: "Avec di",
+        question: "Complète : « c'est toi qui partiras »",
+        speaker: { name: "Awa", subtitle: "parle de la prochaine fois", image: "awa" },
+        before: "Benéen yoon,",
+        after: "dem",
+        translation: "La prochaine fois, c'est toi qui partiras.",
+        choicesLabel: "Choisis la forme",
+        choices: ["yaay", "yaa", "maa", "moo"],
+        answerIndex: 0,
+        hint: "yaa + di : di se contracte en -y",
+        explanation: "yaa + di donne yaay : l'action est à venir.",
+      },
+      {
+        type: "build_sentence",
+        eyebrow: "Avec di",
+        question: "Construis la phrase en wolof",
+        sourceText: "C'est moi qui le réparerai demain.",
+        answer: ["Maa", "koy", "defar", "subë"],
+        tiles: ["subë", "Maa", "ko", "defar", "yaa", "koy"],
+        explanation: "Maa (c'est moi qui) + koy (le, avec le -y de di) + defar (réparer) + subë (demain).",
+      },
+      {
+        type: "write_translation",
+        eyebrow: "Traduction écrite",
+        question: "Écris en wolof",
+        speaker: { name: "Awa", image: "awa" },
+        sourceText: "C'est Diop qui a lavé cette voiture.",
+        acceptedAnswers: ["Joob a raxas oto bi."],
+        hint: "Joob + a + laver + cette voiture",
+        explanation: "Joob a raxas oto bi : le sujet en tête, suivi de a.",
+      },
+    ],
+  },
 };
