@@ -1,10 +1,13 @@
 import Ionicons from "@expo/vector-icons/Ionicons";
-import { Alert, Image, Pressable, Text, View } from "react-native";
-import Animated, { FadeInDown, ZoomIn } from "react-native-reanimated";
+import { Alert, Pressable, Text, View } from "react-native";
+import Animated, { FadeInDown } from "react-native-reanimated";
+
+import { MascotReaction } from "@/components/lesson/mascot-reaction";
 
 import { Button } from "@/components/ui/button";
 import { Colors } from "@/constants/theme";
 import { compareAnswerWords, type DiffWord } from "@/lib/answer-diff";
+import type { MascotReaction as MascotReactionData } from "@/lib/mascot";
 
 type FeedbackPanelProps = {
   isCorrect: boolean;
@@ -21,6 +24,8 @@ type FeedbackPanelProps = {
   heartLost: boolean;
   /** Hauteur de la barre du bas de l'iPhone : le panneau coloré descend jusqu'au bord */
   bottomInset: number;
+  /** Humeur et message du lion (calculés par getMascotReaction) */
+  mascot: MascotReactionData;
   onContinue: () => void;
 };
 
@@ -40,6 +45,7 @@ function SuccessPanel({
   explanation,
   xp,
   bottomInset,
+  mascot,
   onContinue,
 }: FeedbackPanelProps) {
   return (
@@ -49,14 +55,8 @@ function SuccessPanel({
       style={{ paddingBottom: bottomInset + 8 }}
       className="gap-4 rounded-t-[28px] bg-green px-5 pt-[22px]"
     >
-      {/* Le lion « dépasse » au-dessus du panneau : position absolute avec un top NÉGATIF */}
-      <Animated.View
-        entering={ZoomIn.delay(150).springify().damping(12)}
-        pointerEvents="none"
-        className="absolute -top-[112px] right-2"
-      >
-        <Image source={require("@/assets/images/lion-bust.png")} className="h-[121px] w-[140px]" />
-      </Animated.View>
+      {/* Le lion « dépasse » au-dessus du panneau et réagit (saut, série…) */}
+      <MascotReaction {...mascot} />
 
       <View className="flex-row items-center gap-3">
         <View className="h-11 w-11 items-center justify-center rounded-full bg-white">
@@ -77,7 +77,9 @@ function SuccessPanel({
         {/* « Associer » n'a pas de phrase de réponse : correctAnswer est vide → on ne l'affiche pas */}
         {correctAnswer !== "" && <Text className="font-title text-2xl text-white">{correctAnswer}</Text>}
         {translation && <Text className="font-body text-sm italic text-[#D5EADD]">« {translation} »</Text>}
-        {explanation !== "" && <Text className="font-body text-[13px] leading-5 text-[#D5EADD]">{explanation}</Text>}
+        {explanation !== "" && (
+          <Text className="font-body text-[13px] leading-5 text-[#D5EADD]">{explanation}</Text>
+        )}
       </View>
 
       <Button title="Continuer" variant="white" arrow onPress={onContinue} />
@@ -96,6 +98,7 @@ function MistakePanel({
   explanation,
   heartLost,
   bottomInset,
+  mascot,
   onContinue,
 }: FeedbackPanelProps) {
   // Mot à mot : quels mots barrer dans ta réponse, quels mots souligner dans la bonne
@@ -113,6 +116,9 @@ function MistakePanel({
       style={{ paddingBottom: bottomInset }}
       className="gap-3.5 rounded-t-[28px] bg-[#FFF1F1] px-5 pt-[22px]"
     >
+      {/* Le lion vient aussi après une erreur : tête penchée, il encourage */}
+      <MascotReaction {...mascot} />
+
       <View className="flex-row items-center gap-3">
         <View className="h-11 w-11 items-center justify-center rounded-full bg-red">
           <Ionicons name="close" size={24} color={Colors.white} />

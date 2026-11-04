@@ -15,6 +15,7 @@ import { LessonHeader } from "@/components/lesson/lesson-header";
 import { MatchPairsStep } from "@/components/lesson/match-pairs-step";
 import { MultipleChoiceStep } from "@/components/lesson/multiple-choice-step";
 import { OutOfHearts } from "@/components/lesson/out-of-hearts";
+import { StreakCelebration } from "@/components/lesson/streak-celebration";
 import { WriteTranslationStep } from "@/components/lesson/write-translation-step";
 import { DeremStep } from "@/components/lesson/derem-step";
 import { Button } from "@/components/ui/button";
@@ -26,8 +27,10 @@ import { findDeremAnswerIndex } from "@/lib/derem";
 import { computeHearts } from "@/lib/hearts";
 import { computeLessonResult, XP_PER_EXERCISE, type LessonResult } from "@/lib/lesson-result";
 import { areAllLessonsCompleted } from "@/lib/path";
+import { getMascotReaction } from "@/lib/mascot";
 import { buildModuleQuiz, findModuleOfItem, isExerciseStep } from "@/lib/quiz";
 import { buildReviewSession, getStepRef, REVIEW_SESSION_ID } from "@/lib/review";
+import { isFirstLessonOfDay } from "@/lib/streak";
 import { useProgressStore } from "@/stores/progress-store";
 import { useSettingsStore } from "@/stores/settings-store";
 
@@ -67,6 +70,8 @@ export default function LessonScreen() {
   // Le bilan de la leçon, pour calculer XP, précision et étoiles à la fin
   const [correctCount, setCorrectCount] = useState(0);
   const [mistakeCount, setMistakeCount] = useState(0);
+  // Bonnes réponses d'affilée (remis à 0 à chaque erreur) : le lion fête les séries
+  const [correctStreak, setCorrectStreak] = useState(0);
   // Heure de début (en millisecondes), mémorisée une seule fois à l'ouverture
   const [startedAt] = useState(() => Date.now());
   // Les exercices ratés PENDANT cette séance : réussis au 2e essai, ils ne montent pas de palier
@@ -74,10 +79,14 @@ export default function LessonScreen() {
 
   // Le résultat final : null tant que la leçon n'est pas finie
   const [result, setResult] = useState<LessonResult | null>(null);
+  // 1re leçon du jour → la série augmente : on la fête APRÈS le bilan (écran de série)
+  const [shouldCelebrateStreak, setShouldCelebrateStreak] = useState(false);
+  const [isShowingStreak, setIsShowingStreak] = useState(false);
 
   // L'action du magasin qui enregistre une leçon terminée, et la série (mise à jour juste après)
   const completeLesson = useProgressStore((state) => state.completeLesson);
   const streakDays = useProgressStore((state) => state.streakDays);
+  const lastActiveDateKey = useProgressStore((state) => state.lastActiveDateKey);
   const completedLessons = useProgressStore((state) => state.completedLessons);
 
   // Défense en profondeur : un quiz ne se joue que si TOUTES les leçons de son module sont bouclées,
@@ -121,6 +130,11 @@ export default function LessonScreen() {
     );
   }
 
+  // Après le bilan : l'écran de série (seulement pour la 1re leçon du jour)
+  if (result && isShowingStreak) {
+    return <StreakCelebration streakDays={streakDays} onContinue={() => router.back()} />;
+  }
+
   // Leçon finie : tout l'écran est remplacé par le bilan
   if (result) {
     return (
@@ -129,7 +143,8 @@ export default function LessonScreen() {
         result={result}
         streakDays={streakDays}
         newWords={lesson.newWords}
-        onContinue={() => router.back()}
+        // « Continuer » : vers l'écran de série si la série vient d'augmenter, sinon retour au Parcours
+        onContinue={() => (shouldCelebrateStreak ? setIsShowingStreak(true) : router.back())}
       />
     );
   }
@@ -164,6 +179,8 @@ export default function LessonScreen() {
   /** Fin de la leçon : calcule le résultat, l'enregistre, puis affiche le bilan. */
   function finishLesson() {
     const lessonResult = computeLessonResult(correctCount, mistakeCount, Date.now() - startedAt);
+    // À vérifier AVANT d'enregistrer : après, la dernière leçon serait forcément « aujourd'hui »
+    setShouldCelebrateStreak(isFirstLessonOfDay(lastActiveDateKey, new Date()));
     completeLesson(lesson.id, lessonResult); // sauvegarde (la série est mise à jour dans le magasin)
     setResult(lessonResult); // → au prochain affichage, `if (result)` montre l'écran de bilan
   }
@@ -185,6 +202,7 @@ export default function LessonScreen() {
     Haptics.notificationAsync(Haptics.NotificationFeedbackType.Error);
     playWrongSound();
     setMistakeCount((current) => current + 1);
+    setCorrectStreak(0);
     if (!isPremium) {
       loseStoredHeart();
     }
@@ -201,6 +219,7 @@ export default function LessonScreen() {
       Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
       playCorrectSound();
       setCorrectCount((current) => current + 1);
+      setCorrectStreak((current) => current + 1);
       // En révision, une réussite du 1er coup fait monter l'exercice d'un palier (J+3, J+7, puis maîtrisé)
       if (isReviewSession && stepRef && !missedThisSession.includes(stepRef)) markReviewSuccess(stepRef);
     } else {
@@ -275,6 +294,7 @@ export default function LessonScreen() {
             // Une vie n'est perdue que pour un utilisateur gratuit
             heartLost={!isPremium}
             bottomInset={insets.bottom}
+            mascot={getMascotReaction(answerIsCorrect === true, correctStreak, mistakeCount)}
             onContinue={goToNextStep}
           />
         ) : isAutoChecked ? (
