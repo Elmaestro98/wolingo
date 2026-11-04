@@ -144,6 +144,27 @@ export const MODULES: Module[] = [
     title: "Emphatique sujet, injonctif",
     subtitle: "Dire « c'est moi qui… » :",
     example: "maa ko jel…",
-    items: [{ id: "u7-l1", kind: "lesson", title: "« C'est moi qui… »", minutes: 5 }],
+    items: [
+      { id: "u7-l1", kind: "lesson", title: "« C'est moi qui… »", minutes: 5 },
+      { id: "u7-l2", kind: "lesson", title: "« Chacun, tous, partout »", minutes: 5 },
+      { id: "u7-chest", kind: "chest", title: "Coffre", xpReward: 15 },
+      { id: "u7-l3", kind: "lesson", title: "« Avant que, jusqu'à ce que »", minutes: 5 },
+      { id: "u7-l4", kind: "lesson", title: "« Qu'il le fasse ! »", minutes: 5 },
+      { id: "u7-quiz", kind: "quiz", title: "Grand quiz du module" },
+    ],
+  },
+  {
+    // Plan du cahier des charges (section 4) ; contenu : unité 8 du cours de Xavier Bry
+    id: "u8",
+    number: 8,
+    level: "A2",
+    title: "Synthèse et causatif",
+    subtitle: "Dire « tu es jolie » :",
+    example: "dangë rafet…",
+    items: [
+      { id: "u8-l1", kind: "lesson", title: "« Tu es jolie »", minutes: 5 },
+      { id: "u8-l2", kind: "lesson", title: "« Il est en train de travailler »", minutes: 5 },
+      { id: "u8-quiz", kind: "quiz", title: "Grand quiz du module" },
+    ],
   },
 ];
