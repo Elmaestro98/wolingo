@@ -167,4 +167,20 @@ export const MODULES: Module[] = [
       { id: "u8-quiz", kind: "quiz", title: "Grand quiz du module" },
     ],
   },
+  {
+    // Plan du cahier des charges (section 4) ; contenu : unité 9 du cours de Xavier Bry
+    id: "u9",
+    number: 9,
+    level: "A2",
+    title: "Les passés",
+    subtitle: "Dire « je vendais » :",
+    example: "dama jaay-oon…",
+    items: [
+      { id: "u9-l1", kind: "lesson", title: "« J'avais travaillé »", minutes: 5 },
+      { id: "u9-l2", kind: "lesson", title: "« Je vendais »", minutes: 5 },
+      { id: "u9-chest", kind: "chest", title: "Coffre", xpReward: 15 },
+      { id: "u9-l3", kind: "lesson", title: "« D'habitude, je vendais »", minutes: 5 },
+      { id: "u9-quiz", kind: "quiz", title: "Grand quiz du module" },
+    ],
+  },
 ];
