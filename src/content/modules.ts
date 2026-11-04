@@ -183,4 +183,22 @@ export const MODULES: Module[] = [
       { id: "u9-quiz", kind: "quiz", title: "Grand quiz du module" },
     ],
   },
+  {
+    // Plan du cahier des charges (section 4) ; contenu : unité 10 du cours de Xavier Bry
+    id: "u10",
+    number: 10,
+    level: "A2",
+    title: "Conditionnel et comparatif",
+    subtitle: "Dire « quand je partirai » :",
+    example: "bu ma demé…",
+    items: [
+      { id: "u10-l1", kind: "lesson", title: "« Quand je partirai »", minutes: 5 },
+      { id: "u10-l2", kind: "lesson", title: "« Si tu viens »", minutes: 5 },
+      { id: "u10-chest", kind: "chest", title: "Coffre", xpReward: 15 },
+      { id: "u10-l3", kind: "lesson", title: "« Quand je suis venu »", minutes: 5 },
+      { id: "u10-l4", kind: "lesson", title: "« Plus que » : gënë", minutes: 5 },
+      { id: "u10-l5", kind: "lesson", title: "« Aussi que, moins que » : ni", minutes: 5 },
+      { id: "u10-quiz", kind: "quiz", title: "Grand quiz du module" },
+    ],
+  },
 ];
