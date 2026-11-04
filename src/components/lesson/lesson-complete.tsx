@@ -3,11 +3,25 @@ import * as Haptics from "expo-haptics";
 import type { ComponentProps } from "react";
 import { useEffect } from "react";
 import { Image, Pressable, ScrollView, Text, View } from "react-native";
-import Animated, { FadeIn, FadeInDown, ZoomIn } from "react-native-reanimated";
+import Animated, {
+  cancelAnimation,
+  Easing,
+  FadeInDown,
+  useAnimatedStyle,
+  useReducedMotion,
+  useSharedValue,
+  withDelay,
+  withRepeat,
+  withSequence,
+  withTiming,
+  ZoomIn,
+} from "react-native-reanimated";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 import { Button } from "@/components/ui/button";
 import { Colors } from "@/constants/theme";
+import { useCountUp } from "@/hooks/use-count-up";
+import { SOUNDS, useSoundEffect } from "@/hooks/use-sound-effect";
 import type { Example } from "@/content/lessons";
 import type { LessonResult } from "@/lib/lesson-result";
 
@@ -36,11 +50,25 @@ type LessonCompleteProps = {
 };
 
 /** Écran 18 de la maquette : le bilan de fin de leçon. */
-export function LessonComplete({ lessonTitle, result, streakDays, newWords, onContinue }: LessonCompleteProps) {
-  // useEffect avec [] : exécuté UNE SEULE FOIS, quand l'écran apparaît → vibration de victoire
+export function LessonComplete({
+  lessonTitle,
+  result,
+  streakDays,
+  newWords,
+  onContinue,
+}: LessonCompleteProps) {
+  const playCompleteSound = useSoundEffect(SOUNDS.complete);
+
+  // Exécuté une seule fois, quand l'écran apparaît → vibration et petite musique de victoire
+  // (playCompleteSound ne change pas d'un affichage à l'autre grâce à useCallback)
   useEffect(() => {
     Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
-  }, []);
+    playCompleteSound();
+  }, [playCompleteSound]);
+
+  // Les chiffres défilent de 0 jusqu'au résultat, au moment où leur carte apparaît
+  const shownXp = useCountUp(result.xp, 800, 300);
+  const shownAccuracy = useCountUp(Math.round(result.accuracy * 100), 800, 420);
 
   return (
     <SafeAreaView className="flex-1 bg-cream">
@@ -51,20 +79,7 @@ export function LessonComplete({ lessonTitle, result, streakDays, newWords, onCo
         {/* Confettis */}
         <View pointerEvents="none" className="absolute left-0 right-0 top-10 h-[200px]">
           {CONFETTI.map((piece, index) => (
-            <Animated.View
-              key={index}
-              entering={FadeIn.delay(200 + index * 80)}
-              className={piece.round ? "rounded-full" : "rounded-sm"}
-              style={{
-                position: "absolute",
-                left: piece.left,
-                top: piece.top,
-                width: piece.width,
-                height: piece.height,
-                backgroundColor: piece.color,
-                transform: [{ rotate: `${index * 25}deg` }],
-              }}
-            />
+            <ConfettiPiece key={index} piece={piece} index={index} />
           ))}
         </View>
 
@@ -80,12 +95,7 @@ export function LessonComplete({ lessonTitle, result, streakDays, newWords, onCo
 
         {/* Le lion « surgit » avec un effet ressort */}
         <Animated.View entering={ZoomIn.springify().damping(12)} className="mt-2.5 items-center">
-          <Image
-            source={require("@/assets/images/lion.png")}
-            className="h-[190px] w-[145px]"
-            resizeMode="contain"
-            accessibilityLabel="Le lion mascotte de Wolingo lève le pouce"
-          />
+          <HoppingLion />
         </Animated.View>
 
         <View className="mt-1.5 items-center gap-1">
@@ -97,16 +107,30 @@ export function LessonComplete({ lessonTitle, result, streakDays, newWords, onCo
 
         {/* 3 statistiques, qui apparaissent l'une après l'autre (delay croissant) */}
         <View className="mt-[18px] flex-row gap-2">
-          <StatCard icon="flash" iconColor={Colors.yellow} value={`+${result.xp}`} valueColor="text-[#6B4700]" label="XP gagnés" delay={300} />
+          <StatCard
+            icon="flash"
+            iconColor={Colors.yellow}
+            value={`+${shownXp}`}
+            valueColor="text-[#6B4700]"
+            label="XP gagnés"
+            delay={300}
+          />
           <StatCard
             icon="locate"
             iconColor={Colors.green}
-            value={`${Math.round(result.accuracy * 100)} %`}
+            value={`${shownAccuracy} %`}
             valueColor="text-green"
             label="Précision"
             delay={420}
           />
-          <StatCard icon="timer-outline" iconColor="#3D3730" value={`${result.minutes} min`} valueColor="text-ink" label="Temps" delay={540} />
+          <StatCard
+            icon="timer-outline"
+            iconColor="#3D3730"
+            value={`${result.minutes} min`}
+            valueColor="text-ink"
+            label="Temps"
+            delay={540}
+          />
         </View>
 
         <Animated.View entering={FadeInDown.delay(660)} className="mt-3">
@@ -128,6 +152,86 @@ export function LessonComplete({ lessonTitle, result, streakDays, newWords, onCo
 }
 
 // ---------------------------------------------------------------------------
+// Les animations de fête
+// ---------------------------------------------------------------------------
+
+/** Un confetti qui tombe du haut en tournant, puis se pose à sa place. */
+function ConfettiPiece({ piece, index }: { piece: (typeof CONFETTI)[number]; index: number }) {
+  const reduceMotion = useReducedMotion();
+  // 0 = au début de sa chute (en haut, invisible), 1 = posé à sa place
+  const fall = useSharedValue(reduceMotion ? 1 : 0);
+
+  useEffect(() => {
+    if (reduceMotion) return;
+    // withDelay : chaque confetti part un peu après le précédent (effet « pluie »)
+    fall.set(withDelay(200 + index * 80, withTiming(1, { duration: 900, easing: Easing.out(Easing.quad) })));
+  }, [reduceMotion, index, fall]);
+
+  const fallStyle = useAnimatedStyle(() => ({
+    opacity: fall.get(),
+    transform: [
+      { translateY: (fall.get() - 1) * 120 }, //            part 120 px plus haut, finit à 0
+      { rotate: `${index * 25 + (1 - fall.get()) * 360}deg` }, // fait un tour complet en tombant
+    ],
+  }));
+
+  return (
+    <Animated.View
+      className={piece.round ? "rounded-full" : "rounded-sm"}
+      style={[
+        {
+          position: "absolute",
+          left: piece.left,
+          top: piece.top,
+          width: piece.width,
+          height: piece.height,
+          backgroundColor: piece.color,
+        },
+        fallStyle,
+      ]}
+    />
+  );
+}
+
+/** Le lion mascotte, qui sautille de joie de temps en temps. */
+function HoppingLion() {
+  const reduceMotion = useReducedMotion();
+  const hop = useSharedValue(0);
+
+  useEffect(() => {
+    if (reduceMotion) return;
+    // Un saut (monte, redescend), puis une pause ; le tout répété à l'infini, après l'apparition du lion
+    hop.set(
+      withDelay(
+        800,
+        withRepeat(
+          withSequence(
+            withTiming(-14, { duration: 220, easing: Easing.out(Easing.quad) }),
+            withTiming(0, { duration: 220, easing: Easing.in(Easing.quad) }),
+            withTiming(0, { duration: 1400 }), // pause : on « reste » à 0 pendant 1,4 s
+          ),
+          -1,
+        ),
+      ),
+    );
+    return () => cancelAnimation(hop);
+  }, [reduceMotion, hop]);
+
+  const hopStyle = useAnimatedStyle(() => ({ transform: [{ translateY: hop.get() }] }));
+
+  return (
+    <Animated.View style={hopStyle}>
+      <Image
+        source={require("@/assets/images/lion.png")}
+        className="h-[190px] w-[145px]"
+        resizeMode="contain"
+        accessibilityLabel="Le lion mascotte de Wolingo lève le pouce"
+      />
+    </Animated.View>
+  );
+}
+
+// ---------------------------------------------------------------------------
 // Les cartes
 // ---------------------------------------------------------------------------
 
@@ -144,7 +248,10 @@ type StatCardProps = {
 
 function StatCard({ icon, iconColor, value, valueColor, label, delay }: StatCardProps) {
   return (
-    <Animated.View entering={FadeInDown.delay(delay)} className="flex-1 items-center gap-1 rounded-[18px] bg-white px-1.5 py-3">
+    <Animated.View
+      entering={FadeInDown.delay(delay)}
+      className="flex-1 items-center gap-1 rounded-[18px] bg-white px-1.5 py-3"
+    >
       <Ionicons name={icon} size={22} color={iconColor} />
       <Text className={`font-title text-[22px] ${valueColor}`}>{value}</Text>
       <Text className="font-body-bold text-xs text-muted">{label}</Text>
@@ -154,7 +261,8 @@ function StatCard({ icon, iconColor, value, valueColor, label, delay }: StatCard
 
 function StreakCard({ streakDays }: { streakDays: number }) {
   // Position dans le cycle de 10 jours : 1 à 10 (10 = coffre atteint, pas 0)
-  const daysInCycle = streakDays % STREAK_CHEST_DAYS === 0 ? STREAK_CHEST_DAYS : streakDays % STREAK_CHEST_DAYS;
+  const daysInCycle =
+    streakDays % STREAK_CHEST_DAYS === 0 ? STREAK_CHEST_DAYS : streakDays % STREAK_CHEST_DAYS;
   const daysLeft = STREAK_CHEST_DAYS - daysInCycle;
   const segments = Array.from({ length: STREAK_CHEST_DAYS }, (_, index) => index + 1);
 
@@ -205,7 +313,10 @@ function NewWordsCard({ words }: { words: Example[] }) {
       {/* Grille de 2 colonnes (même astuce que « compléter la phrase ») */}
       <View className="flex-row flex-wrap gap-2">
         {words.map((word) => (
-          <View key={word.wolof} className="grow basis-[45%] flex-row items-center justify-between rounded-2xl bg-[#F3EEE5] px-3.5 py-3">
+          <View
+            key={word.wolof}
+            className="grow basis-[45%] flex-row items-center justify-between rounded-2xl bg-[#F3EEE5] px-3.5 py-3"
+          >
             <View className="shrink">
               <Text className="font-title text-lg text-green">{word.wolof}</Text>
               <Text className="font-body text-[13px] text-muted">{word.french}</Text>

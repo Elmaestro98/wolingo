@@ -40,6 +40,8 @@ export default function ProfileScreen() {
   const reminderTime = useSettingsStore((state) => state.reminderTime);
   const setReminder = useSettingsStore((state) => state.setReminder);
   const isPremium = useSettingsStore((state) => state.isPremium);
+  const soundEnabled = useSettingsStore((state) => state.soundEnabled);
+  const setSoundEnabled = useSettingsStore((state) => state.setSoundEnabled);
   const resetOnboarding = useSettingsStore((state) => state.resetOnboarding);
   const resetProgress = useProgressStore((state) => state.resetProgress);
 
@@ -188,6 +190,16 @@ export default function ProfileScreen() {
                 </View>
               </SettingRow>
             )}
+
+            <SettingRow icon="volume-high" label="Sons">
+              <Switch
+                value={soundEnabled}
+                onValueChange={setSoundEnabled}
+                trackColor={{ true: Colors.green, false: "#CFC6B8" }}
+                thumbColor={Colors.white}
+                ios_backgroundColor="#CFC6B8"
+              />
+            </SettingRow>
 
             <SettingRow icon="refresh" label="Revoir l'accueil" onPress={resetOnboarding} />
             <SettingRow

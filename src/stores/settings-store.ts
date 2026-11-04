@@ -22,6 +22,8 @@ type SettingsState = {
    * Pour l'instant activée par un interrupteur de test (le paiement est hors V1).
    */
   isPremium: boolean;
+  /** Sons des bonnes / mauvaises réponses et de fin de leçon */
+  soundEnabled: boolean;
 
   // ---- Les ACTIONS : les seules façons de modifier les données ----
   setDailyGoal: (minutes: DailyGoalMinutes) => void;
@@ -29,6 +31,7 @@ type SettingsState = {
   completeOnboarding: (level: StartLevel) => void;
   resetOnboarding: () => void;
   setPremium: (isPremium: boolean) => void;
+  setSoundEnabled: (soundEnabled: boolean) => void;
 };
 
 /**
@@ -45,6 +48,7 @@ export const useSettingsStore = create<SettingsState>()(
       reminderTime: 1140,
       startLevel: null,
       isPremium: false,
+      soundEnabled: true,
 
       // `set` modifie le magasin, puis prévient tous les écrans qui l'utilisent
       setDailyGoal: (minutes) => set({ dailyGoalMinutes: minutes }),
@@ -52,6 +56,7 @@ export const useSettingsStore = create<SettingsState>()(
       completeOnboarding: (level) => set({ startLevel: level, hasCompletedOnboarding: true }),
       resetOnboarding: () => set({ hasCompletedOnboarding: false }),
       setPremium: (isPremium) => set({ isPremium }),
+      setSoundEnabled: (soundEnabled) => set({ soundEnabled }),
     }),
     {
       // Nom de la sauvegarde sur le téléphone

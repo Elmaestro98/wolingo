@@ -10,6 +10,7 @@ import {
   NunitoSans_700Bold,
   NunitoSans_800ExtraBold,
 } from '@expo-google-fonts/nunito-sans';
+import { setAudioModeAsync } from 'expo-audio';
 import { useFonts } from 'expo-font';
 import { Stack } from 'expo-router';
 import * as SplashScreen from 'expo-splash-screen';
@@ -26,6 +27,10 @@ SplashScreen.preventAutoHideAsync();
 
 // Une seule fois au démarrage : nos notifications s'affichent même app ouverte
 configureNotifications();
+
+// Une seule fois au démarrage : les sons de l'app respectent le bouton « silencieux » de l'iPhone,
+// et se mélangent à la musique de l'utilisateur au lieu de la couper
+setAudioModeAsync({ playsInSilentMode: false, interruptionMode: 'mixWithOthers' });
 
 export default function RootLayout() {
   // Lit dans le magasin : l'onboarding est-il terminé ?

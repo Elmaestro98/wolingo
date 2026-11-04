@@ -2,6 +2,7 @@ import * as Haptics from "expo-haptics";
 import { router, useLocalSearchParams } from "expo-router";
 import { useState } from "react";
 import { Alert, Keyboard, KeyboardAvoidingView, Platform, ScrollView, View } from "react-native";
+import Animated, { FadeInRight } from "react-native-reanimated";
 import { SafeAreaView, useSafeAreaInsets } from "react-native-safe-area-context";
 
 import { BuildSentenceStep } from "@/components/lesson/build-sentence-step";
@@ -20,6 +21,7 @@ import { Button } from "@/components/ui/button";
 import { PlaceholderScreen } from "@/components/ui/placeholder-screen";
 import { LESSONS, type LessonStep } from "@/content/lessons";
 import { useNow } from "@/hooks/use-now";
+import { SOUNDS, useSoundEffect } from "@/hooks/use-sound-effect";
 import { findDeremAnswerIndex } from "@/lib/derem";
 import { computeHearts } from "@/lib/hearts";
 import { computeLessonResult, XP_PER_EXERCISE, type LessonResult } from "@/lib/lesson-result";
@@ -45,6 +47,10 @@ export default function LessonScreen() {
       buildModuleQuiz(id) ??
       (isReviewSession ? buildReviewSession(reviewItems, new Date()) : undefined),
   );
+
+  // Les sons de correction (préparés dès l'ouverture, pour jouer sans attendre)
+  const playCorrectSound = useSoundEffect(SOUNDS.correct);
+  const playWrongSound = useSoundEffect(SOUNDS.wrong);
 
   // Hauteur de la barre du bas de l'iPhone, pour que le panneau coloré descende jusqu'en bas
   const insets = useSafeAreaInsets();
@@ -177,6 +183,7 @@ export default function LessonScreen() {
   /** Une erreur : vibration, compteur d'erreurs, et une vie en moins (sauf Premium : vies illimitées). */
   function loseHeart() {
     Haptics.notificationAsync(Haptics.NotificationFeedbackType.Error);
+    playWrongSound();
     setMistakeCount((current) => current + 1);
     if (!isPremium) {
       loseStoredHeart();
@@ -192,6 +199,7 @@ export default function LessonScreen() {
     const stepRef = getStepRef(step);
     if (isCorrect) {
       Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
+      playCorrectSound();
       setCorrectCount((current) => current + 1);
       // En révision, une réussite du 1er coup fait monter l'exercice d'un palier (J+3, J+7, puis maîtrisé)
       if (isReviewSession && stepRef && !missedThisSession.includes(stepRef)) markReviewSuccess(stepRef);
@@ -242,12 +250,16 @@ export default function LessonScreen() {
           contentContainerClassName="px-5 pb-6 pt-2"
           keyboardShouldPersistTaps="handled"
         >
-          <StepView
-            step={step}
-            checked={isChecked}
-            onAnswerChange={handleAnswerChange}
-            onMistake={loseHeart}
-          />
+          {/* entering : l'exercice arrive en glissant depuis la droite. Comme le ScrollView est recréé
+            à chaque étape (key), l'animation se rejoue pour chaque nouvel exercice */}
+          <Animated.View entering={FadeInRight.duration(280)}>
+            <StepView
+              step={step}
+              checked={isChecked}
+              onAnswerChange={handleAnswerChange}
+              onMistake={loseHeart}
+            />
+          </Animated.View>
         </ScrollView>
 
         {/* Bas de l'écran : 3 cas possibles */}

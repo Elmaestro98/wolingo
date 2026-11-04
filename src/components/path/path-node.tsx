@@ -1,6 +1,17 @@
 import Ionicons from "@expo/vector-icons/Ionicons";
-import { Pressable, Text, View } from "react-native";
+import { useEffect } from "react";
+import { Text, View } from "react-native";
+import Animated, {
+  cancelAnimation,
+  Easing,
+  useAnimatedStyle,
+  useReducedMotion,
+  useSharedValue,
+  withRepeat,
+  withTiming,
+} from "react-native-reanimated";
 
+import { PressableScale } from "@/components/ui/pressable-scale";
 import { Colors } from "@/constants/theme";
 import type { PathItemState, PathItemStatus } from "@/lib/path";
 import { QUIZ_QUESTION_COUNT } from "@/lib/quiz";
@@ -44,32 +55,57 @@ export function PathNode({ state, onPress }: PathNodeProps) {
 
 function CompletedLessonIcon({ title, onPress }: { title: string; onPress: () => void }) {
   return (
-    <Pressable
+    <PressableScale
       onPress={onPress}
       accessibilityRole="button"
       accessibilityLabel={`${title}, terminée. Refaire la leçon`}
       className="h-[72px] w-[72px] items-center justify-center rounded-full border-b-[6px] border-green-shadow bg-green active:mt-[6px] active:border-b-0"
     >
       <Ionicons name="checkmark-sharp" size={32} color={Colors.white} />
-    </Pressable>
+    </PressableScale>
   );
 }
 
 /** Halo jaune + bulle noire « COMMENCER » : signale l'étape à faire maintenant (leçon ou quiz). */
 function StartBubble() {
+  const reduceMotion = useReducedMotion();
+  // Deux valeurs animées : la taille du halo, et la hauteur de la bulle
+  const haloScale = useSharedValue(1);
+  const bubbleOffset = useSharedValue(0);
+
+  // useEffect : on lance les animations quand la bulle apparaît (et on les arrête quand elle disparaît)
+  useEffect(() => {
+    if (reduceMotion) return;
+    const smooth = Easing.inOut(Easing.quad); // départ et arrivée en douceur
+    // withRepeat(…, -1, true) : répète à l'infini, en aller-retour
+    haloScale.set(withRepeat(withTiming(1.15, { duration: 900, easing: smooth }), -1, true));
+    bubbleOffset.set(withRepeat(withTiming(-6, { duration: 700, easing: smooth }), -1, true));
+    return () => {
+      cancelAnimation(haloScale);
+      cancelAnimation(bubbleOffset);
+    };
+  }, [reduceMotion, haloScale, bubbleOffset]);
+
+  // Plus le halo grandit, plus il devient transparent : il « respire »
+  const haloStyle = useAnimatedStyle(() => ({
+    transform: [{ scale: haloScale.get() }],
+    opacity: 1 - (haloScale.get() - 1) * 3,
+  }));
+  const bubbleStyle = useAnimatedStyle(() => ({ transform: [{ translateY: bubbleOffset.get() }] }));
+
   return (
     <>
       {/* Halo jaune transparent derrière le bouton */}
-      <View className="absolute h-[104px] w-[104px] rounded-full bg-yellow/30" />
+      <Animated.View style={haloStyle} className="absolute h-[104px] w-[104px] rounded-full bg-yellow/30" />
 
-      {/* Bulle noire « COMMENCER » au-dessus, avec sa petite pointe */}
-      <View className="absolute -top-[40px] items-center">
+      {/* Bulle noire « COMMENCER » au-dessus, avec sa petite pointe ; elle flotte doucement */}
+      <Animated.View style={bubbleStyle} className="absolute -top-[40px] items-center">
         <View className="rounded-xl bg-ink px-3.5 py-[7px]">
           <Text className="font-body-black text-[13px] uppercase tracking-[0.5px] text-white">Commencer</Text>
         </View>
         {/* Triangle dessiné avec des bordures : seule la bordure du haut est colorée */}
         <View className="h-0 w-0 border-l-[7px] border-r-[7px] border-t-[8px] border-l-transparent border-r-transparent border-t-ink" />
-      </View>
+      </Animated.View>
     </>
   );
 }
@@ -79,14 +115,14 @@ function CurrentLessonIcon({ title, onPress }: { title: string; onPress: () => v
     <View className="items-center justify-center">
       <StartBubble />
 
-      <Pressable
+      <PressableScale
         onPress={onPress}
         accessibilityRole="button"
         accessibilityLabel={`Commencer la leçon ${title}`}
         className="h-[84px] w-[84px] items-center justify-center rounded-full border-b-[6px] border-[#B8890F] bg-yellow active:mt-[6px] active:border-b-0"
       >
         <Ionicons name="play" size={34} color="#3A2A00" style={{ marginLeft: 4 }} />
-      </Pressable>
+      </PressableScale>
     </View>
   );
 }
@@ -154,7 +190,7 @@ function QuizIcon({ status, onPress }: { status: PathItemStatus; onPress: () => 
   return (
     <View className="items-center justify-center">
       {status === "current" && <StartBubble />}
-      <Pressable
+      <PressableScale
         onPress={onPress}
         accessibilityRole="button"
         accessibilityLabel={
@@ -163,7 +199,7 @@ function QuizIcon({ status, onPress }: { status: PathItemStatus; onPress: () => 
         className="active:opacity-80"
       >
         {diamond}
-      </Pressable>
+      </PressableScale>
     </View>
   );
 }
