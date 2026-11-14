@@ -17,6 +17,7 @@ import { StatusBar } from 'expo-status-bar';
 import { useEffect } from 'react';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 
+import { useHeartsNotification } from '@/hooks/use-hearts-notification';
 import { useReminderSync } from '@/hooks/use-reminder-sync';
 import { setPlaysInSilentMode } from '@/services/audio-mode';
 import { configureNotifications } from '@/services/notifications';
@@ -39,6 +40,9 @@ export default function RootLayout() {
 
   // Le rappel quotidien du téléphone suit les réglages (heure, activé, durée)
   useReminderSync();
+
+  // Prévient quand les vies sont rechargées (si on a quitté l'app sans aucune vie)
+  useHeartsNotification();
 
   // Charge les 6 fichiers de police ; `fontsLoaded` passe à true quand c'est fini
   const [fontsLoaded, fontError] = useFonts({

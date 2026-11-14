@@ -3,7 +3,7 @@ import { create } from "zustand";
 import { createJSONStorage, persist } from "zustand/middleware";
 
 import { getStreakAfterLesson, toDateKey } from "@/lib/dates";
-import { loseOneHeart, MAX_HEARTS } from "@/lib/hearts";
+import { gainOneHeart, loseOneHeart, MAX_HEARTS } from "@/lib/hearts";
 import { scheduleAfterMistake, scheduleAfterSuccess, type ReviewItems } from "@/lib/review";
 
 type ProgressState = {
@@ -27,6 +27,8 @@ type ProgressState = {
   completeLesson: (lessonId: string, result: { stars: number; xp: number; minutes: number }) => void;
   /** Retire une vie (à n'appeler que pour un utilisateur gratuit) */
   loseHeart: () => void;
+  /** Rend une vie (récompense d'une séance de pratique) */
+  gainHeart: () => void;
   /** Exercice raté : il reviendra demain en révision */
   scheduleReview: (stepRef: string) => void;
   /** Exercice réussi en révision : palier suivant, ou retiré s'il est maîtrisé */
@@ -77,6 +79,15 @@ export const useProgressStore = create<ProgressState>()(
       loseHeart: () =>
         set((state) => {
           const next = loseOneHeart(
+            { hearts: state.hearts, refillStartedAt: state.heartsRefillStartedAt },
+            Date.now(),
+          );
+          return { hearts: next.hearts, heartsRefillStartedAt: next.refillStartedAt };
+        }),
+
+      gainHeart: () =>
+        set((state) => {
+          const next = gainOneHeart(
             { hearts: state.hearts, refillStartedAt: state.heartsRefillStartedAt },
             Date.now(),
           );

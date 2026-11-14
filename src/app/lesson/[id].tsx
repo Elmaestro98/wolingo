@@ -24,10 +24,11 @@ import { LESSONS, type LessonStep } from "@/content/lessons";
 import { useNow } from "@/hooks/use-now";
 import { SOUNDS, useSoundEffect } from "@/hooks/use-sound-effect";
 import { findDeremAnswerIndex } from "@/lib/derem";
-import { computeHearts } from "@/lib/hearts";
+import { computeHearts, MAX_HEARTS } from "@/lib/hearts";
 import { computeLessonResult, XP_PER_EXERCISE, type LessonResult } from "@/lib/lesson-result";
 import { areAllLessonsCompleted } from "@/lib/path";
 import { getMascotReaction } from "@/lib/mascot";
+import { getPracticeLessonId, isPracticeSession } from "@/lib/practice";
 import { buildModuleQuiz, findModuleOfItem, isExerciseStep } from "@/lib/quiz";
 import { buildReviewSession, getStepRef, REVIEW_SESSION_ID } from "@/lib/review";
 import { isFirstLessonOfDay } from "@/lib/streak";
@@ -82,6 +83,8 @@ export default function LessonScreen() {
   // 1re leçon du jour → la série augmente : on la fête APRÈS le bilan (écran de série)
   const [shouldCelebrateStreak, setShouldCelebrateStreak] = useState(false);
   const [isShowingStreak, setIsShowingStreak] = useState(false);
+  // Vrai si cette séance de pratique a rendu une vie (affiché dans le bilan)
+  const [hasGainedHeart, setHasGainedHeart] = useState(false);
 
   // L'action du magasin qui enregistre une leçon terminée, et la série (mise à jour juste après)
   const completeLesson = useProgressStore((state) => state.completeLesson);
@@ -101,6 +104,14 @@ export default function LessonScreen() {
   const savedHearts = useProgressStore((state) => state.hearts);
   const heartsRefillStartedAt = useProgressStore((state) => state.heartsRefillStartedAt);
   const loseStoredHeart = useProgressStore((state) => state.loseHeart);
+  const gainStoredHeart = useProgressStore((state) => state.gainHeart);
+
+  // Pratique = leçon déjà terminée ou révision du jour : pas de vie perdue, et +1 vie à la fin.
+  // useState(() => …) FIGE la valeur à l'ouverture : sinon, une fois la leçon enregistrée,
+  // une NOUVELLE leçon deviendrait « déjà terminée » et compterait à tort comme une pratique.
+  const [isPractice] = useState(() => isPracticeSession(id, completedLessons));
+  // Les vies ne comptent pas pour un Premium, ni pendant une pratique
+  const usesHearts = !isPremium && !isPractice;
 
   // La révision espacée
   const scheduleReview = useProgressStore((state) => state.scheduleReview);
@@ -113,7 +124,7 @@ export default function LessonScreen() {
   const heartsState = { hearts: savedHearts, refillStartedAt: heartsRefillStartedAt };
   // Vies À CET INSTANT (sauvegardées + regagnées depuis)
   const currentHearts = computeHearts(heartsState, now).hearts;
-  const isOutOfHearts = !isPremium && currentHearts === 0;
+  const isOutOfHearts = usesHearts && currentHearts === 0;
 
   if (!lesson) {
     return (
@@ -143,6 +154,7 @@ export default function LessonScreen() {
         result={result}
         streakDays={streakDays}
         newWords={lesson.newWords}
+        heartGained={hasGainedHeart}
         // « Continuer » : vers l'écran de série si la série vient d'augmenter, sinon retour au Parcours
         onContinue={() => (shouldCelebrateStreak ? setIsShowingStreak(true) : router.back())}
       />
@@ -164,7 +176,16 @@ export default function LessonScreen() {
   // Plus de vies (version gratuite) : la leçon s'arrête.
   // « && !isChecked » : on laisse d'abord l'utilisateur lire la correction de sa dernière erreur.
   if (isOutOfHearts && !isChecked) {
-    return <OutOfHearts savedHearts={heartsState} onBack={() => router.back()} />;
+    // La séance proposée pour regagner une vie (undefined si aucune leçon n'est encore terminée)
+    const practiceLessonId = getPracticeLessonId(completedLessons, reviewItems, new Date(now));
+    return (
+      <OutOfHearts
+        savedHearts={heartsState}
+        onBack={() => router.back()}
+        // replace (et pas push) : on REMPLACE cet écran, pour que « retour » ramène au Parcours
+        onPractice={practiceLessonId ? () => router.replace(`/lesson/${practiceLessonId}`) : undefined}
+      />
+    );
   }
 
   // ---- Valeurs calculées ----
@@ -182,6 +203,11 @@ export default function LessonScreen() {
     // À vérifier AVANT d'enregistrer : après, la dernière leçon serait forcément « aujourd'hui »
     setShouldCelebrateStreak(isFirstLessonOfDay(lastActiveDateKey, new Date()));
     completeLesson(lesson.id, lessonResult); // sauvegarde (la série est mise à jour dans le magasin)
+    // Récompense de la pratique : +1 vie, seulement s'il en manque (inutile d'annoncer « +1 » à 5 vies)
+    if (isPractice && !isPremium && currentHearts < MAX_HEARTS) {
+      gainStoredHeart();
+      setHasGainedHeart(true);
+    }
     setResult(lessonResult); // → au prochain affichage, `if (result)` montre l'écran de bilan
   }
 
@@ -197,13 +223,13 @@ export default function LessonScreen() {
     setIsChecked(false);
   }
 
-  /** Une erreur : vibration, compteur d'erreurs, et une vie en moins (sauf Premium : vies illimitées). */
+  /** Une erreur : vibration, compteur d'erreurs, et une vie en moins (sauf Premium et pratique). */
   function loseHeart() {
     Haptics.notificationAsync(Haptics.NotificationFeedbackType.Error);
     playWrongSound();
     setMistakeCount((current) => current + 1);
     setCorrectStreak(0);
-    if (!isPremium) {
+    if (usesHearts) {
       loseStoredHeart();
     }
   }
@@ -291,8 +317,8 @@ export default function LessonScreen() {
             translation={getAnswerTranslation(step)}
             explanation={getStepExplanation(step)}
             xp={XP_PER_EXERCISE}
-            // Une vie n'est perdue que pour un utilisateur gratuit
-            heartLost={!isPremium}
+            // Une vie n'est perdue que dans une leçon normale d'un utilisateur gratuit
+            heartLost={usesHearts}
             bottomInset={insets.bottom}
             mascot={getMascotReaction(answerIsCorrect === true, correctStreak, mistakeCount)}
             onContinue={goToNextStep}

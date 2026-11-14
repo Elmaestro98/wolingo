@@ -47,6 +47,8 @@ type LessonCompleteProps = {
   /** Série de jours APRÈS cette leçon */
   streakDays: number;
   newWords: Example[];
+  /** Vrai si cette séance de pratique a rendu une vie */
+  heartGained?: boolean;
   onContinue: () => void;
 };
 
@@ -56,6 +58,7 @@ export function LessonComplete({
   result,
   streakDays,
   newWords,
+  heartGained = false,
   onContinue,
 }: LessonCompleteProps) {
   const playCompleteSound = useSoundEffect(SOUNDS.complete);
@@ -133,6 +136,22 @@ export function LessonComplete({
             delay={540}
           />
         </View>
+
+        {/* Récompense de la pratique (seulement si une vie a été rendue) */}
+        {heartGained && (
+          <Animated.View
+            entering={FadeInDown.delay(600)}
+            className="mt-3 flex-row items-center gap-3 rounded-[20px] bg-red-light p-4"
+          >
+            <Ionicons name="heart" size={26} color="#E5484D" />
+            <View className="flex-1">
+              <Text className="font-title text-lg text-ink">+1 vie</Text>
+              <Text className="font-body text-[13px] text-muted">
+                Réviser, ça paie : une vie de regagnée !
+              </Text>
+            </View>
+          </Animated.View>
+        )}
 
         <Animated.View entering={FadeInDown.delay(660)} className="mt-3">
           <StreakCard streakDays={streakDays} />

@@ -8,6 +8,7 @@ import { DevMenu } from "@/components/dev/dev-menu";
 import { Colors } from "@/constants/theme";
 import { useLearnerStats } from "@/hooks/use-learner-stats";
 import { getBadgeStates, type BadgeId, type BadgeState } from "@/lib/badges";
+import { PREMIUM_ENABLED } from "@/lib/premium";
 import { addMinutes, formatTime } from "@/lib/time";
 import { useProgressStore } from "@/stores/progress-store";
 import { useSettingsStore, type DailyGoalMinutes } from "@/stores/settings-store";
@@ -102,36 +103,38 @@ export default function ProfileScreen() {
           </View>
         </Section>
 
-        {/* Premium */}
-        <View
-          className={`flex-row items-center gap-3 rounded-[20px] p-4 ${isPremium ? "bg-green" : "bg-yellow-light"}`}
-        >
+        {/* Premium : caché tant que l'application est 100 % gratuite (voir lib/premium.ts) */}
+        {PREMIUM_ENABLED && (
           <View
-            className={`h-11 w-11 items-center justify-center rounded-full ${isPremium ? "bg-white/20" : "bg-yellow"}`}
+            className={`flex-row items-center gap-3 rounded-[20px] p-4 ${isPremium ? "bg-green" : "bg-yellow-light"}`}
           >
-            <Ionicons name="diamond" size={20} color={isPremium ? Colors.white : "#3A2A00"} />
-          </View>
-          <View className="flex-1">
-            <Text className={`font-title text-lg ${isPremium ? "text-white" : "text-[#3A2A00]"}`}>
-              {isPremium ? "Wolingo Premium" : "Passe à Premium"}
-            </Text>
-            <Text className={`font-body text-[13px] ${isPremium ? "text-[#D5EADD]" : "text-[#5A4300]"}`}>
-              {isPremium
-                ? "Vies illimitées activées. Jërëjëf !"
-                : "Vies illimitées : apprends sans jamais t'arrêter."}
-            </Text>
-          </View>
-          {!isPremium && (
-            <Pressable
-              // Le paiement est hors V1
-              onPress={() => Alert.alert("Wolingo Premium", "Bientôt disponible !")}
-              accessibilityRole="button"
-              className="rounded-full bg-yellow px-3 py-2 active:opacity-80"
+            <View
+              className={`h-11 w-11 items-center justify-center rounded-full ${isPremium ? "bg-white/20" : "bg-yellow"}`}
             >
-              <Text className="font-body-black text-[13px] text-[#3A2A00]">Découvrir</Text>
-            </Pressable>
-          )}
-        </View>
+              <Ionicons name="diamond" size={20} color={isPremium ? Colors.white : "#3A2A00"} />
+            </View>
+            <View className="flex-1">
+              <Text className={`font-title text-lg ${isPremium ? "text-white" : "text-[#3A2A00]"}`}>
+                {isPremium ? "Wolingo Premium" : "Passe à Premium"}
+              </Text>
+              <Text className={`font-body text-[13px] ${isPremium ? "text-[#D5EADD]" : "text-[#5A4300]"}`}>
+                {isPremium
+                  ? "Vies illimitées activées. Jërëjëf !"
+                  : "Vies illimitées : apprends sans jamais t'arrêter."}
+              </Text>
+            </View>
+            {!isPremium && (
+              <Pressable
+                // Le paiement est hors V1
+                onPress={() => Alert.alert("Wolingo Premium", "Bientôt disponible !")}
+                accessibilityRole="button"
+                className="rounded-full bg-yellow px-3 py-2 active:opacity-80"
+              >
+                <Text className="font-body-black text-[13px] text-[#3A2A00]">Découvrir</Text>
+              </Pressable>
+            )}
+          </View>
+        )}
 
         {/* Réglages */}
         <Section title="Réglages">

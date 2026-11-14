@@ -10,18 +10,25 @@ import {
   computeHearts,
   formatCountdown,
   getTimeUntilNextHeart,
+  HEART_REFILL_MS,
   MAX_HEARTS,
   type HeartsState,
 } from "@/lib/hearts";
+import { PREMIUM_ENABLED } from "@/lib/premium";
+
+/** Le délai de recharge en minutes (5), calculé depuis hearts.ts pour ne jamais être faux. */
+const REFILL_MINUTES = HEART_REFILL_MS / 60_000;
 
 type OutOfHeartsProps = {
   /** Les vies sauvegardées (pour calculer le compte à rebours) */
   savedHearts: HeartsState;
   onBack: () => void;
+  /** Lance une séance de pratique pour regagner une vie (absent si aucune leçon n'est terminée) */
+  onPractice?: () => void;
 };
 
-/** Écran affiché à un utilisateur gratuit qui n'a plus de vies (pas dans la maquette : ajouté). */
-export function OutOfHearts({ savedHearts, onBack }: OutOfHeartsProps) {
+/** Écran affiché quand l'utilisateur n'a plus de vies (pas dans la maquette : ajouté). */
+export function OutOfHearts({ savedHearts, onBack, onPractice }: OutOfHeartsProps) {
   // Se redessine chaque seconde → le compte à rebours avance tout seul
   const now = useNow(1000);
   const timeLeft = getTimeUntilNextHeart(savedHearts, now);
@@ -50,7 +57,7 @@ export function OutOfHearts({ savedHearts, onBack }: OutOfHeartsProps) {
         <Text className="text-center font-body text-base leading-6 text-muted">
           {hasHeartAgain
             ? "Retourne au parcours pour reprendre ta leçon."
-            : "Une vie revient toutes les 10 minutes. Profites-en pour revoir tes mots : ndank-ndank !"}
+            : `Une vie revient toutes les ${REFILL_MINUTES} minutes.${onPractice ? " Ou révise une leçon pour en regagner une tout de suite !" : ""}`}
         </Text>
 
         {/* Les 5 cœurs : pleins pour les vies déjà revenues, vides pour les autres */}
@@ -74,7 +81,12 @@ export function OutOfHearts({ savedHearts, onBack }: OutOfHeartsProps) {
       </View>
 
       <View className="gap-2 px-6 pb-2">
-        <Button title="Vies illimitées avec Premium" arrow onPress={handlePremium} />
+        {/* Caché tant que l'application est 100 % gratuite (voir lib/premium.ts) */}
+        {PREMIUM_ENABLED && <Button title="Vies illimitées avec Premium" arrow onPress={handlePremium} />}
+        {/* Pas besoin de réviser si une vie est déjà revenue pendant l'attente */}
+        {onPractice && !hasHeartAgain && (
+          <Button title="Réviser pour regagner une vie" arrow onPress={onPractice} />
+        )}
         <Button title="Retour au parcours" variant="white" onPress={onBack} />
       </View>
     </SafeAreaView>

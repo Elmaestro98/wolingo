@@ -11,6 +11,9 @@ import { buildReminderContent, toHourMinute } from "@/lib/reminder-content";
 /** Le « canal » Android de nos rappels (obligatoire depuis Android 8). */
 const REMINDER_CHANNEL_ID = "daily-reminder";
 
+/** Le NOM de la notification « vies rechargées » : il permet de l'annuler sans toucher au rappel. */
+const HEARTS_NOTIFICATION_ID = "hearts-full";
+
 /**
  * À appeler UNE fois au démarrage : dit au téléphone d'afficher nos notifications
  * même quand l'app est ouverte (sinon elles seraient ignorées au premier plan).
@@ -68,8 +71,14 @@ export function syncDailyReminder(settings: ReminderSettings): Promise<boolean> 
 }
 
 async function applyReminder(settings: ReminderSettings): Promise<boolean> {
-  // On repart toujours de zéro : jamais deux rappels en double
-  await Notifications.cancelAllScheduledNotificationsAsync();
+  // On repart toujours de zéro : jamais deux rappels en double.
+  // On annule TOUT SAUF la notification des vies (sinon le rappel l'effacerait).
+  const scheduled = await Notifications.getAllScheduledNotificationsAsync();
+  for (const request of scheduled) {
+    if (request.identifier !== HEARTS_NOTIFICATION_ID) {
+      await Notifications.cancelScheduledNotificationAsync(request.identifier);
+    }
+  }
   if (!settings.enabled) return false;
 
   const hasPermission = await ensurePermission();
@@ -86,6 +95,35 @@ async function applyReminder(settings: ReminderSettings): Promise<boolean> {
     },
   });
   return true;
+}
+
+/**
+ * Programme « Tes 5 vies sont rechargées ! » à l'heure `fullAt` (en ms).
+ * On ne demande PAS la permission ici (pas de fenêtre surprise) : on envoie seulement
+ * si l'utilisateur a déjà accepté les notifications (avec le rappel quotidien).
+ */
+export async function scheduleHeartsFullNotification(fullAt: number): Promise<void> {
+  await cancelHeartsFullNotification(); // annuler puis reprogrammer : jamais deux en double
+  const permission = await Notifications.getPermissionsAsync();
+  if (!permission.granted) return;
+
+  await Notifications.scheduleNotificationAsync({
+    identifier: HEARTS_NOTIFICATION_ID,
+    content: {
+      title: "Tes 5 vies sont rechargées ! ❤️",
+      body: "Le lion t'attend : reprends ta leçon de wolof.",
+    },
+    trigger: {
+      type: Notifications.SchedulableTriggerInputTypes.DATE,
+      date: fullAt,
+      channelId: REMINDER_CHANNEL_ID,
+    },
+  });
+}
+
+/** Annule la notification des vies (sans erreur s'il n'y en a pas). */
+export async function cancelHeartsFullNotification(): Promise<void> {
+  await Notifications.cancelScheduledNotificationAsync(HEARTS_NOTIFICATION_ID);
 }
 
 /** Outil de test (menu développeur) : envoie le rappel dans quelques secondes. */

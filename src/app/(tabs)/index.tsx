@@ -8,12 +8,12 @@ import { LessonPath } from "@/components/path/lesson-path";
 import { ModuleCard } from "@/components/path/module-card";
 import { ModuleSelector } from "@/components/path/module-selector";
 import { NextModuleCard } from "@/components/path/next-module-card";
+import { HeartsPill } from "@/components/path/hearts-pill";
 import { StatPill } from "@/components/path/stat-pill";
 import { MODULES } from "@/content/modules";
 import { getDisplayedStreak, toDateKey } from "@/lib/dates";
 import { getCurrentModule, getModuleStatuses, getPathItemStates, isModuleCompleted } from "@/lib/path";
 import { useNow } from "@/hooks/use-now";
-import { computeHearts } from "@/lib/hearts";
 import { useProgressStore } from "@/stores/progress-store";
 import { useSettingsStore } from "@/stores/settings-store";
 
@@ -29,16 +29,10 @@ export default function PathScreen() {
   const lastActiveDateKey = useProgressStore((state) => state.lastActiveDateKey);
   const minutesToday = useProgressStore((state) => state.minutesToday);
   const todayDateKey = useProgressStore((state) => state.todayDateKey);
-  const isPremium = useSettingsStore((state) => state.isPremium);
-  const savedHearts = useProgressStore((state) => state.hearts);
-  const heartsRefillStartedAt = useProgressStore((state) => state.heartsRefillStartedAt);
 
-  // L'heure actuelle, mise à jour toutes les 30 s : les vies regagnées apparaissent toutes seules
+  // L'heure actuelle, mise à jour toutes les 30 s (pour la série et les minutes du jour).
+  // Les vies ont leur propre composant, HeartsPill, qui se met à jour chaque seconde.
   const nowMs = useNow(30_000);
-  const currentHearts = computeHearts(
-    { hearts: savedHearts, refillStartedAt: heartsRefillStartedAt },
-    nowMs,
-  ).hearts;
 
   // Valeurs à afficher AUJOURD'HUI (une série cassée s'affiche 0 ; les minutes d'hier ne comptent pas)
   const now = new Date(nowMs);
@@ -97,12 +91,7 @@ export default function PathScreen() {
               value={displayedStreak}
               accessibilityLabel={`Série de ${displayedStreak} jours`}
             />
-            <StatPill
-              icon="heart"
-              iconColor="#E5484D"
-              value={isPremium ? "∞" : currentHearts}
-              accessibilityLabel={isPremium ? "Vies illimitées" : `${currentHearts} vies`}
-            />
+            <HeartsPill />
           </View>
         </View>
 

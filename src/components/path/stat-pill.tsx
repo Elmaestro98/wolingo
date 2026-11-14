@@ -7,12 +7,14 @@ type StatPillProps = {
   iconColor: string;
   /** Un nombre, ou un texte (ex. « ∞ » pour des vies illimitées) */
   value: number | string;
+  /** Petit texte gris optionnel après le nombre (ex. « 04:12 » avant la prochaine vie) */
+  detail?: string;
   /** Texte lu par VoiceOver (ex. « Série de 5 jours ») */
   accessibilityLabel: string;
 };
 
 /** Pastille blanche « icône + nombre » de l'en-tête du Parcours (série 🔥, vies ❤️). */
-export function StatPill({ icon, iconColor, value, accessibilityLabel }: StatPillProps) {
+export function StatPill({ icon, iconColor, value, detail, accessibilityLabel }: StatPillProps) {
   return (
     <View
       accessible
@@ -21,6 +23,8 @@ export function StatPill({ icon, iconColor, value, accessibilityLabel }: StatPil
     >
       <Ionicons name={icon} size={18} color={iconColor} />
       <Text className="font-body-black text-[15px] text-ink">{value}</Text>
+      {/* Le détail n'est affiché que s'il existe ( && ) */}
+      {detail && <Text className="font-body-bold text-[13px] text-muted">{detail}</Text>}
     </View>
   );
 }
