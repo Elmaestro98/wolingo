@@ -1,12 +1,14 @@
 import Ionicons from "@expo/vector-icons/Ionicons";
-import { useState } from "react";
-import { Image, Pressable, Text, View } from "react-native";
+import { useEffect, useState } from "react";
+import { Image, Text, View } from "react-native";
 
 import { getChoiceLook } from "@/components/lesson/choice-look";
 import { ChoiceOption } from "@/components/lesson/choice-option";
+import { SpeakButton } from "@/components/speak-button";
 import { Colors } from "@/constants/theme";
 import { CONTENT_IMAGES } from "@/content/images";
 import type { MultipleChoiceStepData } from "@/content/lessons";
+import { playWolof } from "@/services/wolof-voice";
 
 type MultipleChoiceStepProps = {
   step: MultipleChoiceStepData;
@@ -20,6 +22,11 @@ type MultipleChoiceStepProps = {
 export function MultipleChoiceStep({ step, checked, onAnswerChange }: MultipleChoiceStepProps) {
   // Le choix sélectionné (null = rien de choisi). Mémoire propre à l'exercice.
   const [selectedIndex, setSelectedIndex] = useState<number | null>(null);
+
+  // Dès que l'exercice apparaît, on fait écouter la phrase wolof une fois (si elle est enregistrée)
+  useEffect(() => {
+    playWolof(step.prompt);
+  }, [step.prompt]);
 
   function handleSelect(index: number) {
     setSelectedIndex(index);
@@ -55,15 +62,7 @@ export function MultipleChoiceStep({ step, checked, onAnswerChange }: MultipleCh
                 </Text>
               )}
             </View>
-            <Pressable
-              // Plus tard : jouer l'audio avec expo-audio
-              onPress={() => {}}
-              accessibilityRole="button"
-              accessibilityLabel={`Écouter « ${step.prompt} »`}
-              className="h-[52px] w-[52px] items-center justify-center rounded-2xl border-b-4 border-green-shadow bg-green active:mt-1 active:border-b-0"
-            >
-              <Ionicons name="volume-high-outline" size={24} color={Colors.white} />
-            </Pressable>
+            <SpeakButton text={step.prompt} variant="large" />
           </View>
           {step.context && <Text className="font-body text-[12.5px] text-muted">{step.context}</Text>}
         </View>

@@ -10,7 +10,6 @@ import {
   NunitoSans_700Bold,
   NunitoSans_800ExtraBold,
 } from '@expo-google-fonts/nunito-sans';
-import { setAudioModeAsync } from 'expo-audio';
 import { useFonts } from 'expo-font';
 import { Stack } from 'expo-router';
 import * as SplashScreen from 'expo-splash-screen';
@@ -19,6 +18,7 @@ import { useEffect } from 'react';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 
 import { useReminderSync } from '@/hooks/use-reminder-sync';
+import { setPlaysInSilentMode } from '@/services/audio-mode';
 import { configureNotifications } from '@/services/notifications';
 import { useSettingsStore } from '@/stores/settings-store';
 
@@ -28,9 +28,9 @@ SplashScreen.preventAutoHideAsync();
 // Une seule fois au démarrage : nos notifications s'affichent même app ouverte
 configureNotifications();
 
-// Une seule fois au démarrage : les sons de l'app respectent le bouton « silencieux » de l'iPhone,
-// et se mélangent à la musique de l'utilisateur au lieu de la couper
-setAudioModeAsync({ playsInSilentMode: false, interruptionMode: 'mixWithOthers' });
+// Au démarrage : les sons de l'app respectent le bouton « silencieux » de l'iPhone
+// (les voix wolof changent ce réglage au moment de jouer : voir services/audio-mode.ts)
+setPlaysInSilentMode(false);
 
 export default function RootLayout() {
   // Lit dans le magasin : l'onboarding est-il terminé ?

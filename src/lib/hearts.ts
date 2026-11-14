@@ -1,7 +1,7 @@
 /** Nombre maximum de vies (version gratuite). */
 export const MAX_HEARTS = 5;
-/** Une vie revient toutes les 30 minutes (en millisecondes). */
-export const HEART_REFILL_MS = 30 * 60 * 1000;
+/** Une vie revient toutes les 10 minutes (en millisecondes). */
+export const HEART_REFILL_MS = 10 * 60 * 1000;
 
 /**
  * Ce qu'on sauvegarde : le nombre de vies à un instant donné, et l'heure où la recharge a commencé.
@@ -25,7 +25,7 @@ export function computeHearts(saved: HeartsState, now: number): HeartsState {
   if (hearts >= MAX_HEARTS) {
     return { hearts: MAX_HEARTS, refillStartedAt: null }; // tout est rechargé
   }
-  // On avance le point de départ des vies déjà regagnées : la prochaine arrive 30 min plus tard
+  // On avance le point de départ des vies déjà regagnées : la prochaine arrive 10 min plus tard
   return { hearts, refillStartedAt: saved.refillStartedAt + regained * HEART_REFILL_MS };
 }
 

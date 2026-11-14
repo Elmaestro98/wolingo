@@ -1,11 +1,13 @@
 import Ionicons from "@expo/vector-icons/Ionicons";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Image, Pressable, Text, View } from "react-native";
 
 import { CHOICE_LOOK_CLASSES, getChoiceLook } from "@/components/lesson/choice-look";
+import { SpeakButton } from "@/components/speak-button";
 import { Colors } from "@/constants/theme";
 import { CONTENT_IMAGES } from "@/content/images";
 import type { FillBlankStepData } from "@/content/lessons";
+import { playWolof } from "@/services/wolof-voice";
 
 type FillBlankStepProps = {
   step: FillBlankStepData;
@@ -32,6 +34,12 @@ export function FillBlankStep({ step, checked, onAnswerChange }: FillBlankStepPr
   // Le mot affiché dans le trou (null tant que rien n'est choisi)
   const selectedWord = selectedIndex === null ? null : step.choices[selectedIndex];
   const isWrong = checked && selectedIndex !== step.answerIndex;
+  const correctSentence = buildSentence(step.choices[step.answerIndex]);
+
+  // Au moment de la correction, on fait écouter la bonne phrase
+  useEffect(() => {
+    if (checked) playWolof(correctSentence);
+  }, [checked, correctSentence]);
 
   return (
     <View className="gap-5">
@@ -54,15 +62,8 @@ export function FillBlankStep({ step, checked, onAnswerChange }: FillBlankStepPr
             <Text className="font-body-black text-[15px] text-ink">{step.speaker.name}</Text>
             <Text className="font-body text-[12.5px] text-muted">{step.speaker.subtitle}</Text>
           </View>
-          <Pressable
-            // Plus tard : jouer l'audio avec expo-audio
-            onPress={() => {}}
-            accessibilityRole="button"
-            accessibilityLabel="Écouter la phrase"
-            className="h-[52px] w-[52px] items-center justify-center rounded-2xl border-b-4 border-green-shadow bg-green active:mt-1 active:border-b-0"
-          >
-            <Ionicons name="volume-high-outline" size={24} color={Colors.white} />
-          </Pressable>
+          {/* Avant « Vérifier », écouter la phrase donnerait la réponse : le bouton n'apparaît qu'après */}
+          {checked && <SpeakButton text={correctSentence} variant="large" />}
         </View>
 
         {/* La phrase : flex-wrap = les morceaux passent à la ligne s'ils ne tiennent pas */}

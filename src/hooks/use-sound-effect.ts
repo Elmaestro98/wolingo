@@ -1,6 +1,7 @@
 import { useAudioPlayer, type AudioSource } from "expo-audio";
 import { useCallback } from "react";
 
+import { setPlaysInSilentMode } from "@/services/audio-mode";
 import { useSettingsStore } from "@/stores/settings-store";
 
 /** Les petits sons de l'app (fabriqués à partir de notes de musique : libres de droits). */
@@ -24,7 +25,10 @@ export function useSoundEffect(source: AudioSource): () => void {
   // useCallback : la MÊME fonction d'un affichage à l'autre (sinon un useEffect qui l'utilise rejouerait le son)
   return useCallback(() => {
     if (!soundEnabled) return;
-    player.seekTo(0); // on rembobine au début : le son peut être rejoué plusieurs fois de suite
-    player.play();
+    // Les « ding » respectent le mode silencieux (une voix wolof a pu changer ce réglage juste avant)
+    setPlaysInSilentMode(false).then(() => {
+      player.seekTo(0); // on rembobine au début : le son peut être rejoué plusieurs fois de suite
+      player.play();
+    });
   }, [player, soundEnabled]);
 }

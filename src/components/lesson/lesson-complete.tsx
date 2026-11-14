@@ -2,7 +2,7 @@ import Ionicons from "@expo/vector-icons/Ionicons";
 import * as Haptics from "expo-haptics";
 import type { ComponentProps } from "react";
 import { useEffect } from "react";
-import { Image, Pressable, ScrollView, Text, View } from "react-native";
+import { Image, ScrollView, Text, View } from "react-native";
 import Animated, {
   cancelAnimation,
   Easing,
@@ -18,6 +18,7 @@ import Animated, {
 } from "react-native-reanimated";
 import { SafeAreaView } from "react-native-safe-area-context";
 
+import { SpeakButton } from "@/components/speak-button";
 import { Button } from "@/components/ui/button";
 import { Colors } from "@/constants/theme";
 import { useCountUp } from "@/hooks/use-count-up";
@@ -321,15 +322,7 @@ function NewWordsCard({ words }: { words: Example[] }) {
               <Text className="font-title text-lg text-green">{word.wolof}</Text>
               <Text className="font-body text-[13px] text-muted">{word.french}</Text>
             </View>
-            <Pressable
-              // Plus tard : jouer l'audio avec expo-audio
-              onPress={() => {}}
-              accessibilityRole="button"
-              accessibilityLabel={`Écouter « ${word.wolof} »`}
-              className="h-9 w-9 items-center justify-center rounded-full bg-white"
-            >
-              <Ionicons name="volume-high-outline" size={16} color={Colors.green} />
-            </Pressable>
+            <SpeakButton text={word.wolof} variant="small" />
           </View>
         ))}
       </View>

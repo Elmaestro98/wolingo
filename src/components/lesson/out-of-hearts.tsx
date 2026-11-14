@@ -50,7 +50,7 @@ export function OutOfHearts({ savedHearts, onBack }: OutOfHeartsProps) {
         <Text className="text-center font-body text-base leading-6 text-muted">
           {hasHeartAgain
             ? "Retourne au parcours pour reprendre ta leçon."
-            : "Une vie revient toutes les 30 minutes. Profites-en pour revoir tes mots : ndank-ndank !"}
+            : "Une vie revient toutes les 10 minutes. Profites-en pour revoir tes mots : ndank-ndank !"}
         </Text>
 
         {/* Les 5 cœurs : pleins pour les vies déjà revenues, vides pour les autres */}

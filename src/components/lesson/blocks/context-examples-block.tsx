@@ -1,5 +1,6 @@
 import { Text, View } from "react-native";
 
+import { SpeakButton } from "@/components/speak-button";
 import type { ContextExample } from "@/content/lessons";
 
 type ContextExamplesBlockProps = {
@@ -14,10 +15,16 @@ export function ContextExamplesBlock({ title, examples }: ContextExamplesBlockPr
       <Text className="font-title text-xl text-ink">{title}</Text>
       {examples.map((example) => (
         // Trait vert à gauche (border-l) : style « citation »
-        <View key={example.wolof} className="gap-1 rounded-r-2xl border-l-4 border-green bg-white px-4 py-3">
-          <Text className="font-title text-lg text-ink">{example.wolof}</Text>
-          <Text className="font-body text-sm italic text-muted">{example.french}</Text>
-          {example.note && <Text className="mt-1 font-body-bold text-xs text-green">{example.note}</Text>}
+        <View
+          key={example.wolof}
+          className="flex-row items-center gap-3 rounded-r-2xl border-l-4 border-green bg-white px-4 py-3"
+        >
+          <View className="flex-1 gap-1">
+            <Text className="font-title text-lg text-ink">{example.wolof}</Text>
+            <Text className="font-body text-sm italic text-muted">{example.french}</Text>
+            {example.note && <Text className="mt-1 font-body-bold text-xs text-green">{example.note}</Text>}
+          </View>
+          <SpeakButton text={example.wolof} variant="mini" />
         </View>
       ))}
     </View>

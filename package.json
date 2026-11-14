@@ -64,7 +64,8 @@
     "test": "jest",
     "test:watch": "jest --watchAll",
     "content:check": "jest src/content",
-    "content:export": "node --experimental-strip-types --no-warnings scripts/export-content.mjs"
+    "content:export": "node --experimental-strip-types --no-warnings scripts/export-content.mjs",
+    "audio": "node --experimental-strip-types --no-warnings scripts/audio.mjs"
   },
   "private": true,
   "jest": {

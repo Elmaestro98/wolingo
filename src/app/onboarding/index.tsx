@@ -2,6 +2,7 @@ import { FeatureCard, type FeatureCardProps } from "@/components/onboarding/feat
 import { SpeechBubble } from "@/components/ui/speech-bubble";
 import { Button } from "@/components/ui/button";
 import { Colors } from "@/constants/theme";
+import { hasWolofAudio, playWolof } from "@/services/wolof-voice";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import { router } from "expo-router";
 import { Image, Pressable, Text, View } from "react-native";
@@ -70,9 +71,8 @@ export default function WelcomeScreen() {
           <SpeechBubble
             title="Nanga def ?"
             subtitle="Comment ça va ?"
-            onPlay={() => {
-              // Plus tard : jouer l'audio « Nanga def » avec expo-audio
-            }}
+            // Pas encore d'enregistrement → undefined → la bulle n'affiche pas de bouton 🔊
+            onPlay={hasWolofAudio("Nanga def ?") ? () => playWolof("Nanga def ?") : undefined}
             className="absolute right-0 top-1.5"
           />
         </View>
